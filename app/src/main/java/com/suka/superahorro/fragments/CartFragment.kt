@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,12 +23,8 @@ import com.suka.superahorro.entities.CartItem
 import com.suka.superahorro.packages.createInputDialog
 
 class CartFragment : Fragment() {
-
     lateinit var v : View
-
-    private var db: AppDatabase? = null
-    private var cartItemDao: CartItemDao? = null
-    var cartItems: MutableList<CartItem> = mutableListOf<CartItem>()
+    private val viewModel: CartViewModel by viewModels()
 
     lateinit var recCartItems : RecyclerView
     lateinit var adapter : CartItemAdapter
@@ -35,12 +32,13 @@ class CartFragment : Fragment() {
     lateinit var txtCartTotal : TextView
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         v = inflater.inflate(R.layout.fragment_cart, container, false)
+        viewModel.init(requireContext())
+
         recCartItems = v.findViewById(R.id.recCartItems)
         btCardAdd = v.findViewById(R.id.btCardAdd)
         txtCartTotal = v.findViewById(R.id.txtCartTotal)
@@ -51,26 +49,19 @@ class CartFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        db = AppDatabase.getInstance(v.context)
-        cartItemDao = db?.cartItemDao()
-        cartItems = cartItemDao?.fetchAllCartItems() ?: mutableListOf<CartItem>()
-
-
         btCardAdd.setOnClickListener{
             val dialog = Dialog(requireActivity())
             createInputDialog(dialog, "Nuevo Item", "") { name ->
-                val cartItem = CartItem(name)
-                cartItemDao?.insertCartItem(cartItem)
-
+                viewModel.insertCartItem( CartItem(name) )
                 updateItems()
                 Snackbar.make(v, "Item agregado", Snackbar.LENGTH_SHORT).show()
             }
         }
 
-        adapter = CartItemAdapter(cartItems,
+        adapter = CartItemAdapter(viewModel.cartItems,
             // OnClick
             { position ->
-                val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment(cartItems[position].id)
+                val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment(viewModel.cartItems[position].id)
                 findNavController().navigate(action)
             },
             // OnLongClick
@@ -79,7 +70,7 @@ class CartFragment : Fragment() {
                 builder.setTitle("Borrar item")
                 builder.setMessage("¿Está seguro que desea eliminar el item?")
                 builder.setPositiveButton("Sí") { _, _ ->
-                    cartItemDao?.deleteCartItem(cartItems[position])
+                    viewModel.deleteCartItem(viewModel.cartItems[position])
                     updateItems()
                     Snackbar.make(v, "Item eliminado", Snackbar.LENGTH_SHORT).show()
                 }
@@ -93,8 +84,8 @@ class CartFragment : Fragment() {
 
 
     fun updateItems() {
-        cartItems = cartItemDao?.fetchAllCartItems() ?: mutableListOf<CartItem>()
-        adapter.updateItems(cartItems)
+        viewModel.updateItems()
+        adapter.updateItems(viewModel.cartItems)
         txtCartTotal.text = adapter.getCartDescription()
     }
 
