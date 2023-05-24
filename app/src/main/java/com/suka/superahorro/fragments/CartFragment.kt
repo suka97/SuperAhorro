@@ -53,7 +53,6 @@ class CartFragment : Fragment() {
             val dialog = Dialog(requireActivity())
             createInputDialog(dialog, "Nuevo Item", "") { name ->
                 viewModel.insertCartItem( CartItem(name) )
-                updateItems()
                 Snackbar.make(v, "Item agregado", Snackbar.LENGTH_SHORT).show()
             }
         }
@@ -71,7 +70,6 @@ class CartFragment : Fragment() {
                 builder.setMessage("¿Está seguro que desea eliminar el item?")
                 builder.setPositiveButton("Sí") { _, _ ->
                     viewModel.deleteCartItem(viewModel.cartItems[position])
-                    updateItems()
                     Snackbar.make(v, "Item eliminado", Snackbar.LENGTH_SHORT).show()
                 }
                 val dialog = builder.create()
@@ -80,19 +78,18 @@ class CartFragment : Fragment() {
         )
         recCartItems.layoutManager = LinearLayoutManager(context)
         recCartItems.adapter = adapter
-    }
 
-
-    fun updateItems() {
+        viewModel.onItemsChange = {
+            adapter.updateItems(viewModel.cartItems)
+            txtCartTotal.text = adapter.getCartDescription()
+        }
         viewModel.updateItems()
-        adapter.updateItems(viewModel.cartItems)
-        txtCartTotal.text = adapter.getCartDescription()
     }
 
 
     override fun onResume() {
         super.onResume()
-        updateItems()
+        viewModel.updateItems()
     }
 
 }

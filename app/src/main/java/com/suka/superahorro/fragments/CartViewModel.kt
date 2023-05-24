@@ -13,6 +13,7 @@ class CartViewModel : ViewModel() {
     private var cartItemDao: CartItemDao? = null
 
     var cartItems: MutableList<CartItem> = mutableListOf<CartItem>()
+    var onItemsChange: (() -> Unit)? = null
 
 
     fun init(context: Context) {
@@ -25,15 +26,18 @@ class CartViewModel : ViewModel() {
 
     fun updateItems() {
         cartItems = cartItemDao?.fetchAllCartItems() ?: mutableListOf<CartItem>()
+        onItemsChange?.invoke()
     }
 
 
     fun insertCartItem(cartItem: CartItem) {
         cartItemDao?.insertCartItem(cartItem)
+        onItemsChange?.invoke()
     }
 
 
     fun deleteCartItem(cartItem: CartItem) {
         cartItemDao?.deleteCartItem(cartItem)
+        onItemsChange?.invoke()
     }
 }
