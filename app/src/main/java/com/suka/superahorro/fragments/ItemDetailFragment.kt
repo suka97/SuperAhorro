@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.suka.superahorro.R
 import com.suka.superahorro.database.AppDatabase
@@ -16,10 +17,7 @@ import com.suka.superahorro.packages.*
 
 class ItemDetailFragment : Fragment() {
     lateinit var v : View
-
-    private var db: AppDatabase? = null
-    private var cartItemsDao: CartItemDao? = null
-    lateinit var cartItem: CartItem
+    private val viewModel: ItemDetailViewModel by viewModels()
 
     lateinit var name : LayoutedInput
     lateinit var amount : LayoutedInput
@@ -37,13 +35,9 @@ class ItemDetailFragment : Fragment() {
     ): View? {
         v = inflater.inflate(R.layout.fragment_item_detail, container, false)
         val args = ItemDetailFragmentArgs.fromBundle(requireArguments())
-
-        db = AppDatabase.getInstance(v.context)
-        cartItemsDao = db?.cartItemDao()
-        cartItem = cartItemsDao?.fetchCartItemById(args.itemID)!!
+        viewModel.init(requireContext(), args.itemID)
 
         layout = v.findViewById(R.id.layName_det)
-
         return v
     }
 
@@ -57,13 +51,14 @@ class ItemDetailFragment : Fragment() {
         total = LayoutedInput(this, "Total", ::onUpdateTotal, R.id.txtTot_det, R.id.layTot_det)
         brand = LayoutedInput(this, "Marca", ::saveChanges, R.id.txtBrand_det, R.id.layBrand_det)
         sku = LayoutedInput(this, "SKU", ::saveChanges, R.id.txtSku_det, R.id.laySku_det)
-        setPicture(cartItem.picture)
+        setPicture(viewModel.getCartItem().picture)
     }
 
 
     override fun onStart() {
         super.onStart()
 
+        val cartItem = viewModel.getCartItem()
         name.setText(cartItem.name)
         amount.setValue(UnitValue(cartItem.amount, GLOBAL_UNIT_AMOUNT))
         price.setValue(UnitValue(cartItem.unit_price, GLOBAL_UNIT_PRICE))
@@ -102,13 +97,14 @@ class ItemDetailFragment : Fragment() {
     }
 
     fun saveChanges(){
+        val cartItem = viewModel.getCartItem()
         cartItem.name = name.getText()
         cartItem.amount = amount.getValue()?.value
         cartItem.unit_price = price.getValue()?.value
         cartItem.brand = brand.getText()
         cartItem.sku = sku.getText()
 
-        cartItemsDao?.updateCartItem(cartItem)
+        viewModel.updateCartItem(cartItem)
     }
 
     fun setPicture (picture_url: String?) {
