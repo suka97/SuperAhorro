@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
@@ -19,10 +21,7 @@ import com.suka.superahorro.database.UserDao
 
 class LoginFragment : Fragment() {
     lateinit var v : View
-
-    private var db: AppDatabase? = null
-    private var usersDao: UserDao? = null
-    lateinit var sharedPreferences: SharedPreferences
+    private val viewModel: LoginViewModel by viewModels()
 
     lateinit var btLogin : Button
     lateinit var btSignup : Button
@@ -34,10 +33,7 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         v = inflater.inflate(R.layout.fragment_login, container, false)
-
-        db = AppDatabase.getInstance(v.context)
-        usersDao = db?.userDao()
-        sharedPreferences = requireContext().getSharedPreferences("com.suka.superahorro.PREFERENCES", Context.MODE_PRIVATE)
+        viewModel.init(requireContext())
 
         btLogin = v.findViewById(R.id.btLogin)
         btSignup = v.findViewById(R.id.btSignup)
@@ -57,10 +53,7 @@ class LoginFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        val prefMail: String = sharedPreferences.getString("user_mail", "") ?:""
-        val prefPass: String = sharedPreferences.getString("user_pass", "") ?:""
-        val prefUser = usersDao?.fetchUserByCredentials(prefMail, prefPass)
-        if ( prefUser != null ) login()
+        if ( viewModel.validPreviuousUserExists() ) login()
 
         btLogin.setOnClickListener() {
             val userMail = txtEmail.text.toString()
@@ -71,17 +64,11 @@ class LoginFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            val user = usersDao?.fetchUserByCredentials(userMail, userPass)
-            if ( user == null ) {
-                Snackbar.make(v, "Usuario o contraseña incorrectos", Snackbar.LENGTH_SHORT).show()
+            if ( viewModel.login(userMail, userPass) ) {
+                login()
             }
             else {
-                val prefEditor = sharedPreferences.edit()
-                prefEditor.putString("user_mail", userMail)
-                prefEditor.putString("user_pass", userPass)
-                prefEditor.apply()
-
-                login()
+                Snackbar.make(v, "Usuario o contraseña incorrectos", Snackbar.LENGTH_SHORT).show()
             }
         }
         btSignup.setOnClickListener() {

@@ -17,8 +17,8 @@ class CartItemAdapter (
     var cartItemsList:MutableList<CartItem>,
     var onItemClick : (Int) -> Unit,
     var onItemDelete : (Int) -> Unit
-) : RecyclerView.Adapter<CartItemAdapter.PlayerHolder>() {
-    class PlayerHolder (v: View) : RecyclerView.ViewHolder(v) {
+) : RecyclerView.Adapter<CartItemAdapter.ItemHolder>() {
+    class ItemHolder (v: View) : RecyclerView.ViewHolder(v) {
         private var view: View
         init {
             this.view = v
@@ -89,16 +89,16 @@ class CartItemAdapter (
         return "Lista: $itemCount, Total: ${UnitValue(getItemTotal(), GLOBAL_UNIT_PRICE)}"
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.shop_item, parent, false)
-        return (PlayerHolder(view))
+        return (ItemHolder(view))
     }
 
     override fun getItemCount(): Int {
         return cartItemsList.size
     }
 
-    override fun onBindViewHolder(holder: PlayerHolder, position: Int) {
+    override fun onBindViewHolder(holder: ItemHolder, position: Int) {
         holder.setPicture(cartItemsList[position].picture)
         holder.setName(cartItemsList[position].name)
         holder.setPrice(cartItemsList[position].getTotalPrice())
