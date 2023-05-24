@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
 import com.suka.superahorro.activities.LoginActivity
@@ -23,11 +24,7 @@ import com.suka.superahorro.entities.User
 
 class UserFragment : Fragment() {
     lateinit var v : View
-
-    private var db: AppDatabase? = null
-    private var usersDao: UserDao? = null
-    lateinit var sharedPreferences: SharedPreferences
-    lateinit var saved_user: User
+    private val viewModel: UserViewModel by viewModels()
 
     lateinit var txtEmail: TextView
     lateinit var txtPass: EditText
@@ -39,10 +36,7 @@ class UserFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         v = inflater.inflate(R.layout.fragment_user, container, false)
-
-        db = AppDatabase.getInstance(v.context)
-        usersDao = db?.userDao()
-        sharedPreferences = requireContext().getSharedPreferences("com.suka.superahorro.PREFERENCES", Context.MODE_PRIVATE)
+        viewModel.init(requireContext())
 
         txtEmail = v.findViewById(R.id.txtEmail_config)
         txtPass = v.findViewById(R.id.txtPass_config)
@@ -56,7 +50,7 @@ class UserFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        txtEmail.text = sharedPreferences.getString("user_mail", "")
+        txtEmail.text = viewModel.getUser().mail
 
         btSave.setOnClickListener {
             val builder = AlertDialog.Builder(context)
@@ -65,8 +59,7 @@ class UserFragment : Fragment() {
             builder.setPositiveButton("Sí") { _, _ ->
                 val email = txtEmail.text.toString()
                 val pass = txtPass.text.toString()
-                usersDao?.updateUser(User(email, pass))
-                sharedPreferences.edit().putString("user_pass", pass).apply()
+                viewModel.updateUser( User(email, pass) )
                 Snackbar.make(v, "Cambios guardados", Snackbar.LENGTH_SHORT).show()
             }
         }
@@ -76,8 +69,7 @@ class UserFragment : Fragment() {
             builder.setTitle("Logout")
             builder.setMessage("¿Está seguro que desea desvincular la cuenta?")
             builder.setPositiveButton("Sí") { _, _ ->
-                var sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("com.suka.superahorro.PREFERENCES", android.content.Context.MODE_PRIVATE)
-                sharedPreferences.edit().clear().apply()
+                viewModel.clearLoginInfo()
 
                 startActivity(Intent(context, LoginActivity::class.java))
                 requireActivity().finish()

@@ -11,6 +11,7 @@ class CartViewModel : ViewModel() {
 
     private var db: AppDatabase? = null
     private var cartItemDao: CartItemDao? = null
+
     var cartItems: MutableList<CartItem> = mutableListOf<CartItem>()
 
 
