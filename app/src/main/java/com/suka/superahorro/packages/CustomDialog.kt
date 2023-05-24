@@ -45,7 +45,7 @@ fun createInputDialog(dialog: Dialog, desc: String, value: Any, onOkClicked: (St
     dialog.setOnShowListener{
         Handler().postDelayed({
             input.requestFocus()
-            input.setSelection(input.text.length)
+            input.selectAll()
             val imm = dialog.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT)
         }, 200)
