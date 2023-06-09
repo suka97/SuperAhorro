@@ -7,158 +7,108 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ItemDetailFragment" >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layName_det"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/layAmout_det"
-        app:layout_constraintEnd_toStartOf="@+id/layAmout_det"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/txtName_det"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/layout_gradient"
-            android:ems="10"
-            android:fontFamily="sans-serif-condensed"
-            android:hint="Nombre"
-            android:inputType="textPersonName"
-            android:paddingStart="5dp"
-            android:text="Aceite de Oliva"
-            android:textSize="30sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/laySku_det"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/layTot_det"
-        app:layout_constraintEnd_toStartOf="@+id/layTot_det"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/layTot_det">
-
-        <TextView
-            android:id="@+id/txtSku_det"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/layout_gradient"
-            android:ems="10"
-            android:fontFamily="sans-serif-condensed"
-            android:hint="Nombre"
-            android:inputType="textPersonName"
-            android:paddingStart="5dp"
-            android:text="2646700000001"
-            android:textSize="30sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layBrand_det"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/layPrice_det"
-        app:layout_constraintEnd_toStartOf="@+id/layPrice_det"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/layPrice_det">
-
-        <TextView
-            android:id="@+id/txtBrand_det"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/layout_gradient"
-            android:ems="10"
-            android:fontFamily="sans-serif-condensed"
-            android:hint="Nombre"
-            android:inputType="textPersonName"
-            android:paddingStart="5dp"
-            android:text="Cocinero"
-            android:textSize="30sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layAmout_det"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/txtAmount_det"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="sans-serif-condensed"
-            android:inputType="number"
-            android:text="10 kg"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layPrice_det"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        app:layout_constraintEnd_toEndOf="@id/layAmout_det"
-        app:layout_constraintStart_toStartOf="@id/layAmout_det"
-        app:layout_constraintTop_toBottomOf="@id/layAmout_det">
-
-        <TextView
-            android:id="@+id/txtPrice_det"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="sans-serif-condensed"
-            android:inputType="number"
-            android:text="$1,200.00"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layTot_det"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        app:layout_constraintEnd_toEndOf="@id/layPrice_det"
-        app:layout_constraintStart_toStartOf="@id/layPrice_det"
-        app:layout_constraintTop_toBottomOf="@id/layPrice_det">
-
-        <TextView
-            android:id="@+id/txtTot_det"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="sans-serif-condensed"
-            android:inputType="number"
-            android:text="$1,200.00"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <ImageView
         android:id="@+id/img_det"
         android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_height="0dp"
         android:src="@drawable/default_item"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/txtTot_det"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtName_det" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtName_det"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Nombre"
+        android:padding="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/TextField_Head1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aceite de Oliva" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtAmount_det"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Cantidad"
+        android:padding="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/img_det"
+        app:layout_constraintTop_toBottomOf="@id/txtName_det"
+        app:suffixText="kg">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/TextField_Input1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="10" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtPrice_det"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Precio Unitario"
+        android:padding="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/img_det"
+        app:layout_constraintTop_toBottomOf="@id/txtAmount_det">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/TextField_Input1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="10" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtTot_det"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Precio Total"
+        android:padding="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/img_det"
+        app:layout_constraintTop_toBottomOf="@id/txtPrice_det">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/TextField_Input1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="10" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtModel_det"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Modelo"
+        android:padding="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_det">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/TextField_Input1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Galletitas Crackers x10ud y sigue de largo" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

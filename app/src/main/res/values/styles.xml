@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextField_Head1">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textSize">50sp</item>
+        <item name="android:paddingVertical">0dp</item>
+    </style>
+
+    <style name="TextField_Input1">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:paddingVertical">0dp</item>
+    </style>
+</resources>

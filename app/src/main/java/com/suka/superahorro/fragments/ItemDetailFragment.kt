@@ -19,14 +19,12 @@ class ItemDetailFragment : Fragment() {
     lateinit var v : View
     private val viewModel: ItemDetailViewModel by viewModels()
 
-    lateinit var name : LayoutedInput
-    lateinit var amount : LayoutedInput
-    lateinit var price : LayoutedInput
-    lateinit var total : LayoutedInput
-    lateinit var brand : LayoutedInput
-    lateinit var sku : LayoutedInput
-
-    lateinit var layout : ConstraintLayout
+//    lateinit var name : LayoutedInput
+//    lateinit var amount : LayoutedInput
+//    lateinit var price : LayoutedInput
+//    lateinit var total : LayoutedInput
+//    lateinit var brand : LayoutedInput
+//    lateinit var sku : LayoutedInput
 
 
     override fun onCreateView(
@@ -37,7 +35,6 @@ class ItemDetailFragment : Fragment() {
         val args = ItemDetailFragmentArgs.fromBundle(requireArguments())
         viewModel.init(requireContext(), args.itemID)
 
-        layout = v.findViewById(R.id.layName_det)
         return v
     }
 
@@ -45,13 +42,13 @@ class ItemDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        name = LayoutedInput(this, "Nombre", ::saveChanges, R.id.txtName_det, R.id.layName_det)
-        amount = LayoutedInput(this, "Cantidad", ::onUpdatePriceAmount, R.id.txtAmount_det, R.id.layAmout_det)
-        price = LayoutedInput(this, "Precio", ::onUpdatePriceAmount, R.id.txtPrice_det, R.id.layPrice_det)
-        total = LayoutedInput(this, "Total", ::onUpdateTotal, R.id.txtTot_det, R.id.layTot_det)
-        brand = LayoutedInput(this, "Marca", ::saveChanges, R.id.txtBrand_det, R.id.layBrand_det)
-        sku = LayoutedInput(this, "SKU", ::saveChanges, R.id.txtSku_det, R.id.laySku_det)
-        setPicture(viewModel.getCartItem().picture)
+//        name = LayoutedInput(this, "Nombre", ::saveChanges, R.id.txtName_det, R.id.layName_det)
+//        amount = LayoutedInput(this, "Cantidad", ::onUpdatePriceAmount, R.id.txtAmount_det, R.id.layAmout_det)
+//        price = LayoutedInput(this, "Precio", ::onUpdatePriceAmount, R.id.txtPrice_det, R.id.layPrice_det)
+//        total = LayoutedInput(this, "Total", ::onUpdateTotal, R.id.txtTot_det, R.id.layTot_det)
+//        brand = LayoutedInput(this, "Marca", ::saveChanges, R.id.txtBrand_det, R.id.layBrand_det)
+//        sku = LayoutedInput(this, "SKU", ::saveChanges, R.id.txtSku_det, R.id.laySku_det)
+//        setPicture(viewModel.getCartItem().picture)
     }
 
 
@@ -59,50 +56,50 @@ class ItemDetailFragment : Fragment() {
         super.onStart()
 
         val cartItem = viewModel.getCartItem()
-        name.setText(cartItem.name)
-        amount.setValue(UnitValue(cartItem.amount, GLOBAL_UNIT_AMOUNT))
-        price.setValue(UnitValue(cartItem.unit_price, GLOBAL_UNIT_PRICE))
-        total.setValue(UnitValue(cartItem.getTotalPrice(), GLOBAL_UNIT_PRICE))
-        brand.setText(cartItem.brand ?: "-")
-        sku.setText(cartItem.sku ?: "-")
+//        name.setText(cartItem.name)
+//        amount.setValue(UnitValue(cartItem.amount, GLOBAL_UNIT_AMOUNT))
+//        price.setValue(UnitValue(cartItem.unit_price, GLOBAL_UNIT_PRICE))
+//        total.setValue(UnitValue(cartItem.getTotalPrice(), GLOBAL_UNIT_PRICE))
+//        brand.setText(cartItem.brand ?: "-")
+//        sku.setText(cartItem.sku ?: "-")
     }
 
     override fun onResume() {
         super.onResume()
 
-        name.updateListener()
-        amount.updateListener()
-        price.updateListener()
+//        name.updateListener()
+//        amount.updateListener()
+//        price.updateListener()
     }
 
 
     fun onUpdateTotal(){
-        val amount = amount.getValue()?.value
-        val total = total.getValue()?.value
-        if(amount != null && total != null){
-            price.setValue(UnitValue(total / amount, GLOBAL_UNIT_PRICE))
-        }
+//        val amount = amount.getValue()?.value
+//        val total = total.getValue()?.value
+//        if(amount != null && total != null){
+//            price.setValue(UnitValue(total / amount, GLOBAL_UNIT_PRICE))
+//        }
 
         saveChanges()
     }
 
     fun onUpdatePriceAmount(){
-        val amount = amount.getValue()?.value
-        val price = price.getValue()?.value
-        if(amount != null && price != null){
-            total.setValue(UnitValue(amount * price, GLOBAL_UNIT_PRICE))
-        }
+//        val amount = amount.getValue()?.value
+//        val price = price.getValue()?.value
+//        if(amount != null && price != null){
+//            total.setValue(UnitValue(amount * price, GLOBAL_UNIT_PRICE))
+//        }
 
         saveChanges()
     }
 
     fun saveChanges(){
         val cartItem = viewModel.getCartItem()
-        cartItem.name = name.getText()
-        cartItem.amount = amount.getValue()?.value
-        cartItem.unit_price = price.getValue()?.value
-        cartItem.brand = brand.getText()
-        cartItem.sku = sku.getText()
+//        cartItem.name = name.getText()
+//        cartItem.amount = amount.getValue()?.value
+//        cartItem.unit_price = price.getValue()?.value
+//        cartItem.brand = brand.getText()
+//        cartItem.sku = sku.getText()
 
         viewModel.updateCartItem(cartItem)
     }
