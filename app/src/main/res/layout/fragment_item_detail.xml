@@ -11,6 +11,7 @@
         android:id="@+id/img_det"
         android:layout_width="200dp"
         android:layout_height="0dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/default_item"
         app:layout_constraintBottom_toBottomOf="@+id/txtTot_det"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,14 +24,19 @@
         android:layout_height="wrap_content"
         android:hint="Nombre"
         android:padding="2dp"
+        app:endIconDrawable="@drawable/icon_pick_32"
+        app:endIconMode="custom"
+        app:endIconTint="@color/select1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/icon"
             style="@style/TextField_Head1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:editable="false"
             android:text="Aceite de Oliva" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,7 +69,8 @@
         android:padding="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/img_det"
-        app:layout_constraintTop_toBottomOf="@id/txtAmount_det">
+        app:layout_constraintTop_toBottomOf="@id/txtAmount_det"
+        app:suffixText="$/kg">
 
         <com.google.android.material.textfield.TextInputEditText
             style="@style/TextField_Input1"
@@ -82,7 +89,8 @@
         android:padding="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/img_det"
-        app:layout_constraintTop_toBottomOf="@id/txtPrice_det">
+        app:layout_constraintTop_toBottomOf="@id/txtPrice_det"
+        app:suffixText="$">
 
         <com.google.android.material.textfield.TextInputEditText
             style="@style/TextField_Input1"
@@ -99,6 +107,9 @@
         android:layout_height="wrap_content"
         android:hint="Modelo"
         android:padding="2dp"
+        app:endIconDrawable="@drawable/icon_pick_32"
+        app:endIconMode="custom"
+        app:endIconTint="@color/select1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/img_det">
@@ -107,6 +118,7 @@
             style="@style/TextField_Input1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:editable="false"
             android:text="Galletitas Crackers x10ud y sigue de largo" />
 
     </com.google.android.material.textfield.TextInputLayout>
