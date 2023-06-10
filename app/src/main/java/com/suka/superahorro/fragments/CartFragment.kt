@@ -3,26 +3,17 @@ package com.suka.superahorro.fragments
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.suka.superahorro.R
 import com.suka.superahorro.adapters.CartItemAdapter
-import com.suka.superahorro.database.AppDatabase
-import com.suka.superahorro.database.CartItemDao
 import com.suka.superahorro.databinding.FragmentCartBinding
-import com.suka.superahorro.databinding.FragmentUserBinding
-import com.suka.superahorro.entities.CartItem
+import com.suka.superahorro.my_entities.CartItem
 import com.suka.superahorro.packages.createInputDialog
 
 class CartFragment : Fragment() {

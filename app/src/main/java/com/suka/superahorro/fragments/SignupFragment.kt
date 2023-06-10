@@ -12,8 +12,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
-import com.suka.superahorro.database.AppDatabase
-import com.suka.superahorro.database.UserDao
 import com.suka.superahorro.entities.User
 
 class SignupFragment : Fragment() {

@@ -10,7 +10,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.suka.superahorro.R
-import com.suka.superahorro.entities.CartItem
+import com.suka.superahorro.my_entities.CartItem
 import com.suka.superahorro.packages.*
 
 class CartItemAdapter (

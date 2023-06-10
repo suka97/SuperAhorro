@@ -18,8 +18,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
 import com.suka.superahorro.activities.LoginActivity
 import com.suka.superahorro.activities.MainActivity
-import com.suka.superahorro.database.AppDatabase
-import com.suka.superahorro.database.UserDao
 import com.suka.superahorro.databinding.FragmentLoginBinding
 import com.suka.superahorro.databinding.FragmentUserBinding
 import com.suka.superahorro.entities.User
