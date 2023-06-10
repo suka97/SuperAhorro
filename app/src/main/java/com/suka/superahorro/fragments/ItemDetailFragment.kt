@@ -13,7 +13,6 @@ import com.suka.superahorro.R
 import com.suka.superahorro.databinding.FragmentItemDetailBinding
 
 class ItemDetailFragment : Fragment() {
-    lateinit var v : View
     private val viewModel: ItemDetailViewModel by viewModels()
     private  lateinit var b: FragmentItemDetailBinding
 

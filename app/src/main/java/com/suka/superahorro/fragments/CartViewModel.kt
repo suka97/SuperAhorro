@@ -26,17 +26,6 @@ class CartViewModel : ViewModel() {
         db = AppDatabase.getInstance(context)
         cartItemDao = db?.cartItemDao()
         cartItems = cartItemDao?.fetchAllCartItems() ?: mutableListOf<CartItem>()
-
-        auth = Firebase.auth
-        auth.signInWithEmailAndPassword("user@mail.com", "pass123")
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    Log.d("firebase", "signInWithEmail:success")
-                } else {
-                    Log.d("firebase", "signInWithEmail:failure")
-                }
-            }
     }
 
 

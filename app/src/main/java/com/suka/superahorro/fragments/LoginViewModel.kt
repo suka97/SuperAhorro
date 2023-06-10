@@ -2,41 +2,52 @@ package com.suka.superahorro.fragments
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.material.snackbar.Snackbar
-import com.suka.superahorro.database.AppDatabase
-import com.suka.superahorro.database.UserDao
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class LoginViewModel : ViewModel() {
     private lateinit var context: Context
 
-    private var db: AppDatabase? = null
-    private var usersDao: UserDao? = null
-    private lateinit var sharedPreferences: SharedPreferences
+    val isLoading = MutableLiveData<Boolean>(false)
+
+    interface LoginListener {
+        fun onLoginSuccess()
+        fun onLoginError()
+    }
+    var loginListener: LoginListener? = null
 
 
     fun init(context: Context) {
         this.context = context
-        db = AppDatabase.getInstance(context)
-        usersDao = db?.userDao()
-        sharedPreferences = context.getSharedPreferences("com.suka.superahorro.PREFERENCES", Context.MODE_PRIVATE)
     }
 
 
-    fun validPreviuousUserExists(): Boolean {
-        val prefMail: String = sharedPreferences.getString("user_mail", "") ?:""
-        val prefPass: String = sharedPreferences.getString("user_pass", "") ?:""
-        val prefUser = usersDao?.fetchUserByCredentials(prefMail, prefPass)
-        return prefUser != null
+    fun login(email: String?=null, pass: String?=null) {
+        val fireAuth = Firebase.auth
+        if ( fireAuth.currentUser != null ) {
+            loginListener?.onLoginSuccess()
+            return
+        }
+
+        if ( email == null || pass == null ) {
+            return
+        }
+        isLoading.value = true
+        Firebase.auth.signInWithEmailAndPassword(email, pass)
+            .addOnCompleteListener { task ->
+                isLoading.value = false
+                if (task.isSuccessful) {
+                    val user = fireAuth.currentUser
+                    Log.d("firebase", "signInWithEmail:success")
+                    loginListener?.onLoginSuccess()
+                } else {
+                    Log.d("firebase", "signInWithEmail:failure")
+                    loginListener?.onLoginError()
+                }
+            }
     }
 
-
-    fun login(mail: String, pass: String): Boolean {
-        val user = usersDao?.fetchUserByCredentials(mail, pass) ?: return false
-        val prefEditor = sharedPreferences.edit()
-        prefEditor.putString("user_mail", mail)
-        prefEditor.putString("user_pass", pass)
-        prefEditor.apply()
-        return true
-    }
 }
