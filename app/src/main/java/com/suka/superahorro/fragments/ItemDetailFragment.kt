@@ -2,7 +2,6 @@ package com.suka.superahorro.fragments
 
 import android.os.Bundle
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,15 +9,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
-import com.google.android.material.textfield.TextInputLayout
 import com.suka.superahorro.R
 import com.suka.superahorro.databinding.FragmentItemDetailBinding
-import com.suka.superahorro.packages.*
 
 class ItemDetailFragment : Fragment() {
     lateinit var v : View
     private val viewModel: ItemDetailViewModel by viewModels()
-    private  lateinit var binding: FragmentItemDetailBinding
+    private  lateinit var b: FragmentItemDetailBinding
 
     private var autoCallbacksEnabled = true
 
@@ -29,9 +26,9 @@ class ItemDetailFragment : Fragment() {
     ): View? {
         val args = ItemDetailFragmentArgs.fromBundle(requireArguments())
         viewModel.init(requireContext(), args.itemID)
-        binding = FragmentItemDetailBinding.inflate(inflater, container, false)
+        b = FragmentItemDetailBinding.inflate(inflater, container, false)
 
-        return binding.root
+        return b.root
     }
 
 
@@ -44,19 +41,18 @@ class ItemDetailFragment : Fragment() {
         super.onStart()
 
         val cartItem = viewModel.getCartItem()
-        binding.nameTxt.editText?.setText(cartItem.name)
-        binding.amountTxt.editText?.setText(cartItem.amount.toString())
-        binding.unitPriceTxt.editText?.setText(cartItem.unit_price.toString())
-        binding.totalPriceTxt.editText?.setText(cartItem.getTotalPrice().toString())
+        b.nameTxt.editText?.setText(cartItem.name)
+        b.amountTxt.editText?.setText(cartItem.amount.toString())
+        b.unitPriceTxt.editText?.setText(cartItem.unit_price.toString())
+        b.totalPriceTxt.editText?.setText(cartItem.getTotalPrice().toString())
 //        brand.setText(cartItem.brand ?: "-")
 //        sku.setText(cartItem.sku ?: "-")
         setPicture(viewModel.getCartItem().picture)
 
-        binding.amountTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
-        binding.unitPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
-        binding.totalPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdateTotal))
-
-
+        // update callbacks
+        b.amountTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
+        b.unitPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
+        b.totalPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdateTotal))
     }
 
     override fun onResume() {
@@ -69,12 +65,12 @@ class ItemDetailFragment : Fragment() {
 
 
     fun onUpdateTotal(){
-        val amount: Float? = binding.amountTxt.editText?.text.toString().toFloatOrNull()
-        val total: Float? = binding.totalPriceTxt.editText?.text.toString().toFloatOrNull()
+        val amount: Float? = b.amountTxt.editText?.text.toString().toFloatOrNull()
+        val total: Float? = b.totalPriceTxt.editText?.text.toString().toFloatOrNull()
         if(amount != null && total != null){
             val price = total / amount
             autoCallbacksEnabled = false
-            binding.unitPriceTxt.editText?.setText(price.toString())
+            b.unitPriceTxt.editText?.setText(price.toString())
             autoCallbacksEnabled = true
         }
 
@@ -82,12 +78,12 @@ class ItemDetailFragment : Fragment() {
     }
 
     fun onUpdatePriceAmount(){
-        val amount: Float? = binding.amountTxt.editText?.text.toString().toFloatOrNull()
-        val price: Float? = binding.unitPriceTxt.editText?.text.toString().toFloatOrNull()
+        val amount: Float? = b.amountTxt.editText?.text.toString().toFloatOrNull()
+        val price: Float? = b.unitPriceTxt.editText?.text.toString().toFloatOrNull()
         if(amount != null && price != null){
             val total = amount * price
             autoCallbacksEnabled = false
-            binding.totalPriceTxt.editText?.setText(total.toString())
+            b.totalPriceTxt.editText?.setText(total.toString())
             autoCallbacksEnabled = true
         }
 
@@ -96,9 +92,9 @@ class ItemDetailFragment : Fragment() {
 
     fun saveChanges(){
         val cartItem = viewModel.getCartItem()
-        cartItem.name = binding.nameTxt.editText?.text.toString()
-        cartItem.amount = binding.amountTxt.editText?.text.toString().toFloatOrNull()
-        cartItem.unit_price = binding.unitPriceTxt.editText?.text.toString().toFloatOrNull()
+        cartItem.name = b.nameTxt.editText?.text.toString()
+        cartItem.amount = b.amountTxt.editText?.text.toString().toFloatOrNull()
+        cartItem.unit_price = b.unitPriceTxt.editText?.text.toString().toFloatOrNull()
 //        cartItem.brand = brand.getText()
 //        cartItem.sku = sku.getText()
 
@@ -106,7 +102,7 @@ class ItemDetailFragment : Fragment() {
     }
 
     fun setPicture (picture_url: String?) {
-        var img: ImageView = binding.modelImg
+        var img: ImageView = b.modelImg
         if ( picture_url == null )
             img.setImageResource(R.drawable.default_item)
         else {
