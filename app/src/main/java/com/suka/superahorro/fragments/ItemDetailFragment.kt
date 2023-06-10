@@ -6,25 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.google.android.material.textfield.TextInputLayout
 import com.suka.superahorro.R
-import com.suka.superahorro.database.AppDatabase
-import com.suka.superahorro.database.CartItemDao
-import com.suka.superahorro.entities.CartItem
 import com.suka.superahorro.packages.*
 
 class ItemDetailFragment : Fragment() {
     lateinit var v : View
     private val viewModel: ItemDetailViewModel by viewModels()
 
-//    lateinit var name : LayoutedInput
-//    lateinit var amount : LayoutedInput
-//    lateinit var price : LayoutedInput
-//    lateinit var total : LayoutedInput
-//    lateinit var brand : LayoutedInput
-//    lateinit var sku : LayoutedInput
+    lateinit var name : TextInputLayout
+    lateinit var amount : TextInputLayout
+    lateinit var price : TextInputLayout
+    lateinit var total : TextInputLayout
+    lateinit var model : TextInputLayout
+    lateinit var sku : TextInputLayout
 
 
     override fun onCreateView(
@@ -42,6 +39,13 @@ class ItemDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        name = v.findViewById(R.id.txtName_det)
+        amount = v.findViewById(R.id.txtAmount_det)
+        price = v.findViewById(R.id.txtPrice_det)
+        total = v.findViewById(R.id.txtTot_det)
+        model = v.findViewById(R.id.txtModel_det)
+        sku = v.findViewById(R.id.txtSku_det)
+
 //        name = LayoutedInput(this, "Nombre", ::saveChanges, R.id.txtName_det, R.id.layName_det)
 //        amount = LayoutedInput(this, "Cantidad", ::onUpdatePriceAmount, R.id.txtAmount_det, R.id.layAmout_det)
 //        price = LayoutedInput(this, "Precio", ::onUpdatePriceAmount, R.id.txtPrice_det, R.id.layPrice_det)
@@ -56,12 +60,14 @@ class ItemDetailFragment : Fragment() {
         super.onStart()
 
         val cartItem = viewModel.getCartItem()
-//        name.setText(cartItem.name)
-//        amount.setValue(UnitValue(cartItem.amount, GLOBAL_UNIT_AMOUNT))
-//        price.setValue(UnitValue(cartItem.unit_price, GLOBAL_UNIT_PRICE))
-//        total.setValue(UnitValue(cartItem.getTotalPrice(), GLOBAL_UNIT_PRICE))
-//        brand.setText(cartItem.brand ?: "-")
-//        sku.setText(cartItem.sku ?: "-")
+        name.editText?.setText(cartItem.name)
+        amount.editText?.setText(cartItem.amount.toString())
+        price.editText?.setText(cartItem.unit_price.toString())
+        total.editText?.setText(cartItem.getTotalPrice().toString())
+        //        brand.setText(cartItem.brand ?: "-")
+        //        sku.setText(cartItem.sku ?: "-")
+
+        setPicture(cartItem.picture)
     }
 
     override fun onResume() {
@@ -95,9 +101,9 @@ class ItemDetailFragment : Fragment() {
 
     fun saveChanges(){
         val cartItem = viewModel.getCartItem()
-//        cartItem.name = name.getText()
-//        cartItem.amount = amount.getValue()?.value
-//        cartItem.unit_price = price.getValue()?.value
+        cartItem.name = name.editText?.text.toString()
+        cartItem.amount = name.editText?.text.toString().toFloatOrNull()
+        cartItem.unit_price = name.editText?.text.toString().toFloatOrNull()
 //        cartItem.brand = brand.getText()
 //        cartItem.sku = sku.getText()
 
