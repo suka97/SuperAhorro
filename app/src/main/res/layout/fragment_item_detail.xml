@@ -7,19 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ItemDetailFragment" >
 
-    <ImageView
-        android:id="@+id/img_det"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/default_item"
-        app:layout_constraintBottom_toBottomOf="@+id/txtTot_det"
-        app:layout_constraintEnd_toStartOf="@id/txtAmount_det"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtName_det" />
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtName_det"
+        android:id="@+id/name_txt"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -40,67 +29,80 @@
             android:text="Aceite de Oliva" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtAmount_det"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <ImageView
+        android:id="@+id/model_img"
         android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/default_item"
+        app:layout_constraintBottom_toBottomOf="@+id/imgSide_lay"
+        app:layout_constraintEnd_toStartOf="@id/imgSide_lay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/imgSide_lay" />
+
+    <LinearLayout
+        android:id="@+id/imgSide_lay"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:hint="Cantidad"
-        android:padding="2dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtName_det"
-        app:suffixText="kg">
+        app:layout_constraintTop_toBottomOf="@+id/name_txt">
 
-        <com.google.android.material.textfield.TextInputEditText
-            style="@style/TextField_Input1"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="10" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtPrice_det"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Precio Unitario"
-        android:padding="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/txtAmount_det"
-        app:layout_constraintTop_toBottomOf="@id/txtAmount_det"
-        app:suffixText="$/kg">
-
-        <com.google.android.material.textfield.TextInputEditText
-            style="@style/TextField_Input1"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/amount_txt"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="10" />
+            android:hint="Cantidad"
+            android:padding="2dp"
+            app:suffixText="kg">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/TextField_Input1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="10" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtTot_det"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Precio Total"
-        android:padding="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/txtPrice_det"
-        app:layout_constraintTop_toBottomOf="@id/txtPrice_det"
-        app:suffixText="$">
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            style="@style/TextField_Input1"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/unitPrice_txt"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="10" />
+            android:hint="Precio Unitario"
+            android:padding="2dp"
+            app:suffixText="$/kg">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/TextField_Input1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="100.00" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/totalPrice_txt"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Precio Total"
+            android:padding="2dp"
+            app:suffixText="$">
+
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/TextField_Input1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2000.00" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtModel_det"
+        android:id="@+id/modelName_txt"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -111,7 +113,7 @@
         app:endIconTint="@color/select1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/img_det">
+        app:layout_constraintTop_toBottomOf="@id/model_img">
 
         <com.google.android.material.textfield.TextInputEditText
             style="@style/TextField_Input1"
@@ -123,7 +125,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtSku_det"
+        android:id="@+id/modelSku_txt"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -131,7 +133,7 @@
         android:padding="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtModel_det">
+        app:layout_constraintTop_toBottomOf="@id/modelName_txt">
 
         <com.google.android.material.textfield.TextInputEditText
             style="@style/TextField_Input1"

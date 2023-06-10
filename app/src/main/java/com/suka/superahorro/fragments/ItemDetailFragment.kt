@@ -48,10 +48,10 @@ class ItemDetailFragment : Fragment() {
         super.onStart()
 
         val cartItem = viewModel.getCartItem()
-        binding.txtNameDet.editText?.setText(cartItem.name)
-        binding.txtAmountDet.editText?.setText(cartItem.amount.toString())
-        binding.txtPriceDet.editText?.setText(cartItem.unit_price.toString())
-        binding.txtTotDet.editText?.setText(cartItem.getTotalPrice().toString())
+        binding.nameTxt.editText?.setText(cartItem.name)
+        binding.amountTxt.editText?.setText(cartItem.amount.toString())
+        binding.unitPriceTxt.editText?.setText(cartItem.unit_price.toString())
+        binding.totalPriceTxt.editText?.setText(cartItem.getTotalPrice().toString())
         //        brand.setText(cartItem.brand ?: "-")
         //        sku.setText(cartItem.sku ?: "-")
 
@@ -99,7 +99,7 @@ class ItemDetailFragment : Fragment() {
     }
 
     fun setPicture (picture_url: String?) {
-        var img: ImageView = binding.imgDet
+        var img: ImageView = binding.modelImg
         if ( picture_url == null )
             img.setImageResource(R.drawable.default_item)
         else {
