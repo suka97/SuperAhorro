@@ -1,6 +1,5 @@
 package com.suka.superahorro.fragments
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
-import com.suka.superahorro.entities.User
 
 class SignupFragment : Fragment() {
     lateinit var v : View

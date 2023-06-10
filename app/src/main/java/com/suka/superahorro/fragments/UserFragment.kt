@@ -1,26 +1,17 @@
 package com.suka.superahorro.fragments
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
-import com.suka.superahorro.R
 import com.suka.superahorro.activities.LoginActivity
-import com.suka.superahorro.activities.MainActivity
-import com.suka.superahorro.databinding.FragmentLoginBinding
 import com.suka.superahorro.databinding.FragmentUserBinding
-import com.suka.superahorro.entities.User
+import com.suka.superahorro.my_entities.User
 
 class UserFragment : Fragment() {
     private val viewModel: UserViewModel by viewModels()

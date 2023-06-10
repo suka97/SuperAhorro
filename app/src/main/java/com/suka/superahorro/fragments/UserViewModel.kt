@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.suka.superahorro.entities.User
+import com.suka.superahorro.my_entities.User
 
 class UserViewModel : ViewModel() {
     private lateinit var context: Context
@@ -18,7 +18,7 @@ class UserViewModel : ViewModel() {
 
         val mail: String = Firebase.auth.currentUser?.email ?:""
 //        val pass: String = Firebase.auth.currentUser?.uid ?:""
-        user.value = User(mail, "")
+//        user.value = User(mail, "")
     }
 
 
