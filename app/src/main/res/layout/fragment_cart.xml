@@ -8,7 +8,7 @@
     tools:context=".fragments.CartFragment">
 
     <ImageButton
-        android:id="@+id/btCardAdd"
+        android:id="@+id/addItem_bt"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:backgroundTint="#00FFFFFF"
@@ -19,7 +19,7 @@
         tools:src="@drawable/icon_add" />
 
     <TextView
-        android:id="@+id/txtCartTotal"
+        android:id="@+id/cartTotal_txt"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fontFamily="sans-serif-condensed"
@@ -27,8 +27,8 @@
         android:paddingLeft="10dp"
         android:text="Lista: 16 items, Total: $10,500.00"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/btCardAdd"
-        app:layout_constraintEnd_toStartOf="@+id/btCardAdd"
+        app:layout_constraintBottom_toBottomOf="@+id/addItem_bt"
+        app:layout_constraintEnd_toStartOf="@+id/addItem_bt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btCardAdd"
+        app:layout_constraintTop_toBottomOf="@+id/addItem_bt"
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="0dp" />
 

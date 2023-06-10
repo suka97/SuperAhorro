@@ -20,41 +20,37 @@ import com.suka.superahorro.R
 import com.suka.superahorro.adapters.CartItemAdapter
 import com.suka.superahorro.database.AppDatabase
 import com.suka.superahorro.database.CartItemDao
+import com.suka.superahorro.databinding.FragmentCartBinding
+import com.suka.superahorro.databinding.FragmentUserBinding
 import com.suka.superahorro.entities.CartItem
 import com.suka.superahorro.packages.createInputDialog
 
 class CartFragment : Fragment() {
-    lateinit var v : View
     private val viewModel: CartViewModel by viewModels()
+    private  lateinit var b: FragmentCartBinding
 
-    lateinit var recCartItems : RecyclerView
     lateinit var adapter : CartItemAdapter
-    lateinit var btCardAdd : ImageButton
-    lateinit var txtCartTotal : TextView
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        v = inflater.inflate(R.layout.fragment_cart, container, false)
         viewModel.init(requireContext())
+        b = FragmentCartBinding.inflate(inflater, container, false)
 
-        recCartItems = v.findViewById(R.id.recCartItems)
-        btCardAdd = v.findViewById(R.id.btCardAdd)
-        txtCartTotal = v.findViewById(R.id.txtCartTotal)
-        return v
+        return b.root
     }
 
 
     override fun onStart() {
         super.onStart()
 
-        btCardAdd.setOnClickListener{
+        b.addItemBt.setOnClickListener{
             val dialog = Dialog(requireActivity())
             createInputDialog(dialog, "Nuevo Item", "") { name ->
                 viewModel.insertCartItem( CartItem(name) )
-                Snackbar.make(v, "Item agregado", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(b.root, "Item agregado", Snackbar.LENGTH_SHORT).show()
             }
         }
 
@@ -71,18 +67,18 @@ class CartFragment : Fragment() {
                 builder.setMessage("¿Está seguro que desea eliminar el item?")
                 builder.setPositiveButton("Sí") { _, _ ->
                     viewModel.deleteCartItem(viewModel.cartItems[position])
-                    Snackbar.make(v, "Item eliminado", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(b.root, "Item eliminado", Snackbar.LENGTH_SHORT).show()
                 }
                 val dialog = builder.create()
                 dialog.show()
             }
         )
-        recCartItems.layoutManager = LinearLayoutManager(context)
-        recCartItems.adapter = adapter
+        b.recCartItems.layoutManager = LinearLayoutManager(context)
+        b.recCartItems.adapter = adapter
 
         viewModel.onItemsChange = {
             adapter.updateItems(viewModel.cartItems)
-            txtCartTotal.text = adapter.getCartDescription()
+            b.cartTotalTxt.text = adapter.getCartDescription()
         }
         viewModel.updateItems()
     }
