@@ -20,51 +20,44 @@ import com.suka.superahorro.activities.LoginActivity
 import com.suka.superahorro.activities.MainActivity
 import com.suka.superahorro.database.AppDatabase
 import com.suka.superahorro.database.UserDao
+import com.suka.superahorro.databinding.FragmentLoginBinding
+import com.suka.superahorro.databinding.FragmentUserBinding
 import com.suka.superahorro.entities.User
 
 class UserFragment : Fragment() {
-    lateinit var v : View
     private val viewModel: UserViewModel by viewModels()
+    private  lateinit var b: FragmentUserBinding
 
-    lateinit var txtEmail: TextView
-    lateinit var txtPass: EditText
-    lateinit var btSave: Button
-    lateinit var btLogout: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        v = inflater.inflate(R.layout.fragment_user, container, false)
         viewModel.init(requireContext())
+        b = FragmentUserBinding.inflate(inflater, container, false)
 
-        txtEmail = v.findViewById(R.id.txtEmail_config)
-        txtPass = v.findViewById(R.id.txtPass_config)
-        btSave = v.findViewById(R.id.btSave_config)
-        btLogout = v.findViewById(R.id.btLogout)
-
-        return v
+        return b.root
     }
 
 
     override fun onStart() {
         super.onStart()
 
-        txtEmail.text = viewModel.getUser().mail
+        b.emailTxt.text = viewModel.getUser().mail
 
-        btSave.setOnClickListener {
+        b.saveBt.setOnClickListener {
             val builder = AlertDialog.Builder(context)
             builder.setTitle("Guardar")
             builder.setMessage("¿Está seguro que desea guardar los cambios?")
             builder.setPositiveButton("Sí") { _, _ ->
-                val email = txtEmail.text.toString()
-                val pass = txtPass.text.toString()
+                val email = b.emailTxt.text.toString()
+                val pass = b.passTxt.text.toString()
                 viewModel.updateUser( User(email, pass) )
-                Snackbar.make(v, "Cambios guardados", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(b.root, "Cambios guardados", Snackbar.LENGTH_SHORT).show()
             }
         }
 
-        btLogout.setOnClickListener{
+        b.logoutBt.setOnClickListener{
             val builder = AlertDialog.Builder(context)
             builder.setTitle("Logout")
             builder.setMessage("¿Está seguro que desea desvincular la cuenta?")
