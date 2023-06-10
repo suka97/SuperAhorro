@@ -1,6 +1,8 @@
 package com.suka.superahorro.fragments
 
 import android.os.Bundle
+import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +20,8 @@ class ItemDetailFragment : Fragment() {
     private val viewModel: ItemDetailViewModel by viewModels()
     private  lateinit var binding: FragmentItemDetailBinding
 
+    private var autoCallbacksEnabled = true
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,14 +37,6 @@ class ItemDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-//        name = LayoutedInput(this, "Nombre", ::saveChanges, R.id.txtName_det, R.id.layName_det)
-//        amount = LayoutedInput(this, "Cantidad", ::onUpdatePriceAmount, R.id.txtAmount_det, R.id.layAmout_det)
-//        price = LayoutedInput(this, "Precio", ::onUpdatePriceAmount, R.id.txtPrice_det, R.id.layPrice_det)
-//        total = LayoutedInput(this, "Total", ::onUpdateTotal, R.id.txtTot_det, R.id.layTot_det)
-//        brand = LayoutedInput(this, "Marca", ::saveChanges, R.id.txtBrand_det, R.id.layBrand_det)
-//        sku = LayoutedInput(this, "SKU", ::saveChanges, R.id.txtSku_det, R.id.laySku_det)
-//        setPicture(viewModel.getCartItem().picture)
     }
 
 
@@ -52,10 +48,15 @@ class ItemDetailFragment : Fragment() {
         binding.amountTxt.editText?.setText(cartItem.amount.toString())
         binding.unitPriceTxt.editText?.setText(cartItem.unit_price.toString())
         binding.totalPriceTxt.editText?.setText(cartItem.getTotalPrice().toString())
-        //        brand.setText(cartItem.brand ?: "-")
-        //        sku.setText(cartItem.sku ?: "-")
+//        brand.setText(cartItem.brand ?: "-")
+//        sku.setText(cartItem.sku ?: "-")
+        setPicture(viewModel.getCartItem().picture)
 
-        setPicture(cartItem.picture)
+        binding.amountTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
+        binding.unitPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
+        binding.totalPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdateTotal))
+
+
     }
 
     override fun onResume() {
@@ -68,30 +69,36 @@ class ItemDetailFragment : Fragment() {
 
 
     fun onUpdateTotal(){
-//        val amount = amount.getValue()?.value
-//        val total = total.getValue()?.value
-//        if(amount != null && total != null){
-//            price.setValue(UnitValue(total / amount, GLOBAL_UNIT_PRICE))
-//        }
+        val amount: Float? = binding.amountTxt.editText?.text.toString().toFloatOrNull()
+        val total: Float? = binding.totalPriceTxt.editText?.text.toString().toFloatOrNull()
+        if(amount != null && total != null){
+            val price = total / amount
+            autoCallbacksEnabled = false
+            binding.unitPriceTxt.editText?.setText(price.toString())
+            autoCallbacksEnabled = true
+        }
 
         saveChanges()
     }
 
     fun onUpdatePriceAmount(){
-//        val amount = amount.getValue()?.value
-//        val price = price.getValue()?.value
-//        if(amount != null && price != null){
-//            total.setValue(UnitValue(amount * price, GLOBAL_UNIT_PRICE))
-//        }
+        val amount: Float? = binding.amountTxt.editText?.text.toString().toFloatOrNull()
+        val price: Float? = binding.unitPriceTxt.editText?.text.toString().toFloatOrNull()
+        if(amount != null && price != null){
+            val total = amount * price
+            autoCallbacksEnabled = false
+            binding.totalPriceTxt.editText?.setText(total.toString())
+            autoCallbacksEnabled = true
+        }
 
         saveChanges()
     }
 
     fun saveChanges(){
         val cartItem = viewModel.getCartItem()
-//        cartItem.name = name.editText?.text.toString()
-//        cartItem.amount = name.editText?.text.toString().toFloatOrNull()
-//        cartItem.unit_price = name.editText?.text.toString().toFloatOrNull()
+        cartItem.name = binding.nameTxt.editText?.text.toString()
+        cartItem.amount = binding.amountTxt.editText?.text.toString().toFloatOrNull()
+        cartItem.unit_price = binding.unitPriceTxt.editText?.text.toString().toFloatOrNull()
 //        cartItem.brand = brand.getText()
 //        cartItem.sku = sku.getText()
 
@@ -107,6 +114,17 @@ class ItemDetailFragment : Fragment() {
                 .load(picture_url)
                 .placeholder(R.drawable.default_item)
                 .into(img)
+        }
+    }
+
+    private fun getTextWatcher(callback: ()->Unit): TextWatcher {
+        return object : TextWatcher {
+            override fun afterTextChanged(s: android.text.Editable?) {
+                if (autoCallbacksEnabled)
+                    callback()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
         }
     }
 

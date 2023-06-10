@@ -61,6 +61,7 @@
                 style="@style/TextField_Input1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
                 android:text="10" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -78,6 +79,7 @@
                 style="@style/TextField_Input1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
                 android:text="100.00" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -95,6 +97,7 @@
                 style="@style/TextField_Input1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
                 android:text="2000.00" />
 
         </com.google.android.material.textfield.TextInputLayout>
