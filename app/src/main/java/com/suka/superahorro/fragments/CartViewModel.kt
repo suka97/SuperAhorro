@@ -2,8 +2,11 @@ package com.suka.superahorro.fragments
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.suka.superahorro.database.Database
 import com.suka.superahorro.my_entities.CartItem
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class CartViewModel : ViewModel() {
     private lateinit var context: Context
@@ -14,7 +17,10 @@ class CartViewModel : ViewModel() {
 
     fun init(context: Context) {
         this.context = context
-        cartItems = Database.getCartItems()
+        Database.init()
+        viewModelScope.launch {
+            cartItems = async { Database.getCartItems() }.await()
+        }
     }
 
 
