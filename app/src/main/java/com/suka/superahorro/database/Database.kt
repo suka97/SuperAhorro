@@ -11,8 +11,8 @@ import com.suka.superahorro.my_entities.User
 import kotlinx.coroutines.tasks.await
 
 object Database {
-    private var user_id: String = ""
-    private var userDoc: DocumentReference? = null
+    private lateinit var user_id: String
+    private lateinit var userDoc: DocumentReference
 
     fun init() {
         user_id = Firebase.auth.currentUser!!.uid
@@ -23,7 +23,11 @@ object Database {
     // cartItems
     suspend fun getCartItems(): MutableList<CartItem> {
         try {
-            val doc = userDoc!!.get().await()
+            val doc = userDoc.get().await()
+            val items = doc!!.reference.collection("items").get().await().documents
+//                .addOnSuccessListener {
+//                    val items = it.reference.collection("items").get().await()
+//                }
             return mutableListOf<CartItem>()
         }
         catch (e: Exception) {

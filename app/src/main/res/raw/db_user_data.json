@@ -1,0 +1,53 @@
+{
+  "carts": [
+    {
+      "id": "J4WNALZhZFf78wkosMre",   // 3 + 21 = 24
+      "shop": "Carrefour",            // 5 + 10 = 15
+      "items": [
+        {
+          "item": "0OYuMLZS",             // 5 + 9 = 14
+          "model": "7790742345806",       // 6 + 14 = 20
+          "amount": 10,                   // 7 + 8 = 15
+          "unit_price": 100,              // 11 + 8 = 19
+          "disc": {
+            "type": "percent",                // 5 + 8 = 13
+            "value": 10                       // 6 + 8 = 14
+          }                               // 13 + 14 = 27
+        }
+      ],                              // 14 + 20 + 15 + 19 + 27 = 95
+      "disc": {
+        "type": "percent",                // 5 + 8 = 13
+        "value": 10                       // 6 + 8 = 14
+      },                              // 13 + 14 = 27
+      "total": 900                    // 6 + 8 = 14
+    }                             // 24 + 15 + 95 + 27 + 14 = 175 bytes = 5991 items
+  ],
+
+
+  "items": [
+    {
+      "id": "0OYuMLZS",       // 3 + 9 = 12
+      "name": "Manteca",      // 5 + 8 = 13
+      "tag": "0OYuML02"       // 4 + 9 = 13
+    }                     // 12 + 13 + 13 = 38
+  ],
+
+
+  "models": [
+    {
+      "id": "7790742345806",                                                          // 3 + 14 = 17
+      "name": "Manteca Carrefour Light",                                              // 5 + 24 = 29
+      "unit": "g",                                                                    // 4 + 2 = 6
+      "base_unit": "kg",                                                              // 10 + 3 = 13
+      "img": "https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg"   // 4 + 70 = 74
+    }       // 17 + 29 + 6 + 13 + 74 = 139 bytes = 7543 items
+  ],
+
+
+  "tags": [
+    {
+      "id": "0OYuML02",         // 3 + 9 = 12
+      "name": "Lacteos"         // 5 + 8 = 13
+    }     // 12 + 13 = 25
+  ]
+}
