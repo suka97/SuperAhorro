@@ -2,7 +2,8 @@ package com.suka.superahorro.database
 
 data class User(
     val id: String,
-    val name: String
+    val name: String,
+    val item: Item
 )
 
 
@@ -21,3 +22,17 @@ data class Model(
     //val last_price: Float? = null,
     val img: String? = null
 )
+
+
+data class Cart(
+    val id: String,
+    val shop: String,
+    val items: List<Item>,
+    val disc: Discount,
+    val total: Float
+) {
+    data class Discount(
+        val type: String,
+        val value: Float
+    )
+}
