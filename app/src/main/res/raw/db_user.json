@@ -1,4 +1,19 @@
 {
   "id": "Y3v2s0Tvv7YGCKivnWtsWlFbAaa2",
-  "name": "Nombre"
+  "name": "Nombre del Usuario",
+
+  "tags": [
+    {
+      "id": "0OYuML02",
+      "name": "Lacteos"
+    }
+  ],
+
+  "items": [
+    {
+      "id": "0OYuMLZS",       // 3 + 9 = 12
+      "name": "Manteca",      // 5 + 8 = 13
+      "tag": "0OYuML02"       // 4 + 9 = 13
+    }                     // 12 + 13 + 13 = 38
+  ]
 }

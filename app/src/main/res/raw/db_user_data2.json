@@ -6,7 +6,13 @@
       "items": [
         {
           "item": "0OYuMLZS",             // 5 + 9 = 14
-          "model": "7790742345806",       // 6 + 14 = 20
+          "model": {
+            "id": "7790742345806",                                                          // 3 + 14 = 17
+            "name": "Manteca Carrefour Light",                                              // 5 + 24 = 29
+            "unit": "g",                                                                    // 4 + 2 = 6
+            "base_unit": "kg",                                                              // 10 + 3 = 13
+            "img": "https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg"   // 4 + 70 = 74
+          },                              // 20 + 29 + 6 + 13 + 74 = 142
           "amount": 10,                   // 7 + 8 = 15
           "unit_price": 100,              // 11 + 8 = 19
           "disc": {
@@ -14,13 +20,13 @@
             "value": 10                       // 6 + 8 = 14
           }                               // 13 + 14 = 27
         }
-      ],                              // 14 + 20 + 15 + 19 + 27 = 95
+      ],                              // 14 + 142 + 15 + 19 + 27 = 217
       "disc": {
         "type": "percent",                // 5 + 8 = 13
         "value": 10                       // 6 + 8 = 14
       },                              // 13 + 14 = 27
       "total": 900                    // 6 + 8 = 14
-    }                             // 24 + 15 + 95 + 27 + 14 = 175 bytes = 5991 items
+    }                             // 24 + 15 + 217 + 27 + 14 = 297 bytes = 4578 items
   ],
 
 
@@ -37,18 +43,11 @@
     {
       "id": "7790742345806",                                                          // 3 + 14 = 17
       "name": "Manteca Carrefour Light",                                              // 5 + 24 = 29
+      "item_id": "0OYuMLZS",                                                             // 5 + 9 = 14
       "unit": "g",                                                                    // 4 + 2 = 6
       "base_unit": "kg",                                                              // 10 + 3 = 13
-      "img": "https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg",  // 4 + 70 = 74
-      "carts": [
-        {
-          "date": "2019-10-10T00:00:00.000Z",
-          "id": "J4WNALZhZFf78wkosMre",
-          "shop": "Carrefour",
-          "amount": 10,
-          "unit_price": 100
-        }
-      ]
+      "last_price": 100,
+      "img": "https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg"   // 4 + 70 = 74
     }       // 17 + 29 + 6 + 13 + 74 = 139 bytes = 7543 items
   ],
 
