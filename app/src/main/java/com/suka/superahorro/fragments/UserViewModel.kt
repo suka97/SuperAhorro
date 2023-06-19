@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.suka.superahorro.my_entities.User
+import com.suka.superahorro.dbclasses.User
 
 class UserViewModel : ViewModel() {
     private lateinit var context: Context

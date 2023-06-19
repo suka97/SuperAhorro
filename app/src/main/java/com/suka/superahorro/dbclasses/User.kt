@@ -1,4 +1,4 @@
-package com.suka.superahorro.my_entities
+package com.suka.superahorro.dbclasses
 
 class User (mail : String, pass : String) {
     var mail: String = mail

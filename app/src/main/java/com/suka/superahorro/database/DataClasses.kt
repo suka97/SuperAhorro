@@ -1,38 +1,54 @@
 package com.suka.superahorro.database
 
-data class User(
-    val id: String,
-    val name: String,
-    val item: Item
+data class DbUser(
+    var id: String = "",
+    var name: String = "",
 )
 
 
-data class Item(
-    val id: String,
-    val name: String
+data class DbItem(
+    var id: String,
+    var name: String
 )
 
 
-data class Model(
-    val id: String,
-    val name: String,
-    val item_id: String,
-    val unit: String,
-    val base_unit: String,
-    //val last_price: Float? = null,
-    val img: String? = null
+data class DbModel(
+    var id: String = "",
+    var name: String = "",
+    var item_id: String? = null,
+    var unit: String? = null,
+    var base_unit: String? = null,
+    //var last_price: Float? = null,
+    var img: String? = null
 )
 
 
-data class Cart(
-    val id: String,
-    val shop: String,
-    val items: List<Item>,
-    val disc: Discount,
-    val total: Float
+data class DbCart(
+    var id: String = "",
+    var shop: String? = null,
+    var items: MutableList<DbCartItem> = mutableListOf(),
+    var disc: Discount? = null,
+    var total: Float = 0f
 ) {
     data class Discount(
-        val type: String,
-        val value: Float
+        var type: String = "",
+        var value: Float = 0f
+    )
+}
+
+
+data class DbCartItem(
+    var id: String = "",
+    var name: String = "",
+    var model: Model? = null,
+    var amount: Float? = null,
+    var unit_price: Float? = null,
+) {
+    data class Model(
+        var id: String = "",
+        var name: String = "",
+        var unit: String? = null,
+        var base_unit: String? = null,
+        var img: String? = null
     )
 }

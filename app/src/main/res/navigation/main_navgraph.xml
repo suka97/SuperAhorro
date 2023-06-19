@@ -18,11 +18,7 @@
         android:id="@+id/itemDetailFragment"
         android:name="com.suka.superahorro.fragments.ItemDetailFragment"
         android:label="fragment_item_detail"
-        tools:layout="@layout/fragment_item_detail" >
-        <argument
-            android:name="itemID"
-            app:argType="long" />
-    </fragment>
+        tools:layout="@layout/fragment_item_detail" />
     <fragment
         android:id="@+id/userFragment"
         android:name="com.suka.superahorro.fragments.UserFragment"

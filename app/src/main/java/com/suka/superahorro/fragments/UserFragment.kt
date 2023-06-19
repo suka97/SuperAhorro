@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.activities.LoginActivity
 import com.suka.superahorro.databinding.FragmentUserBinding
-import com.suka.superahorro.my_entities.User
+import com.suka.superahorro.dbclasses.User
 
 class UserFragment : Fragment() {
     private val viewModel: UserViewModel by viewModels()

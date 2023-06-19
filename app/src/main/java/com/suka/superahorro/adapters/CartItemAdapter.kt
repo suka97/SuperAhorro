@@ -10,11 +10,12 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.suka.superahorro.R
-import com.suka.superahorro.my_entities.CartItem
+import com.suka.superahorro.dbclasses.Cart
+import com.suka.superahorro.dbclasses.CartItem
 import com.suka.superahorro.packages.*
 
 class CartItemAdapter (
-    var cartItemsList:MutableList<CartItem>,
+    var cart: Cart,
     var onItemClick : (Int) -> Unit,
     var onItemDelete : (Int) -> Unit
 ) : RecyclerView.Adapter<CartItemAdapter.ItemHolder>() {
@@ -72,21 +73,13 @@ class CartItemAdapter (
 
     }
 
-    fun getItemTotal(): Float {
-        var total: Float = 0F
-        cartItemsList.forEach {
-            total += it.getTotalPrice()?:0F
-        }
-        return total
-    }
-
     fun updateItems(cartItemsList: MutableList<CartItem>) {
-        this.cartItemsList = cartItemsList
-        notifyDataSetChanged()
+//        this.cart = cartItemsList
+//        notifyDataSetChanged()
     }
 
     fun getCartDescription(): String {
-        return "Lista: $itemCount, Total: ${UnitValue(getItemTotal(), GLOBAL_UNIT_PRICE)}"
+        return "Lista: $itemCount, Total: ${UnitValue(cart.data.total, GLOBAL_UNIT_PRICE)}"
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
@@ -95,14 +88,16 @@ class CartItemAdapter (
     }
 
     override fun getItemCount(): Int {
-        return cartItemsList.size
+        return cart.size()
     }
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
-        holder.setPicture(cartItemsList[position].picture)
-        holder.setName(cartItemsList[position].name)
-        holder.setPrice(cartItemsList[position].getTotalPrice())
-        holder.setAmount(cartItemsList[position].amount)
+        val item = cart.getItem(position)
+
+        holder.setPicture(item.data.model?.img)
+        holder.setName(item.data.name)
+        holder.setPrice(item.getTotalPrice())
+        holder.setAmount(item.data.amount)
         holder.getCard().setOnClickListener() {
             onItemClick(position)
         }

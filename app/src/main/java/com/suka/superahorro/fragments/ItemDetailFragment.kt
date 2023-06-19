@@ -23,8 +23,8 @@ class ItemDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val args = ItemDetailFragmentArgs.fromBundle(requireArguments())
-        viewModel.init(requireContext(), args.itemID)
+//        val args = ItemDetailFragmentArgs.fromBundle(requireArguments())
+//        viewModel.init(requireContext(), args.itemID)
         b = FragmentItemDetailBinding.inflate(inflater, container, false)
 
         return b.root
@@ -40,13 +40,13 @@ class ItemDetailFragment : Fragment() {
         super.onStart()
 
         val cartItem = viewModel.getCartItem()
-        b.nameTxt.editText?.setText(cartItem.name)
-        b.amountTxt.editText?.setText(cartItem.amount.toString())
-        b.unitPriceTxt.editText?.setText(cartItem.unit_price.toString())
+        b.nameTxt.editText?.setText(cartItem.data.name)
+        b.amountTxt.editText?.setText(cartItem.data.amount.toString())
+        b.unitPriceTxt.editText?.setText(cartItem.data.unit_price.toString())
         b.totalPriceTxt.editText?.setText(cartItem.getTotalPrice().toString())
 //        brand.setText(cartItem.brand ?: "-")
 //        sku.setText(cartItem.sku ?: "-")
-        setPicture(viewModel.getCartItem().picture)
+//        setPicture(viewModel.getCartItem().picture)
 
         // update callbacks
         b.amountTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
@@ -91,9 +91,9 @@ class ItemDetailFragment : Fragment() {
 
     fun saveChanges(){
         val cartItem = viewModel.getCartItem()
-        cartItem.name = b.nameTxt.editText?.text.toString()
-        cartItem.amount = b.amountTxt.editText?.text.toString().toFloatOrNull()
-        cartItem.unit_price = b.unitPriceTxt.editText?.text.toString().toFloatOrNull()
+//        cartItem.name = b.nameTxt.editText?.text.toString()
+//        cartItem.amount = b.amountTxt.editText?.text.toString().toFloatOrNull()
+//        cartItem.unit_price = b.unitPriceTxt.editText?.text.toString().toFloatOrNull()
 //        cartItem.brand = brand.getText()
 //        cartItem.sku = sku.getText()
 

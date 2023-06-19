@@ -1,25 +1,30 @@
 package com.suka.superahorro.fragments
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.suka.superahorro.database.Database
-import com.suka.superahorro.my_entities.CartItem
+import com.suka.superahorro.dbclasses.Cart
+import com.suka.superahorro.dbclasses.CartItem
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class CartViewModel : ViewModel() {
     private lateinit var context: Context
 
-    var cartItems: MutableList<CartItem> = mutableListOf<CartItem>()
+//    var cartItems: MutableList<CartItem> = mutableListOf<CartItem>()
     var onItemsChange: (() -> Unit)? = null
+    lateinit var cart: Cart
 
 
-    fun init(context: Context) {
+    fun init(context: Context, cartCallback: ()->Unit) {
         this.context = context
         Database.init()
         viewModelScope.launch {
-            cartItems = async { Database.getCartItems() }.await()
+            cart = async { Database.getCart()!! }.await()
+            Log.d("CartViewModel", "Cart: ${cart.data}")
+            cartCallback()
         }
     }
 

@@ -14,9 +14,9 @@
         android:backgroundTint="#00FFFFFF"
         android:padding="5dp"
         android:scaleType="centerCrop"
+        android:src="@drawable/icon_add"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/icon_add" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/cartTotal_txt"
