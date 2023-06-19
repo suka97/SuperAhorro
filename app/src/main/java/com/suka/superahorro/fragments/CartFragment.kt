@@ -37,6 +37,7 @@ class CartFragment : Fragment() {
         viewModel.init(requireContext()) {
             initButtons()
             initAdapter()
+            updateCartTotal()
         }
 
         // save changes from detail view
@@ -45,6 +46,7 @@ class CartFragment : Fragment() {
             if ( cartItem != null) {
                 viewModel.cart.setItem(cartItem)
                 viewModel.saveCartChanges()
+                updateCartTotal()
             }
         }
 
@@ -62,8 +64,9 @@ class CartFragment : Fragment() {
         b.addItemBt.setOnClickListener {
             val dialog = Dialog(requireActivity())
             createInputDialog(dialog, "Nuevo Item", "") { name ->
-//                viewModel.insertCartItem( CartItem(name) )
-                Snackbar.make(b.root, "Item agregado", Snackbar.LENGTH_SHORT).show()
+                val newItem = viewModel.newCartItem(name)
+                val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment(newItem)
+                findNavController().navigate(action)
             }
         }
     }
@@ -82,7 +85,8 @@ class CartFragment : Fragment() {
                 builder.setTitle("Borrar item")
                 builder.setMessage("¿Está seguro que desea eliminar el item?")
                 builder.setPositiveButton("Sí") { _, _ ->
-//                    viewModel.deleteCartItem(viewModel.cartItems[position])
+                    viewModel.deleteCartItem(position)
+                    adapter.notifyDeleteItem(position)
                     Snackbar.make(b.root, "Item eliminado", Snackbar.LENGTH_SHORT).show()
                 }
                 val dialog = builder.create()
@@ -94,9 +98,14 @@ class CartFragment : Fragment() {
 
         viewModel.onItemsChange = {
 //            adapter.updateItems(viewModel.cartItems)
-            b.cartTotalTxt.text = adapter.getCartDescription()
+            updateCartTotal()
         }
         viewModel.updateItems()
+    }
+
+
+    fun updateCartTotal() {
+        b.cartTotalTxt.text = adapter.getCartDescription()
     }
 
 }

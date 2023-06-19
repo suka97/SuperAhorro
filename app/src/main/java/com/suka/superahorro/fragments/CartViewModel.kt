@@ -23,7 +23,6 @@ class CartViewModel : ViewModel() {
         Database.init()
         viewModelScope.launch {
             cart = async { Database.getCart()!! }.await()
-            Log.d("CartViewModel", "Cart: ${cart.data}")
             cartCallback()
         }
     }
@@ -42,14 +41,15 @@ class CartViewModel : ViewModel() {
     }
 
 
-    fun insertCartItem(cartItem: CartItem) {
-        Database.insertCartItem(cartItem)
-        onItemsChange?.invoke()
+    fun newCartItem(name: String): CartItem {
+        cart.insertItem(CartItem(name))
+        return cart.getLastItem()
     }
 
 
-    fun deleteCartItem(cartItem: CartItem) {
-        Database.removeCartItem(cartItem)
+    fun deleteCartItem(position: Int) {
+        cart.deleteItem(position)
+        saveCartChanges()
         onItemsChange?.invoke()
     }
 }

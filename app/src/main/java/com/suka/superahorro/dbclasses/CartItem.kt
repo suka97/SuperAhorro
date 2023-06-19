@@ -10,4 +10,6 @@ class CartItem (var data: DbCartItem, var cartPos: Int) : Parcelable {
         if ( data.unit_price == null || data.amount == null ) return null
         return data.unit_price!! * data.amount!!
     }
+
+    constructor(name : String) : this(DbCartItem(name = name), 0)
 }

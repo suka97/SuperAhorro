@@ -8,3 +8,8 @@ fun Float.round(decimals: Int = 2): Float {
     repeat(decimals) { multiplier *= 10 }
     return (kotlin.math.round(this * multiplier) / multiplier).toFloat()
 }
+
+fun Float?.toStringNull(): String {
+    if (this == null) return ""
+    return this.toString()
+}

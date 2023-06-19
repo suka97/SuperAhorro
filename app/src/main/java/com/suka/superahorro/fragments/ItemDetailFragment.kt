@@ -20,6 +20,7 @@ import com.suka.superahorro.R
 import com.suka.superahorro.databinding.FragmentItemDetailBinding
 import com.suka.superahorro.dbclasses.CartItem
 import com.suka.superahorro.packages.round
+import com.suka.superahorro.packages.toStringNull
 
 class ItemDetailFragment : Fragment() {
     private val viewModel: ItemDetailViewModel by viewModels()
@@ -53,9 +54,9 @@ class ItemDetailFragment : Fragment() {
 
         val cartItem = viewModel.cartItem
         b.nameTxt.editText?.setText(cartItem.data.name)
-        b.amountTxt.editText?.setText(cartItem.data.amount.toString())
-        b.unitPriceTxt.editText?.setText(cartItem.data.unit_price.toString())
-        b.totalPriceTxt.editText?.setText(cartItem.getTotalPrice().toString())
+        b.amountTxt.editText?.setText(cartItem.data.amount.toStringNull())
+        b.unitPriceTxt.editText?.setText(cartItem.data.unit_price.toStringNull())
+        b.totalPriceTxt.editText?.setText(cartItem.getTotalPrice().toStringNull())
         b.modelNameTxt.editText?.setText(cartItem.data.model?.name)
         b.modelSkuTxt.editText?.setText(cartItem.data.model?.id)
 //        setPicture(viewModel.getCartItem().picture)

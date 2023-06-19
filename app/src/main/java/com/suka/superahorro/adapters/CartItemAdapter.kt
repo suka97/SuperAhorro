@@ -73,10 +73,11 @@ class CartItemAdapter (
 
     }
 
-    fun updateItems(cartItemsList: MutableList<CartItem>) {
-//        this.cart = cartItemsList
-//        notifyDataSetChanged()
+    fun notifyDeleteItem (position: Int) {
+        notifyItemRemoved(position)
+//        notifyItemRangeChanged(position, cart.size())
     }
+
 
     fun getCartDescription(): String {
         return "Lista: $itemCount, Total: ${UnitValue(cart.data.total, GLOBAL_UNIT_PRICE)}"
