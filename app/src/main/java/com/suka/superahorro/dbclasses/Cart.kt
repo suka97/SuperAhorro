@@ -9,11 +9,16 @@ class Cart(var data: DbCart) {
     }
 
     fun getItem(index: Int): CartItem {
-        return CartItem(data.items[index])
+        return CartItem(data.items[index], index)
     }
 
     fun insertItem(item: CartItem) {
         data.items.add(item.data)
+        updateTotal()
+    }
+
+    fun setItem(CartItem: CartItem) {
+        data.items[CartItem.cartPos] = CartItem.data
         updateTotal()
     }
 

@@ -1,5 +1,8 @@
 package com.suka.superahorro.database
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 data class DbUser(
     var id: String = "",
     var name: String = "",
@@ -37,18 +40,20 @@ data class DbCart(
 }
 
 
+@Parcelize
 data class DbCartItem(
     var id: String = "",
     var name: String = "",
     var model: Model? = null,
     var amount: Float? = null,
     var unit_price: Float? = null,
-) {
+) : Parcelable {
+    @Parcelize
     data class Model(
         var id: String = "",
         var name: String = "",
         var unit: String? = null,
         var base_unit: String? = null,
         var img: String? = null
-    )
+    ) : Parcelable
 }

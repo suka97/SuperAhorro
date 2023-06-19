@@ -2,15 +2,24 @@ package com.suka.superahorro.fragments
 
 import android.os.Bundle
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.suka.superahorro.R
 import com.suka.superahorro.databinding.FragmentItemDetailBinding
+import com.suka.superahorro.dbclasses.CartItem
+import com.suka.superahorro.packages.round
 
 class ItemDetailFragment : Fragment() {
     private val viewModel: ItemDetailViewModel by viewModels()
@@ -23,29 +32,32 @@ class ItemDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        val args = ItemDetailFragmentArgs.fromBundle(requireArguments())
-//        viewModel.init(requireContext(), args.itemID)
+        val args = ItemDetailFragmentArgs.fromBundle(requireArguments())
+        viewModel.init(requireContext(), args.cartItem)
         b = FragmentItemDetailBinding.inflate(inflater, container, false)
 
+        // save changes on parent fragment
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                setFragmentResult("savedItem", bundleOf("savedItem" to viewModel.cartItem))
+                findNavController().navigateUp()
+            }
+        })
+
         return b.root
-    }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
 
     override fun onStart() {
         super.onStart()
 
-        val cartItem = viewModel.getCartItem()
+        val cartItem = viewModel.cartItem
         b.nameTxt.editText?.setText(cartItem.data.name)
         b.amountTxt.editText?.setText(cartItem.data.amount.toString())
         b.unitPriceTxt.editText?.setText(cartItem.data.unit_price.toString())
         b.totalPriceTxt.editText?.setText(cartItem.getTotalPrice().toString())
-//        brand.setText(cartItem.brand ?: "-")
-//        sku.setText(cartItem.sku ?: "-")
+        b.modelNameTxt.editText?.setText(cartItem.data.model?.name)
+        b.modelSkuTxt.editText?.setText(cartItem.data.model?.id)
 //        setPicture(viewModel.getCartItem().picture)
 
         // update callbacks
@@ -67,38 +79,38 @@ class ItemDetailFragment : Fragment() {
         val amount: Float? = b.amountTxt.editText?.text.toString().toFloatOrNull()
         val total: Float? = b.totalPriceTxt.editText?.text.toString().toFloatOrNull()
         if(amount != null && total != null){
-            val price = total / amount
+            val price = (total / amount).round(2)
             autoCallbacksEnabled = false
             b.unitPriceTxt.editText?.setText(price.toString())
             autoCallbacksEnabled = true
         }
 
-        saveChanges()
+        applyChanges()
     }
 
     fun onUpdatePriceAmount(){
         val amount: Float? = b.amountTxt.editText?.text.toString().toFloatOrNull()
         val price: Float? = b.unitPriceTxt.editText?.text.toString().toFloatOrNull()
         if(amount != null && price != null){
-            val total = amount * price
+            val total = (amount * price).round(2)
             autoCallbacksEnabled = false
             b.totalPriceTxt.editText?.setText(total.toString())
             autoCallbacksEnabled = true
         }
 
-        saveChanges()
+        applyChanges()
     }
 
-    fun saveChanges(){
-        val cartItem = viewModel.getCartItem()
-//        cartItem.name = b.nameTxt.editText?.text.toString()
-//        cartItem.amount = b.amountTxt.editText?.text.toString().toFloatOrNull()
-//        cartItem.unit_price = b.unitPriceTxt.editText?.text.toString().toFloatOrNull()
-//        cartItem.brand = brand.getText()
-//        cartItem.sku = sku.getText()
+    fun applyChanges(){
+        viewModel.cartItem.data.name = b.nameTxt.editText?.text.toString()
+        viewModel.cartItem.data.amount = b.amountTxt.editText?.text.toString().toFloatOrNull()
+        viewModel.cartItem.data.unit_price = b.unitPriceTxt.editText?.text.toString().toFloatOrNull()
+//        viewModel.cartItem.data.model. = brand.getText()
+//        viewModel.cartItem.data.sku = sku.getText()
 
-        viewModel.updateCartItem(cartItem)
+//        viewModel.updateCartItem(cartItem)
     }
+
 
     fun setPicture (picture_url: String?) {
         var img: ImageView = b.modelImg
@@ -122,5 +134,4 @@ class ItemDetailFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
         }
     }
-
 }

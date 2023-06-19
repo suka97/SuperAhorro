@@ -29,6 +29,13 @@ class CartViewModel : ViewModel() {
     }
 
 
+    fun saveCartChanges() {
+        viewModelScope.launch {
+            Database.saveCart(cart)
+        }
+    }
+
+
     fun updateItems() {
 //        cartItems = cartItemDao?.fetchAllCartItems() ?: mutableListOf<CartItem>()
 //        onItemsChange?.invoke()

@@ -8,22 +8,18 @@ import com.suka.superahorro.dbclasses.CartItem
 class ItemDetailViewModel : ViewModel() {
     private lateinit var context: Context
 
-    val cartItem = MutableLiveData<CartItem>()
+    lateinit var cartItem: CartItem
 
 
-    fun init(context: Context, itemID: Long) {
+    fun init(context: Context, cartItem: CartItem) {
         this.context = context
-
+        this.cartItem = cartItem
 //        cartItem.value = cartItemDao?.fetchCartItemById(itemID)!!
     }
 
 
-    fun getCartItem() : CartItem {
-        return cartItem.value!!
-    }
-
     fun updateCartItem(newItem: CartItem) {
-        cartItem.value = newItem
+//        cartItem.value = newItem
 //        cartItemDao?.updateCartItem(cartItem.value!!)
     }
 }

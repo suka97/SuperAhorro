@@ -1,12 +1,18 @@
 package com.suka.superahorro.fragments
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +37,15 @@ class CartFragment : Fragment() {
         viewModel.init(requireContext()) {
             initButtons()
             initAdapter()
+        }
+
+        // save changes from detail view
+        setFragmentResultListener("savedItem") { key, bundle ->
+            val cartItem = bundle.getParcelable<CartItem>("savedItem")
+            if ( cartItem != null) {
+                viewModel.cart.setItem(cartItem)
+                viewModel.saveCartChanges()
+            }
         }
 
         return b.root
@@ -58,7 +73,7 @@ class CartFragment : Fragment() {
         adapter = CartItemAdapter(viewModel.cart,
             // OnClick
             { position ->
-                val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment()
+                val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment(viewModel.cart.getItem(position))
                 findNavController().navigate(action)
             },
             // OnLongClick
