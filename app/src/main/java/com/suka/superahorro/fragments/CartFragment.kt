@@ -39,6 +39,7 @@ class CartFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         b = FragmentCartBinding.inflate(inflater, container, false)
+        initHiddens()
         viewModel.init(requireContext()) {
             initTopBar()
             initButtons()
@@ -148,6 +149,13 @@ class CartFragment : Fragment() {
             val selectedOption = parent.getItemAtPosition(position).toString()
             goToItemDetailNew(selectedOption)
         }
+    }
+
+    private fun initHiddens() {
+        b.newItemTxt.visibility = View.GONE
+        b.newItemBtOk.visibility = View.GONE
+        b.cartTotalTxt.visibility = View.GONE
+        b.cartTotalTxt.visibility = View.GONE
     }
 
 
