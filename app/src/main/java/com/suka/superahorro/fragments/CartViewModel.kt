@@ -2,6 +2,7 @@ package com.suka.superahorro.fragments
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.suka.superahorro.database.Database
@@ -16,13 +17,16 @@ class CartViewModel : ViewModel() {
 //    var cartItems: MutableList<CartItem> = mutableListOf<CartItem>()
     var onItemsChange: (() -> Unit)? = null
     lateinit var cart: Cart
+    var isLoading = MutableLiveData<Boolean>(false)
 
 
     fun init(context: Context, cartCallback: ()->Unit) {
         this.context = context
         Database.init()
         viewModelScope.launch {
+            isLoading.value = true
             cart = async { Database.getCart()!! }.await()
+            isLoading.value = false
             cartCallback()
         }
     }
@@ -30,7 +34,9 @@ class CartViewModel : ViewModel() {
 
     fun saveCartChanges() {
         viewModelScope.launch {
-            Database.saveCart(cart)
+            isLoading.value = true
+            async { Database.saveCart(cart) }.await()
+            isLoading.value = false
         }
     }
 

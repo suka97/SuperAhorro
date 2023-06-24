@@ -39,7 +39,7 @@ object Database {
 
     suspend fun saveCart(cart: Cart) {
         try {
-            cartsColl.document(cart.data.id).set(cart.data)
+            cartsColl.document(cart.data.id).set(cart.data).await()
         }
         catch (e: Exception) {
             Log.e("Database", "Exception thrown: ${e.message}")

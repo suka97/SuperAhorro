@@ -14,8 +14,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.manager.Lifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.adapters.CartItemAdapter
 import com.suka.superahorro.databinding.FragmentCartBinding
@@ -38,6 +40,10 @@ class CartFragment : Fragment() {
             initButtons()
             initAdapter()
             updateCartTotal()
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { newValue ->
+            b.loading.visibility = if (newValue) View.VISIBLE else View.GONE
         }
 
         // save changes from detail view

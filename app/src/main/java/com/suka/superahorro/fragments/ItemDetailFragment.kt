@@ -19,7 +19,9 @@ import com.bumptech.glide.Glide
 import com.suka.superahorro.R
 import com.suka.superahorro.databinding.FragmentItemDetailBinding
 import com.suka.superahorro.dbclasses.CartItem
+import com.suka.superahorro.packages.number
 import com.suka.superahorro.packages.round
+import com.suka.superahorro.packages.text
 import com.suka.superahorro.packages.toStringNull
 
 class ItemDetailFragment : Fragment() {
@@ -77,8 +79,8 @@ class ItemDetailFragment : Fragment() {
 
 
     fun onUpdateTotal(){
-        val amount: Float? = b.amountTxt.editText?.text.toString().toFloatOrNull()
-        val total: Float? = b.totalPriceTxt.editText?.text.toString().toFloatOrNull()
+        val amount: Float? = b.amountTxt.number()
+        val total: Float? = b.totalPriceTxt.number()
         if(amount != null && total != null){
             val price = (total / amount).round(2)
             autoCallbacksEnabled = false
@@ -90,8 +92,8 @@ class ItemDetailFragment : Fragment() {
     }
 
     fun onUpdatePriceAmount(){
-        val amount: Float? = b.amountTxt.editText?.text.toString().toFloatOrNull()
-        val price: Float? = b.unitPriceTxt.editText?.text.toString().toFloatOrNull()
+        val amount: Float? = b.amountTxt.number()
+        val price: Float? = b.unitPriceTxt.number()
         if(amount != null && price != null){
             val total = (amount * price).round(2)
             autoCallbacksEnabled = false
@@ -103,9 +105,9 @@ class ItemDetailFragment : Fragment() {
     }
 
     fun applyChanges(){
-        viewModel.cartItem.data.name = b.nameTxt.editText?.text.toString()
-        viewModel.cartItem.data.amount = b.amountTxt.editText?.text.toString().toFloatOrNull()
-        viewModel.cartItem.data.unit_price = b.unitPriceTxt.editText?.text.toString().toFloatOrNull()
+        viewModel.cartItem.data.name = b.nameTxt.text()
+        viewModel.cartItem.data.amount = b.amountTxt.number()
+        viewModel.cartItem.data.unit_price = b.unitPriceTxt.number()
 //        viewModel.cartItem.data.model. = brand.getText()
 //        viewModel.cartItem.data.sku = sku.getText()
 
