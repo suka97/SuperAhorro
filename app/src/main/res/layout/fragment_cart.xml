@@ -7,17 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".fragments.CartFragment">
 
-    <ImageButton
-        android:id="@+id/addItem_bt"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:backgroundTint="#00FFFFFF"
-        android:padding="5dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/icon_add"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/loading"
         android:layout_width="wrap_content"
@@ -28,17 +17,48 @@
         app:layout_constraintStart_toStartOf="@id/recCartItems"
         app:layout_constraintTop_toTopOf="@id/recCartItems" />
 
+    <ImageButton
+        android:id="@+id/addItem_bt"
+        style="@style/CartButton"
+        android:backgroundTint="#00FFFFFF"
+        android:padding="5dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/icon_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/newItem_btOk"
+        style="@style/CartButton"
+        android:backgroundTint="#00FFFFFF"
+        android:padding="5dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/icon_ok"
+        app:layout_constraintEnd_toStartOf="@id/addItem_bt"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/cartTotal_txt"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fontFamily="sans-serif-condensed"
+        style="@style/CartTopText"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
         android:text="Lista: 16 items, Total: $10,500.00"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/addItem_bt"
-        app:layout_constraintEnd_toStartOf="@+id/addItem_bt"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/addItem_bt"
+        app:layout_constraintEnd_toStartOf="@id/newItem_btOk"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <AutoCompleteTextView
+        android:id="@+id/newItem_txt"
+        style="@style/CartTopText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:hint="Nombre Item"
+        app:layout_constraintBottom_toBottomOf="@id/addItem_bt"
+        app:layout_constraintEnd_toStartOf="@id/newItem_btOk"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addItem_bt"
+        app:layout_constraintTop_toBottomOf="@id/addItem_bt"
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="0dp" />
 

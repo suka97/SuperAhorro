@@ -1,20 +1,25 @@
 package com.suka.superahorro.fragments
 
+import android.R
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.manager.Lifecycle
@@ -29,6 +34,7 @@ class CartFragment : Fragment() {
     private  lateinit var b: FragmentCartBinding
 
     lateinit var adapter : CartItemAdapter
+    var isAdding: MutableLiveData<Boolean> = MutableLiveData(false)
 
 
     override fun onCreateView(
@@ -37,9 +43,11 @@ class CartFragment : Fragment() {
     ): View? {
         b = FragmentCartBinding.inflate(inflater, container, false)
         viewModel.init(requireContext()) {
+            initTopBar()
             initButtons()
             initAdapter()
             updateCartTotal()
+            updateAutoCompletes()
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { newValue ->
@@ -68,12 +76,7 @@ class CartFragment : Fragment() {
 
     private fun initButtons() {
         b.addItemBt.setOnClickListener {
-            val dialog = Dialog(requireActivity())
-            createInputDialog(dialog, "Nuevo Item", "") { name ->
-                val newItem = viewModel.newCartItem(name)
-                val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment(newItem)
-                findNavController().navigate(action)
-            }
+            isAdding.value = !isAdding.value!!
         }
     }
 
@@ -110,8 +113,63 @@ class CartFragment : Fragment() {
     }
 
 
+    private fun initTopBar() {
+        isAdding.observe(viewLifecycleOwner) { newValue ->
+            b.newItemTxt.visibility = if (newValue) View.VISIBLE else View.GONE
+            b.cartTotalTxt.visibility = if (newValue) View.GONE else View.VISIBLE
+            if ( newValue == true ) {
+                b.newItemTxt.setText("")
+                b.newItemTxt.requestFocus()
+            }
+            else {
+                b.newItemBtOk.visibility = View.GONE
+            }
+        }
+
+        b.newItemTxt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // No se utiliza en este caso
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                b.newItemBtOk.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // No se utiliza en este caso
+            }
+        })
+
+        b.newItemBtOk.setOnClickListener() {
+            goToItemDetailNew(b.newItemTxt.text.toString())
+        }
+        b.newItemTxt.setOnItemClickListener { parent, view, position, id ->
+            val selectedOption = parent.getItemAtPosition(position).toString()
+            goToItemDetailNew(selectedOption)
+        }
+    }
+
+
+    private fun goToItemDetailNew(item_name: String) {
+        val newItem = viewModel.newCartItem(item_name)
+        val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment(newItem)
+        findNavController().navigate(action)
+        isAdding.value = false
+    }
+
+
     fun updateCartTotal() {
         b.cartTotalTxt.text = adapter.getCartDescription()
+    }
+
+
+    fun updateAutoCompletes() {
+        val items = listOf("Aceite", "Arroz", "Arroz1", "Arroz2", "Fideos", "Leche", "Pan", "Queso", "Yogurt")
+
+        val adapter = ArrayAdapter(requireContext(), R.layout.simple_dropdown_item_1line, items)
+//        b.newItemTxt.setDropDownHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
+//        b.newItemTxt.dropDownVerticalOffset = -autoCompleteTextView.height
+        b.newItemTxt.setAdapter(adapter)
     }
 
 }
