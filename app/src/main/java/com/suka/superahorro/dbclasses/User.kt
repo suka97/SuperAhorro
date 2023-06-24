@@ -1,13 +1,22 @@
 package com.suka.superahorro.dbclasses
 
-class User (mail : String, pass : String) {
-    var mail: String = mail
+import com.suka.superahorro.database.DbItem
+import com.suka.superahorro.database.DbUser
+import com.suka.superahorro.packages.generateRandomString
+import kotlin.random.Random
 
-    var pass: String = pass
+class User (var data: DbUser) {
+    fun getItemsAutocomplete() : List<String> {
+        return data.items.map { it.name }
+    }
 
-    var firstname: String? = null
-
-    var lastname: String? = null
-
-    var picture: String? = null
+    fun addNewItem(name: String): Item {
+        var id = Random.nextInt(from = 10000, until = 99999)
+        while (data.items.any { it.id == id }) {
+            id = Random.nextInt(from = 10000, until = 99999)
+        }
+        val newItem = Item(id, name)
+        data.items.add(newItem.data)
+        return newItem
+    }
 }

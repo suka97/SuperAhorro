@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.suka.superahorro.database.Database
 import com.suka.superahorro.dbclasses.Cart
 import com.suka.superahorro.dbclasses.CartItem
+import com.suka.superahorro.dbclasses.Item
+import com.suka.superahorro.dbclasses.User
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -17,6 +19,7 @@ class CartViewModel : ViewModel() {
 //    var cartItems: MutableList<CartItem> = mutableListOf<CartItem>()
     var onItemsChange: (() -> Unit)? = null
     lateinit var cart: Cart
+    lateinit var user: User
     var isLoading = MutableLiveData<Boolean>(false)
 
 
@@ -25,9 +28,21 @@ class CartViewModel : ViewModel() {
         Database.init()
         viewModelScope.launch {
             isLoading.value = true
-            cart = async { Database.getCart()!! }.await()
+            cart = async { Database.getCart() }.await()
+            user = async { Database.getUser() }.await()
             isLoading.value = false
             cartCallback()
+        }
+    }
+
+
+    fun addNewItem(name: String, callback: ()->Unit) {
+        viewModelScope.launch {
+            isLoading.value = true
+            val newItem = user.addNewItem(name)
+            async { Database.addItem(newItem) }.await()
+            isLoading.value = false
+            callback()
         }
     }
 

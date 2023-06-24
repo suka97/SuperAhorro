@@ -32,7 +32,7 @@ class UserFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        b.emailTxt.text = viewModel.getUser().mail
+//        b.emailTxt.text = viewModel.getUser().mail
 
         b.saveBt.setOnClickListener {
             val builder = AlertDialog.Builder(context)
@@ -41,7 +41,7 @@ class UserFragment : Fragment() {
             builder.setPositiveButton("Sí") { _, _ ->
                 val email = b.emailTxt.text.toString()
                 val pass = b.passTxt.text.toString()
-                viewModel.updateUser( User(email, pass) )
+//                viewModel.updateUser( User(email, pass) )
                 Snackbar.make(b.root, "Cambios guardados", Snackbar.LENGTH_SHORT).show()
             }
         }

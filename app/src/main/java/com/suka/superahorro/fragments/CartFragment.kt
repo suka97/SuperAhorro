@@ -1,33 +1,30 @@
 package com.suka.superahorro.fragments
 
 import android.R
-import android.app.Activity
 import android.app.AlertDialog
-import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
-import androidx.activity.viewModels
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResult
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.manager.Lifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.adapters.CartItemAdapter
 import com.suka.superahorro.databinding.FragmentCartBinding
 import com.suka.superahorro.dbclasses.CartItem
-import com.suka.superahorro.packages.createInputDialog
+import com.suka.superahorro.packages.hideKeyboard
+import com.suka.superahorro.packages.showKeyboard
+
 
 class CartFragment : Fragment() {
     private val viewModel: CartViewModel by viewModels()
@@ -114,15 +111,16 @@ class CartFragment : Fragment() {
 
 
     private fun initTopBar() {
-        isAdding.observe(viewLifecycleOwner) { newValue ->
-            b.newItemTxt.visibility = if (newValue) View.VISIBLE else View.GONE
-            b.cartTotalTxt.visibility = if (newValue) View.GONE else View.VISIBLE
-            if ( newValue == true ) {
+        isAdding.observe(viewLifecycleOwner) { isAdding ->
+            b.newItemTxt.visibility = if (isAdding) View.VISIBLE else View.GONE
+            b.cartTotalTxt.visibility = if (isAdding) View.GONE else View.VISIBLE
+            if ( isAdding == true ) {
                 b.newItemTxt.setText("")
-                b.newItemTxt.requestFocus()
+                showKeyboard(b.newItemTxt)
             }
             else {
                 b.newItemBtOk.visibility = View.GONE
+                hideKeyboard()
             }
         }
 
@@ -141,7 +139,10 @@ class CartFragment : Fragment() {
         })
 
         b.newItemBtOk.setOnClickListener() {
-            goToItemDetailNew(b.newItemTxt.text.toString())
+            val itemName = b.newItemTxt.text.toString()
+            viewModel.addNewItem(itemName) {
+                goToItemDetailNew(itemName)
+            }
         }
         b.newItemTxt.setOnItemClickListener { parent, view, position, id ->
             val selectedOption = parent.getItemAtPosition(position).toString()
@@ -164,11 +165,8 @@ class CartFragment : Fragment() {
 
 
     fun updateAutoCompletes() {
-        val items = listOf("Aceite", "Arroz", "Arroz1", "Arroz2", "Fideos", "Leche", "Pan", "Queso", "Yogurt")
-
+        val items = viewModel.user.getItemsAutocomplete()
         val adapter = ArrayAdapter(requireContext(), R.layout.simple_dropdown_item_1line, items)
-//        b.newItemTxt.setDropDownHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
-//        b.newItemTxt.dropDownVerticalOffset = -autoCompleteTextView.height
         b.newItemTxt.setAdapter(adapter)
     }
 

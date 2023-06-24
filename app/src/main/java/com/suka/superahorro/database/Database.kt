@@ -4,12 +4,15 @@ import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.suka.superahorro.dbclasses.Cart
 import com.suka.superahorro.dbclasses.CartItem
+import com.suka.superahorro.dbclasses.Item
+import com.suka.superahorro.dbclasses.User
 import kotlinx.coroutines.tasks.await
 
 object Database {
@@ -25,26 +28,14 @@ object Database {
     }
 
     // cartItems
-    suspend fun getCart(): Cart? {
-        try {
-            val cart = cartsColl.document("J4WNALZhZFf78wkosMre").get().await().toObject<DbCart>() ?: throw Exception("Cart not found")
-            return Cart(cart)
-        }
-        catch (e: Exception) {
-            Log.e("Database", "Exception thrown: ${e.message}")
-            return null
-        }
+    suspend fun getCart(): Cart {
+        val cart = cartsColl.document("J4WNALZhZFf78wkosMre").get().await().toObject<DbCart>() ?: throw Exception("Cart not found")
+        return Cart(cart)
     }
 
 
     suspend fun saveCart(cart: Cart) {
-        try {
-            cartsColl.document(cart.data.id).set(cart.data).await()
-        }
-        catch (e: Exception) {
-            Log.e("Database", "Exception thrown: ${e.message}")
-            return
-        }
+        cartsColl.document(cart.data.id).set(cart.data).await()
     }
 
 
@@ -57,8 +48,12 @@ object Database {
 
     }
 
-    // user
-//    fun getUser(): User {
-//        return User("","")
-//    }
+    suspend fun getUser(): User {
+        val user = userDoc.get().await().toObject<DbUser>() ?: throw Exception("User not found")
+        return User(user)
+    }
+
+    suspend fun addItem(item: Item) {
+        userDoc.update("items", FieldValue.arrayUnion(item.data)).await()
+    }
 }

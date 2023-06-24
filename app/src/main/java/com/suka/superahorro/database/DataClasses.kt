@@ -6,12 +6,13 @@ import kotlinx.parcelize.Parcelize
 data class DbUser(
     var id: String = "",
     var name: String = "",
+    var items: MutableList<DbItem> = mutableListOf(),
 )
 
 
 data class DbItem(
-    var id: String,
-    var name: String
+    var id: Int = 0,
+    var name: String = ""
 )
 
 

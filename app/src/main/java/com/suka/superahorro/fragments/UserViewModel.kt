@@ -27,9 +27,9 @@ class UserViewModel : ViewModel() {
     }
 
 
-    fun getUser() : User {
-        return User("","")
-    }
+//    fun getUser() : User {
+//        return User(""",""")
+//    }
 
 
     fun updateUser(newUser: User) {
