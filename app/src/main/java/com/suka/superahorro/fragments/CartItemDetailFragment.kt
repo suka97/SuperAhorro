@@ -2,7 +2,6 @@ package com.suka.superahorro.fragments
 
 import android.os.Bundle
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,22 +10,19 @@ import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.suka.superahorro.R
-import com.suka.superahorro.databinding.FragmentItemDetailBinding
-import com.suka.superahorro.dbclasses.CartItem
+import com.suka.superahorro.databinding.FragmentCartItemDetailBinding
 import com.suka.superahorro.packages.number
 import com.suka.superahorro.packages.round
 import com.suka.superahorro.packages.text
 import com.suka.superahorro.packages.toStringNull
 
-class ItemDetailFragment : Fragment() {
-    private val viewModel: ItemDetailViewModel by viewModels()
-    private  lateinit var b: FragmentItemDetailBinding
+class CartItemDetailFragment : Fragment() {
+    private val viewModel: CartItemDetailViewModel by viewModels()
+    private  lateinit var b: FragmentCartItemDetailBinding
 
     private var autoCallbacksEnabled = true
 
@@ -35,9 +31,9 @@ class ItemDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val args = ItemDetailFragmentArgs.fromBundle(requireArguments())
+        val args = CartItemDetailFragmentArgs.fromBundle(requireArguments())
         viewModel.init(requireContext(), args.cartItem)
-        b = FragmentItemDetailBinding.inflate(inflater, container, false)
+        b = FragmentCartItemDetailBinding.inflate(inflater, container, false)
 
         // save changes on parent fragment
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {

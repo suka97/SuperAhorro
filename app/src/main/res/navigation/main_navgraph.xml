@@ -8,17 +8,17 @@
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.suka.superahorro.fragments.CartFragment"
-        android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" >
+        android:label="Carrito"
+        tools:layout="@layout/fragment_cart">
         <action
             android:id="@+id/action_cartFragment_to_itemDetailFragment"
-            app:destination="@id/itemDetailFragment" />
+            app:destination="@id/cartItemDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/itemDetailFragment"
-        android:name="com.suka.superahorro.fragments.ItemDetailFragment"
-        android:label="fragment_item_detail"
-        tools:layout="@layout/fragment_item_detail" >
+        android:id="@+id/cartItemDetailFragment"
+        android:name="com.suka.superahorro.fragments.CartItemDetailFragment"
+        android:label="Detalle Item"
+        tools:layout="@layout/fragment_cart_item_detail">
         <argument
             android:name="cartItem"
             app:argType="com.suka.superahorro.dbclasses.CartItem" />
@@ -26,6 +26,6 @@
     <fragment
         android:id="@+id/userFragment"
         android:name="com.suka.superahorro.fragments.UserFragment"
-        android:label="fragment_user"
+        android:label="Info Usuario"
         tools:layout="@layout/fragment_user" />
 </navigation>

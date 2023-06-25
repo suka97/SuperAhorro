@@ -1,11 +1,10 @@
 package com.suka.superahorro.fragments
 
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.suka.superahorro.dbclasses.CartItem
 
-class ItemDetailViewModel : ViewModel() {
+class CartItemDetailViewModel : ViewModel() {
     private lateinit var context: Context
 
     lateinit var cartItem: CartItem
