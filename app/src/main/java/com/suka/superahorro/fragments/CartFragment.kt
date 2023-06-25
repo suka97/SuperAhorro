@@ -44,17 +44,12 @@ class CartFragment : Fragment() {
     var isAdding: MutableLiveData<Boolean> = MutableLiveData(false)
 
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        initActionBar()
-    }
-
     // init top bar
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val toolbar = requireActivity().findViewById<MaterialToolbar>(R.id.main_toolbar)
-//        toolbar.title = "Título del Fragmento"
+        val toolbar = requireActivity().findViewById<MaterialToolbar>(R.id.main_toolbar)
+        toolbar?.title = "Título del Fragmento"
 //        toolbar.setNavigationOnClickListener {
 //            // Acción al hacer clic en el botón de navegación del Toolbar
 //        }
@@ -68,7 +63,6 @@ class CartFragment : Fragment() {
         b = FragmentCartBinding.inflate(inflater, container, false)
         initHiddens()
         viewModel.init(requireContext()) {
-            initActionBar()
             initTopBar()
             initButtons()
             initAdapter()
@@ -101,18 +95,12 @@ class CartFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         val id = when(item.itemId) {
 //            R.id.action_add -> Snackbar.make(v, "add", Snackbar.LENGTH_SHORT).show()
 //            R.id.action_fav -> Snackbar.make(v, "fav", Snackbar.LENGTH_SHORT).show()
             else -> ""
         }
         return super.onOptionsItemSelected(item)
-    }
-
-
-    private fun initActionBar() {
-//        (requireActivity() as AppCompatActivity).setSupportActionBar(b.toolbar)
     }
 
 

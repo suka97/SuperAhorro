@@ -2,15 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_search"
-        android:title="Buscar"
+        android:id="@+id/toolbar_cart_add"
+        android:title="Agregar"
+        android:icon="@drawable/icon_toolbar_add"
         app:showAsAction="always" />
     <item
-        android:id="@+id/menu_settings"
-        android:title="Configuración"
+        android:id="@+id/toolbar_cart_delete"
+        android:title="Eliminar Carrito"
         app:showAsAction="never" />
     <item
-        android:id="@+id/menu_logout"
-        android:title="Cerrar sesión"
+        android:id="@+id/toolbar_cart_close"
+        android:title="Cerrar Carrito"
+        android:icon="@drawable/icon_cart"
         app:showAsAction="never" />
 </menu>
