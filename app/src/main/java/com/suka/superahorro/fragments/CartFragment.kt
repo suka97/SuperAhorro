@@ -1,24 +1,34 @@
 package com.suka.superahorro.fragments
 
-import android.R
+import android.app.ActionBar
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.suka.superahorro.R
 import com.suka.superahorro.adapters.CartItemAdapter
 import com.suka.superahorro.databinding.FragmentCartBinding
 import com.suka.superahorro.dbclasses.CartItem
@@ -34,6 +44,23 @@ class CartFragment : Fragment() {
     var isAdding: MutableLiveData<Boolean> = MutableLiveData(false)
 
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initActionBar()
+    }
+
+    // init top bar
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+//        val toolbar = requireActivity().findViewById<MaterialToolbar>(R.id.main_toolbar)
+//        toolbar.title = "Título del Fragmento"
+//        toolbar.setNavigationOnClickListener {
+//            // Acción al hacer clic en el botón de navegación del Toolbar
+//        }
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,6 +68,7 @@ class CartFragment : Fragment() {
         b = FragmentCartBinding.inflate(inflater, container, false)
         initHiddens()
         viewModel.init(requireContext()) {
+            initActionBar()
             initTopBar()
             initButtons()
             initAdapter()
@@ -62,7 +90,29 @@ class CartFragment : Fragment() {
             }
         }
 
+        setHasOptionsMenu(true)
+
         return b.root
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.toolbar_cart, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        val id = when(item.itemId) {
+//            R.id.action_add -> Snackbar.make(v, "add", Snackbar.LENGTH_SHORT).show()
+//            R.id.action_fav -> Snackbar.make(v, "fav", Snackbar.LENGTH_SHORT).show()
+            else -> ""
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
+    private fun initActionBar() {
+//        (requireActivity() as AppCompatActivity).setSupportActionBar(b.toolbar)
     }
 
 
@@ -174,7 +224,7 @@ class CartFragment : Fragment() {
 
     fun updateAutoCompletes() {
         val items = viewModel.user.getItemsAutocomplete()
-        val adapter = ArrayAdapter(requireContext(), R.layout.simple_dropdown_item_1line, items)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, items)
         b.newItemTxt.setAdapter(adapter)
     }
 

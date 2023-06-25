@@ -1,57 +1,90 @@
 package com.suka.superahorro.activities
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
-    private lateinit var appBarConfiguration: AppBarConfiguration
 
-    private lateinit var navView: NavigationView
+    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
+    private lateinit var toolbar: MaterialToolbar
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navView: NavigationView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        navView = findViewById(R.id.nav_view)
-        drawerLayout = findViewById(R.id.drawer_layout)
+        toolbar = findViewById(R.id.main_toolbar)
+        drawerLayout = findViewById(R.id.main_drawer_layout)
+        navView = findViewById(R.id.main_nav_view)
 
-        setupSimpleNavigation()
+        setSupportActionBar(toolbar) // set toolbar as action bar
+        initDrawer()
+        initNavView()
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        return if (::appBarConfiguration.isInitialized) {
-            NavigationUI.navigateUp(navController, appBarConfiguration)
-        } else {
-            NavigationUI.navigateUp(navController, drawerLayout)
+
+    // drawer
+//    override fun onPostCreate(savedInstanceState: Bundle?) {
+//        super.onPostCreate(savedInstanceState)
+//        actionBarDrawerToggle.syncState()
+//    }
+//    override fun onConfigurationChanged(newConfig: Configuration) {
+//        super.onConfigurationChanged(newConfig)
+//        actionBarDrawerToggle.onConfigurationChanged(newConfig)
+//    }
+//    override fun onBackPressed() {
+//        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+//            drawerLayout.closeDrawer(GravityCompat.START)
+//        } else {
+//            super.onBackPressed()
+//        }
+//    }
+
+
+    private fun initDrawer() {
+        actionBarDrawerToggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.main_navdrawer_open,
+            R.string.main_navdrawer_close
+        )
+        toolbar.setNavigationOnClickListener {
+            val isBackVisible = navController.previousBackStackEntry != null
+            if (isBackVisible) {
+                navController.navigateUp()
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
         }
+
+        drawerLayout.addDrawerListener(actionBarDrawerToggle)
+        actionBarDrawerToggle.syncState()
     }
 
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
-    }
 
-    private fun setupSimpleNavigation() {
+    private fun initNavView() {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         navView.setupWithNavController(navController)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)

@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".fragments.CartFragment">
 
+
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/loading"
         android:layout_width="wrap_content"
@@ -25,7 +26,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/icon_add"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageButton
         android:id="@+id/newItem_btOk"
@@ -35,7 +36,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/icon_ok"
         app:layout_constraintEnd_toStartOf="@id/addItem_bt"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/addItem_bt" />
 
     <TextView
         android:id="@+id/cartTotal_txt"
@@ -60,7 +61,7 @@
         app:layout_constraintBottom_toBottomOf="@id/addItem_bt"
         app:layout_constraintEnd_toStartOf="@id/newItem_btOk"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/addItem_bt" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recCartItems"
