@@ -31,8 +31,20 @@ class CartItemDetailViewModel : ViewModel() {
             val url = async { Database.uploadImage("models/${cartItem.data.model!!.id}", bitmap) }.await()
             isLoading.value = false
             if (url!=null) {
+                cartItem.data.model!!.img = url
                 callback(url)
             }
+        }
+    }
+
+
+    fun deleteImage(callback: ()->Unit) {
+        viewModelScope.launch {
+            isLoading.value = true
+            async { Database.deleteImage("models/${cartItem.data.model!!.id}") }.await()
+            isLoading.value = false
+            cartItem.data.model!!.img = null
+            callback()
         }
     }
 }

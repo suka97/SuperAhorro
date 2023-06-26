@@ -24,7 +24,7 @@ data class DbModel(
     var unit: String? = null,
     var base_unit: String? = null,
     //var last_price: Float? = null,
-    var img: Boolean = false
+    var img: String? = null
 )
 
 
@@ -57,6 +57,6 @@ data class DbCartItem(
         var name: String = "",
         var unit: String? = null,
         var base_unit: String? = null,
-        var img: Boolean = false
+        var img: String? = null
     ) : Parcelable
 }

@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".fragments.CartItemDetailFragment" >
 
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="@id/model_img"
+        app:layout_constraintEnd_toEndOf="@id/model_img"
+        app:layout_constraintStart_toStartOf="@id/model_img"
+        app:layout_constraintTop_toTopOf="@id/model_img" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_txt"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -53,6 +64,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:endIconDrawable="@drawable/icon_edit_32"
+            app:endIconMode="custom"
             android:hint="Cantidad"
             android:padding="2dp"
             app:suffixText="kg">

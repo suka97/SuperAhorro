@@ -67,18 +67,34 @@ class CartItemDetailFragment : Fragment() {
         b.totalPriceTxt.editText?.setText(cartItem.getTotalPrice().toStringNull())
         b.modelNameTxt.editText?.setText(cartItem.data.model?.name)
         b.modelSkuTxt.editText?.setText(cartItem.data.model?.sku)
-//        setPicture(cartItem.data.model?.img)
+        setPicture(cartItem.data.model?.img)
 
         // update callbacks
         b.amountTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
         b.unitPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
         b.totalPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdateTotal))
+
+        b.modelNameTxt.setEndIconOnClickListener {
+            Snackbar.make(b.root, "Icon clicked", Snackbar.LENGTH_SHORT).show()
+        }
         b.modelImg.setOnClickListener{
+            if (viewModel.isLoading.value == true) return@setOnClickListener
             if (viewModel.cartItem.data.model == null) {
                 Snackbar.make(b.root, "Debe haber un modelo seleccionado", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            requestImage()
+            if (viewModel.cartItem.data.model!!.img == null) {
+                requestImage()
+            }
+            else {
+                viewModel.deleteImage() {
+                    setPicture(null)
+                }
+            }
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            b.loading.visibility = if (it) View.VISIBLE else View.GONE
         }
     }
 

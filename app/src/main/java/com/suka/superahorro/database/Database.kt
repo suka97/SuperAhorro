@@ -70,9 +70,17 @@ object Database {
         val data = baos.toByteArray()
 
         val imageRef = storageRef.child(path)
-        var uploadTask = imageRef.putBytes(data).await()
-        var url: String? = null
-        if (uploadTask.task.isSuccessful) url = imageRef.downloadUrl.await().toString()
-        return url
+        return try {
+            imageRef.putBytes(data).await()
+            imageRef.downloadUrl.await().toString()
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+
+    suspend fun deleteImage(path: String) {
+        val imageRef = storageRef.child(path)
+        imageRef.delete().await()
     }
 }

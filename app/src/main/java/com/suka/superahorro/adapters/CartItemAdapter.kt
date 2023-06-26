@@ -94,7 +94,7 @@ class CartItemAdapter (
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
         val item = cart.getItem(position)
 
-        holder.setPicture(item.getImage())
+        holder.setPicture(item.data.model?.img)
         holder.setName(item.data.name)
         holder.setPrice(item.getTotalPrice())
         holder.setAmount(item.data.amount)
