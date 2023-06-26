@@ -46,16 +46,10 @@ class CartFragment : Fragment() {
     var isAdding: MutableLiveData<Boolean> = MutableLiveData(false)
 
 
-    // init top bar
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        val toolbar = requireActivity().findViewById<MaterialToolbar>(R.id.main_toolbar)
-//        toolbar?.title = "Título del Fragmento"
-//        toolbar.setNavigationOnClickListener {
-//            // Acción al hacer clic en el botón de navegación del Toolbar
-//        }
-//    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
 
     override fun onCreateView(
@@ -63,13 +57,19 @@ class CartFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         b = FragmentCartBinding.inflate(inflater, container, false)
-        initHiddens()
+        return b.root
+    }
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initHiddens()
         viewModel.dbAuthError.observe(viewLifecycleOwner) { dbAuthError ->
             if (dbAuthError) {
                 Snackbar.make(b.root, "Error de autenticación", Snackbar.LENGTH_SHORT).show()
-//                startActivity(Intent(context, LoginActivity::class.java))
-//                requireActivity().finish()
+                startActivity(Intent(context, LoginActivity::class.java))
+                requireActivity().finish()
             }
         }
 
@@ -96,10 +96,6 @@ class CartFragment : Fragment() {
                 updateCartTotal()
             }
         }
-
-        setHasOptionsMenu(true)
-
-        return b.root
     }
 
 

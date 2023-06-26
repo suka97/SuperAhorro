@@ -31,9 +31,16 @@ class CartItemDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val args = CartItemDetailFragmentArgs.fromBundle(requireArguments())
-        viewModel.init(requireContext(), args.cartItem)
         b = FragmentCartItemDetailBinding.inflate(inflater, container, false)
+        return b.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val args = CartItemDetailFragmentArgs.fromBundle(requireArguments())
+        viewModel.init(args.cartItem)
 
         // save changes on parent fragment
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -42,13 +49,6 @@ class CartItemDetailFragment : Fragment() {
                 findNavController().navigateUp()
             }
         })
-
-        return b.root
-    }
-
-
-    override fun onStart() {
-        super.onStart()
 
         val cartItem = viewModel.cartItem
         b.nameTxt.editText?.setText(cartItem.data.name)
@@ -63,14 +63,6 @@ class CartItemDetailFragment : Fragment() {
         b.amountTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
         b.unitPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
         b.totalPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdateTotal))
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-//        name.updateListener()
-//        amount.updateListener()
-//        price.updateListener()
     }
 
 
