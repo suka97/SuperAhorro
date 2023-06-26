@@ -10,11 +10,15 @@ import com.suka.superahorro.dbclasses.Cart
 import com.suka.superahorro.dbclasses.CartItem
 import com.suka.superahorro.dbclasses.Item
 import com.suka.superahorro.dbclasses.User
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class CartViewModel : ViewModel() {
     val isInitialized = MutableLiveData<Boolean>(false)
+    val dbAuthError = MutableLiveData<Boolean>(false)
 
 //    var cartItems: MutableList<CartItem> = mutableListOf<CartItem>()
     var onItemsChange: (() -> Unit)? = null
@@ -22,10 +26,16 @@ class CartViewModel : ViewModel() {
     lateinit var user: User
     var isLoading = MutableLiveData<Boolean>(false)
 
+    // handle courritine exceptions
+    private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        dbAuthError.value = true
+    }
+    private val viewModelScope = CoroutineScope(Dispatchers.Main + exceptionHandler)
+
 
     init {
-        Database.init()
         viewModelScope.launch {
+            Database.init()
             isLoading.value = true
             cart = async { Database.getCart() }.await()
             user = async { Database.getUser() }.await()

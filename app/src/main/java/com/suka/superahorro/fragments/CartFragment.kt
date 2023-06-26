@@ -3,6 +3,7 @@ package com.suka.superahorro.fragments
 import android.app.ActionBar
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -29,6 +30,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
+import com.suka.superahorro.activities.LoginActivity
 import com.suka.superahorro.adapters.CartItemAdapter
 import com.suka.superahorro.databinding.FragmentCartBinding
 import com.suka.superahorro.dbclasses.CartItem
@@ -45,15 +47,15 @@ class CartFragment : Fragment() {
 
 
     // init top bar
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val toolbar = requireActivity().findViewById<MaterialToolbar>(R.id.main_toolbar)
-        toolbar?.title = "Título del Fragmento"
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//
+//        val toolbar = requireActivity().findViewById<MaterialToolbar>(R.id.main_toolbar)
+//        toolbar?.title = "Título del Fragmento"
 //        toolbar.setNavigationOnClickListener {
 //            // Acción al hacer clic en el botón de navegación del Toolbar
 //        }
-    }
+//    }
 
 
     override fun onCreateView(
@@ -62,6 +64,15 @@ class CartFragment : Fragment() {
     ): View? {
         b = FragmentCartBinding.inflate(inflater, container, false)
         initHiddens()
+
+        viewModel.dbAuthError.observe(viewLifecycleOwner) { dbAuthError ->
+            if (dbAuthError) {
+                Snackbar.make(b.root, "Error de autenticación", Snackbar.LENGTH_SHORT).show()
+//                startActivity(Intent(context, LoginActivity::class.java))
+//                requireActivity().finish()
+            }
+        }
+
         viewModel.isInitialized.observe(viewLifecycleOwner) { isInitialized ->
             if (isInitialized) {
                 initTopBar()
