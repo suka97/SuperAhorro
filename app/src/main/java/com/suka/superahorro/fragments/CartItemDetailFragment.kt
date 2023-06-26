@@ -1,6 +1,12 @@
 package com.suka.superahorro.fragments
 
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,11 +14,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
 import com.suka.superahorro.databinding.FragmentCartItemDetailBinding
 import com.suka.superahorro.packages.number
@@ -25,6 +33,11 @@ class CartItemDetailFragment : Fragment() {
     private  lateinit var b: FragmentCartItemDetailBinding
 
     private var autoCallbacksEnabled = true
+
+    // Constantes
+    companion object {
+        private const val REQUEST_IMAGE_CAPTURE = 1
+    }
 
 
     override fun onCreateView(
@@ -57,12 +70,31 @@ class CartItemDetailFragment : Fragment() {
         b.totalPriceTxt.editText?.setText(cartItem.getTotalPrice().toStringNull())
         b.modelNameTxt.editText?.setText(cartItem.data.model?.name)
         b.modelSkuTxt.editText?.setText(cartItem.data.model?.id)
-//        setPicture(viewModel.getCartItem().picture)
+        setPicture(cartItem.data.model?.img)
 
         // update callbacks
         b.amountTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
         b.unitPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
         b.totalPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdateTotal))
+        b.modelImg.setOnClickListener{
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                if (takePictureIntent.resolveActivity(requireActivity().packageManager) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                }
+            } else {
+                requestPermissions(arrayOf(Manifest.permission.CAMERA), 1)
+            }
+        }
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            b.modelImg.setImageBitmap(imageBitmap)
+        }
     }
 
 
