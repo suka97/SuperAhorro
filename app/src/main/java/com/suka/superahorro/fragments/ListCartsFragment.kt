@@ -7,26 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.suka.superahorro.R
+import com.suka.superahorro.databinding.FragmentCartBinding
+import com.suka.superahorro.databinding.FragmentListCartsBinding
 
 class ListCartsFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = ListCartsFragment()
-    }
-
     private lateinit var viewModel: ListCartsViewModel
+    private  lateinit var b: FragmentListCartsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_list_carts, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ListCartsViewModel::class.java)
-        // TODO: Use the ViewModel
+        b = FragmentListCartsBinding.inflate(inflater, container, false)
+        return b.root
     }
 
 }

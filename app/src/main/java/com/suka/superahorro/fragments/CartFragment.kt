@@ -62,12 +62,14 @@ class CartFragment : Fragment() {
     ): View? {
         b = FragmentCartBinding.inflate(inflater, container, false)
         initHiddens()
-        viewModel.init(requireContext()) {
-            initTopBar()
-            initButtons()
-            initAdapter()
-            updateCartTotal()
-            updateAutoCompletes()
+        viewModel.isInitialized.observe(viewLifecycleOwner) { isInitialized ->
+            if (isInitialized) {
+                initTopBar()
+                initButtons()
+                initAdapter()
+                updateCartTotal()
+                updateAutoCompletes()
+            }
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { newValue ->

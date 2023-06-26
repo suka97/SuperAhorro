@@ -14,7 +14,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class CartViewModel : ViewModel() {
-    private lateinit var context: Context
+    val isInitialized = MutableLiveData<Boolean>(false)
 
 //    var cartItems: MutableList<CartItem> = mutableListOf<CartItem>()
     var onItemsChange: (() -> Unit)? = null
@@ -23,15 +23,15 @@ class CartViewModel : ViewModel() {
     var isLoading = MutableLiveData<Boolean>(false)
 
 
-    fun init(context: Context, cartCallback: ()->Unit) {
-        this.context = context
+    init {
         Database.init()
         viewModelScope.launch {
             isLoading.value = true
             cart = async { Database.getCart() }.await()
             user = async { Database.getUser() }.await()
             isLoading.value = false
-            cartCallback()
+
+            isInitialized.value = true
         }
     }
 
@@ -47,9 +47,9 @@ class CartViewModel : ViewModel() {
     }
 
 
-    fun saveCartChanges() {
+    fun saveCartChanges(showLoading: Boolean = false) {
         viewModelScope.launch {
-            isLoading.value = true
+            if (showLoading) isLoading.value = true
             async { Database.saveCart(cart) }.await()
             isLoading.value = false
         }

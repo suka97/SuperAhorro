@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.suka.superahorro.R
 import com.suka.superahorro.dbclasses.Cart
-import com.suka.superahorro.dbclasses.CartItem
 import com.suka.superahorro.packages.*
 
 class CartItemAdapter (
@@ -84,7 +83,7 @@ class CartItemAdapter (
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.shop_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.recicler_cart_items, parent, false)
         return (ItemHolder(view))
     }
 

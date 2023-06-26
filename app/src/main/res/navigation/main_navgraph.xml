@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navgraph"
-    app:startDestination="@id/cartFragment">
+    app:startDestination="@id/listCartsFragment">
 
     <fragment
         android:id="@+id/cartFragment"
@@ -28,4 +28,13 @@
         android:name="com.suka.superahorro.fragments.UserFragment"
         android:label="Info Usuario"
         tools:layout="@layout/fragment_user" />
+    <fragment
+        android:id="@+id/listCartsFragment"
+        android:name="com.suka.superahorro.fragments.ListCartsFragment"
+        android:label="Carritos"
+        tools:layout="@layout/fragment_list_carts">
+        <action
+            android:id="@+id/action_listCartsFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
+    </fragment>
 </navigation>
