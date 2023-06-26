@@ -1,14 +1,24 @@
 package com.suka.superahorro.packages
 
+import android.Manifest
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.provider.MediaStore
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+
 
 const val GLOBAL_UNIT_AMOUNT = "kg"
 const val GLOBAL_UNIT_PRICE = "$"
+
+// activity requests
+const val REQUEST_IMAGE_CAPTURE = 1
+
 
 fun Float.round(decimals: Int = 2): Float {
     var multiplier = 1.0
@@ -48,4 +58,16 @@ fun Fragment.showKeyboard(view: View) {
     view.requestFocus()
     val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+}
+
+
+fun Fragment.requestImage() {
+    if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(requireActivity().packageManager) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+        }
+    } else {
+        requestPermissions(arrayOf(Manifest.permission.CAMERA), 1)
+    }
 }

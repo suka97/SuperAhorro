@@ -28,9 +28,11 @@ class CartItemDetailViewModel : ViewModel() {
     fun uploadImage(bitmap: Bitmap, callback: (url: String)->Unit) {
         viewModelScope.launch {
             isLoading.value = true
-            val url = async { Database.uploadImage(bitmap) }.await()
+            val url = async { Database.uploadImage("models/${cartItem.data.model!!.id}", bitmap) }.await()
             isLoading.value = false
-            if (url!=null) callback(url)
+            if (url!=null) {
+                callback(url)
+            }
         }
     }
 }

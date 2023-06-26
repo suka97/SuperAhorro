@@ -11,5 +11,9 @@ class CartItem (var data: DbCartItem, var cartPos: Int) : Parcelable {
         return data.unit_price!! * data.amount!!
     }
 
+    fun getImage() : String? {
+        return null
+    }
+
     constructor(name : String) : this(DbCartItem(name = name), 0)
 }

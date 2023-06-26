@@ -1,8 +1,6 @@
 package com.suka.superahorro.fragments
 
-import android.app.ActionBar
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -13,21 +11,13 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
 import com.suka.superahorro.activities.LoginActivity
@@ -75,9 +65,9 @@ class CartFragment : Fragment() {
 
         viewModel.isInitialized.observe(viewLifecycleOwner) { isInitialized ->
             if (isInitialized) {
+                initAdapter()
                 initTopBar()
                 initButtons()
-                initAdapter()
                 updateCartTotal()
                 updateAutoCompletes()
             }

@@ -18,12 +18,13 @@ data class DbItem(
 
 data class DbModel(
     var id: String = "",
+    var sku: String? = null,
     var name: String = "",
     var item_id: String? = null,
     var unit: String? = null,
     var base_unit: String? = null,
     //var last_price: Float? = null,
-    var img: String? = null
+    var img: Boolean = false
 )
 
 
@@ -52,9 +53,10 @@ data class DbCartItem(
     @Parcelize
     data class Model(
         var id: String = "",
+        var sku: String? = null,
         var name: String = "",
         var unit: String? = null,
         var base_unit: String? = null,
-        var img: String? = null
+        var img: Boolean = false
     ) : Parcelable
 }

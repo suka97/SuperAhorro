@@ -28,6 +28,7 @@ class CartViewModel : ViewModel() {
 
     // handle courritine exceptions
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.e("CartViewModel", "Exception in couroutine: ${throwable.message}")
         dbAuthError.value = true
     }
     private val viewModelScope = CoroutineScope(Dispatchers.Main + exceptionHandler)

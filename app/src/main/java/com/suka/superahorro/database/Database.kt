@@ -64,12 +64,12 @@ object Database {
     }
 
 
-    suspend fun uploadImage(bitmap: Bitmap): String? {
+    suspend fun uploadImage(path: String, bitmap: Bitmap): String? {
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
 
-        val imageRef = storageRef.child("models/${bitmap.hashCode()}")
+        val imageRef = storageRef.child(path)
         var uploadTask = imageRef.putBytes(data).await()
         var url: String? = null
         if (uploadTask.task.isSuccessful) url = imageRef.downloadUrl.await().toString()

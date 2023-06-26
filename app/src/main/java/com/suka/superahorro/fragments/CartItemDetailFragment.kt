@@ -23,7 +23,9 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
 import com.suka.superahorro.databinding.FragmentCartItemDetailBinding
+import com.suka.superahorro.packages.REQUEST_IMAGE_CAPTURE
 import com.suka.superahorro.packages.number
+import com.suka.superahorro.packages.requestImage
 import com.suka.superahorro.packages.round
 import com.suka.superahorro.packages.text
 import com.suka.superahorro.packages.toStringNull
@@ -33,11 +35,6 @@ class CartItemDetailFragment : Fragment() {
     private  lateinit var b: FragmentCartItemDetailBinding
 
     private var autoCallbacksEnabled = true
-
-    // Constantes
-    companion object {
-        private const val REQUEST_IMAGE_CAPTURE = 1
-    }
 
 
     override fun onCreateView(
@@ -69,26 +66,24 @@ class CartItemDetailFragment : Fragment() {
         b.unitPriceTxt.editText?.setText(cartItem.data.unit_price.toStringNull())
         b.totalPriceTxt.editText?.setText(cartItem.getTotalPrice().toStringNull())
         b.modelNameTxt.editText?.setText(cartItem.data.model?.name)
-        b.modelSkuTxt.editText?.setText(cartItem.data.model?.id)
-        setPicture(cartItem.data.model?.img)
+        b.modelSkuTxt.editText?.setText(cartItem.data.model?.sku)
+//        setPicture(cartItem.data.model?.img)
 
         // update callbacks
         b.amountTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
         b.unitPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
         b.totalPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdateTotal))
         b.modelImg.setOnClickListener{
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                if (takePictureIntent.resolveActivity(requireActivity().packageManager) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-                }
-            } else {
-                requestPermissions(arrayOf(Manifest.permission.CAMERA), 1)
+            if (viewModel.cartItem.data.model == null) {
+                Snackbar.make(b.root, "Debe haber un modelo seleccionado", Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+            requestImage()
         }
     }
 
 
+    // get image from camera
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
