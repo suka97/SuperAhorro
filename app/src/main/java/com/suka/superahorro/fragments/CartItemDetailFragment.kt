@@ -93,7 +93,9 @@ class CartItemDetailFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
-            b.modelImg.setImageBitmap(imageBitmap)
+            viewModel.uploadImage(imageBitmap) { url ->
+                setPicture(url)
+            }
         }
     }
 
