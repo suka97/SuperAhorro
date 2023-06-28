@@ -1,9 +1,12 @@
 package com.suka.superahorro.dbclasses
 
+import android.os.Parcelable
 import com.suka.superahorro.database.DbCart
 import com.suka.superahorro.packages.round
+import kotlinx.parcelize.Parcelize
 
-class Cart(var data: DbCart) {
+@Parcelize
+class Cart(var data: DbCart): Parcelable {
 
     fun size(): Int {
         return data.items.size

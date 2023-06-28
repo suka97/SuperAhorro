@@ -54,6 +54,9 @@ class CartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val args = CartFragmentArgs.fromBundle(requireArguments())
+        viewModel.init(args.cart)
+
         initHiddens()
         viewModel.dbAuthError.observe(viewLifecycleOwner) { dbAuthError ->
             if (dbAuthError) {

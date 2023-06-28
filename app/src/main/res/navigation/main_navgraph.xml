@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_cartFragment_to_itemDetailFragment"
             app:destination="@id/cartItemDetailFragment" />
+        <argument
+            android:name="cart"
+            app:argType="com.suka.superahorro.dbclasses.Cart" />
     </fragment>
     <fragment
         android:id="@+id/cartItemDetailFragment"

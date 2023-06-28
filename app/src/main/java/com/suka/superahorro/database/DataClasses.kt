@@ -3,6 +3,8 @@ package com.suka.superahorro.database
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
+
+
 data class DbUser(
     var id: String = "",
     var name: String = "",
@@ -28,17 +30,25 @@ data class DbModel(
 )
 
 
+@Parcelize
 data class DbCart(
     var id: String = "",
     var shop: String? = null,
+    var status: String = STATUS_OPENED,
     var items: MutableList<DbCartItem> = mutableListOf(),
     var disc: Discount? = null,
     var total: Float = 0f
-) {
+): Parcelable {
+    @Parcelize
     data class Discount(
         var type: String = "",
         var value: Float = 0f
-    )
+    ): Parcelable
+
+    companion object {
+        const val STATUS_OPENED = "opened"
+        const val STATUS_CLOSED = "closed"
+    }
 }
 
 

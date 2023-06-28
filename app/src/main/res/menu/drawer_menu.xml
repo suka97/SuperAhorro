@@ -6,7 +6,7 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/cartFragment"
+            android:id="@+id/listCartsFragment"
             android:icon="@drawable/icon_cart"
             android:title="Carrito" />
 

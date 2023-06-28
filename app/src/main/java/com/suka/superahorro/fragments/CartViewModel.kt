@@ -19,12 +19,12 @@ import kotlinx.coroutines.launch
 class CartViewModel : ViewModel() {
     val isInitialized = MutableLiveData<Boolean>(false)
     val dbAuthError = MutableLiveData<Boolean>(false)
+    var isLoading = MutableLiveData<Boolean>(false)
 
 //    var cartItems: MutableList<CartItem> = mutableListOf<CartItem>()
     var onItemsChange: (() -> Unit)? = null
     lateinit var cart: Cart
     lateinit var user: User
-    var isLoading = MutableLiveData<Boolean>(false)
 
     // handle courritine exceptions
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -34,11 +34,24 @@ class CartViewModel : ViewModel() {
     private val viewModelScope = CoroutineScope(Dispatchers.Main + exceptionHandler)
 
 
-    init {
+//    init {
+//        viewModelScope.launch {
+//            Database.init()
+//            isLoading.value = true
+//            cart = async { Database.getCart() }.await()
+//            user = async { Database.getUser() }.await()
+//            isLoading.value = false
+//
+//            isInitialized.value = true
+//        }
+//    }
+
+
+    fun init(cart: Cart) {
+        this.cart = cart
         viewModelScope.launch {
             Database.init()
             isLoading.value = true
-            cart = async { Database.getCart() }.await()
             user = async { Database.getUser() }.await()
             isLoading.value = false
 
