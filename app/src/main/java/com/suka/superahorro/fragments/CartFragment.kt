@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -22,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
 import com.suka.superahorro.activities.LoginActivity
 import com.suka.superahorro.adapters.CartItemAdapter
+import com.suka.superahorro.databinding.ActivityMainBinding
 import com.suka.superahorro.databinding.FragmentCartBinding
 import com.suka.superahorro.dbclasses.CartItem
 import com.suka.superahorro.packages.hideKeyboard
@@ -31,6 +33,7 @@ import com.suka.superahorro.packages.showKeyboard
 class CartFragment : Fragment() {
     private val viewModel: CartViewModel by viewModels()
     private  lateinit var b: FragmentCartBinding
+    private lateinit var toolbarMenu: Menu
 
     lateinit var adapter : CartItemAdapter
     var isAdding: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -93,6 +96,7 @@ class CartFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.toolbar_cart, menu)
+        toolbarMenu = menu
         super.onCreateOptionsMenu(menu, inflater)
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -148,6 +152,9 @@ class CartFragment : Fragment() {
         isAdding.observe(viewLifecycleOwner) { isAdding ->
             b.newItemTxt.visibility = if (isAdding) View.VISIBLE else View.GONE
             b.cartTotalTxt.visibility = if (isAdding) View.GONE else View.VISIBLE
+            toolbarMenu.findItem(R.id.toolbar_cart_add)?.setIcon(
+                if (isAdding) R.drawable.icon_add_filled else R.drawable.icon_add
+            )
             if ( isAdding == true ) {
                 b.newItemTxt.setText("")
                 showKeyboard(b.newItemTxt)
