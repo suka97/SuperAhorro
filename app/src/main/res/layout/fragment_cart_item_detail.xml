@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:hint="Cantidad"
             android:padding="2dp"
-            app:endIconDrawable="@drawable/icon_edit_32"
+            app:endIconDrawable="@drawable/icon_edit"
             app:endIconMode="custom"
             app:suffixText="kg">
 
@@ -41,7 +41,7 @@
                 style="@style/TextField_Input1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
+                android:inputType="number|numberDecimal"
                 android:selectAllOnFocus="true"
                 android:text="10" />
 
@@ -60,7 +60,7 @@
                 style="@style/TextField_Input1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
+                android:inputType="number|numberDecimal"
                 android:selectAllOnFocus="true"
                 android:text="100.00" />
 
@@ -130,7 +130,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Modelo"
                 android:padding="2dp"
-                app:endIconDrawable="@drawable/icon_pick_32"
+                app:endIconDrawable="@drawable/icon_list"
                 app:endIconMode="custom"
                 app:endIconTint="@color/select1"
                 app:layout_constraintTop_toTopOf="parent">
@@ -166,7 +166,7 @@
         android:layout_height="wrap_content"
         android:hint="Nombre"
         android:padding="2dp"
-        app:endIconDrawable="@drawable/icon_pick_32"
+        app:endIconDrawable="@drawable/icon_list"
         app:endIconMode="custom"
         app:endIconTint="@color/select1"
         app:layout_constraintEnd_toEndOf="parent"
