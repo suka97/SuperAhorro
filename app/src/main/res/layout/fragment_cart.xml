@@ -19,24 +19,14 @@
         app:layout_constraintTop_toTopOf="@id/recCartItems" />
 
     <ImageButton
-        android:id="@+id/addItem_bt"
-        style="@style/CartButton"
-        android:backgroundTint="#00FFFFFF"
-        android:padding="5dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/icon_add"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <ImageButton
         android:id="@+id/newItem_btOk"
         style="@style/CartButton"
         android:backgroundTint="#00FFFFFF"
         android:padding="5dp"
         android:scaleType="centerCrop"
         android:src="@drawable/icon_ok"
-        app:layout_constraintEnd_toStartOf="@id/addItem_bt"
-        app:layout_constraintTop_toTopOf="@id/addItem_bt" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/cartTotal_txt"
@@ -47,7 +37,7 @@
         android:paddingLeft="10dp"
         android:text="Lista: 16 items, Total: $10,500.00"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/addItem_bt"
+        app:layout_constraintBottom_toBottomOf="@id/newItem_btOk"
         app:layout_constraintEnd_toStartOf="@id/newItem_btOk"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -58,17 +48,17 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:hint="Nombre Item"
-        app:layout_constraintBottom_toBottomOf="@id/addItem_bt"
+        app:layout_constraintBottom_toBottomOf="@id/newItem_btOk"
         app:layout_constraintEnd_toStartOf="@id/newItem_btOk"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/addItem_bt" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recCartItems"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addItem_bt"
+        app:layout_constraintTop_toBottomOf="@id/newItem_btOk"
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="0dp" />
 

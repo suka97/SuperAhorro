@@ -70,7 +70,6 @@ class CartFragment : Fragment() {
             if (isInitialized) {
                 initAdapter()
                 initTopBar()
-                initButtons()
                 updateCartTotal()
                 updateAutoCompletes()
             }
@@ -98,8 +97,9 @@ class CartFragment : Fragment() {
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = when(item.itemId) {
-//            R.id.action_add -> Snackbar.make(v, "add", Snackbar.LENGTH_SHORT).show()
-//            R.id.action_fav -> Snackbar.make(v, "fav", Snackbar.LENGTH_SHORT).show()
+            R.id.toolbar_cart_add -> {
+                isAdding.value = !isAdding.value!!
+            }
             else -> ""
         }
         return super.onOptionsItemSelected(item)
@@ -109,13 +109,6 @@ class CartFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.updateItems()
-    }
-
-
-    private fun initButtons() {
-        b.addItemBt.setOnClickListener {
-            isAdding.value = !isAdding.value!!
-        }
     }
 
 
@@ -160,7 +153,7 @@ class CartFragment : Fragment() {
                 showKeyboard(b.newItemTxt)
             }
             else {
-                b.newItemBtOk.visibility = View.GONE
+                b.newItemBtOk.visibility = View.INVISIBLE
                 hideKeyboard()
             }
         }
@@ -171,7 +164,7 @@ class CartFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                b.newItemBtOk.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+                b.newItemBtOk.visibility = if (s.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
             }
 
             override fun afterTextChanged(s: Editable?) {

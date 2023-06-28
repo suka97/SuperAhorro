@@ -87,7 +87,18 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/addModel_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Vincular Modelo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/model_img" />
+
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/model_card"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -99,7 +110,7 @@
         app:contentPadding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/model_img">
+        app:layout_constraintTop_toBottomOf="@id/addModel_btn">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

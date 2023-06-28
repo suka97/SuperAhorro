@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
 import com.suka.superahorro.databinding.FragmentCartItemDetailBinding
@@ -35,6 +37,11 @@ class CartItemDetailFragment : Fragment() {
     private  lateinit var b: FragmentCartItemDetailBinding
 
     private var autoCallbacksEnabled = true
+
+    companion object {
+        const val DIALOG_ADDMODEL_BYSKU = "Por SKU"
+        const val DIALOG_ADDMODEL_BYNAME = "Por nombre"
+    }
 
 
     override fun onCreateView(
@@ -53,13 +60,45 @@ class CartItemDetailFragment : Fragment() {
         viewModel.init(args.cartItem)
 
         // save changes on parent fragment
-        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 setFragmentResult("savedItem", bundleOf("savedItem" to viewModel.cartItem))
                 findNavController().navigateUp()
             }
         })
 
+        initHiddens()
+        initViewModelObservers()
+        initTexts()
+        initButtons()
+    }
+
+
+    // get image from camera
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            viewModel.uploadImage(imageBitmap) { url ->
+                setPicture(url)
+            }
+        }
+    }
+
+
+    fun initHiddens() {
+        b.modelCard.visibility = if (viewModel.cartItem.data.model!=null) View.VISIBLE else View.GONE
+    }
+
+
+    fun initViewModelObservers() {
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            b.loading.visibility = if (it) View.VISIBLE else View.GONE
+        }
+    }
+
+
+    fun initTexts() {
         val cartItem = viewModel.cartItem
         b.nameTxt.editText?.setText(cartItem.data.name)
         b.amountTxt.editText?.setText(cartItem.data.amount.toStringNull())
@@ -73,10 +112,14 @@ class CartItemDetailFragment : Fragment() {
         b.amountTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
         b.unitPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
         b.totalPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdateTotal))
+    }
 
+
+    fun initButtons() {
         b.modelNameTxt.setEndIconOnClickListener {
             Snackbar.make(b.root, "Icon clicked", Snackbar.LENGTH_SHORT).show()
         }
+
         b.modelImg.setOnClickListener{
             if (viewModel.isLoading.value == true) return@setOnClickListener
             if (viewModel.cartItem.data.model == null) {
@@ -87,27 +130,40 @@ class CartItemDetailFragment : Fragment() {
                 requestImage()
             }
             else {
-                viewModel.deleteImage() {
-                    setPicture(null)
-                }
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Eliminar imagen")
+                    .setMessage("¿Está seguro que desea eliminar la imagen?")
+                    .setPositiveButton("Eliminar") { dialog, which ->
+                        viewModel.deleteImage() {
+                            setPicture(null)
+                        }
+                    }
+                    .show()
             }
         }
 
-        viewModel.isLoading.observe(viewLifecycleOwner) {
-            b.loading.visibility = if (it) View.VISIBLE else View.GONE
+        b.addModelBtn.setOnClickListener {
+            handleAddModel()
         }
     }
 
 
-    // get image from camera
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-            viewModel.uploadImage(imageBitmap) { url ->
-                setPicture(url)
+    fun handleAddModel() {
+        val items = arrayOf(DIALOG_ADDMODEL_BYSKU, DIALOG_ADDMODEL_BYNAME)
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Vincular Modelo")
+            .setItems(items) { dialog, which ->
+                when(items[which]) {
+                    DIALOG_ADDMODEL_BYSKU -> {
+
+                    }
+
+                    DIALOG_ADDMODEL_BYNAME -> {
+
+                    }
+                }
             }
-        }
+            .show()
     }
 
 
