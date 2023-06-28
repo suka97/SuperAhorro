@@ -1,4 +1,4 @@
-package com.suka.superahorro.fragments
+package com.suka.superahorro.fragments.ItemDetail
 
 import androidx.lifecycle.ViewModel
 

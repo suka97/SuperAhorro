@@ -1,4 +1,4 @@
-package com.suka.superahorro.fragments
+package com.suka.superahorro.fragments.Cart
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -12,7 +12,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -23,7 +22,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
 import com.suka.superahorro.activities.LoginActivity
 import com.suka.superahorro.adapters.CartItemAdapter
-import com.suka.superahorro.databinding.ActivityMainBinding
 import com.suka.superahorro.databinding.FragmentCartBinding
 import com.suka.superahorro.dbclasses.CartItem
 import com.suka.superahorro.packages.hideKeyboard
@@ -120,7 +118,9 @@ class CartFragment : Fragment() {
         adapter = CartItemAdapter(viewModel.cart,
             // OnClick
             { position ->
-                val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment(viewModel.cart.getItem(position))
+                val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment(
+                    viewModel.cart.getItem(position)
+                )
                 findNavController().navigate(action)
             },
             // OnLongClick

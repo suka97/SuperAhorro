@@ -1,4 +1,4 @@
-package com.suka.superahorro.fragments
+package com.suka.superahorro.fragments.Signup
 
 import android.content.Context
 import androidx.lifecycle.ViewModel

@@ -1,4 +1,4 @@
-package com.suka.superahorro.fragments
+package com.suka.superahorro.fragments.Signup
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

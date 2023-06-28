@@ -1,4 +1,4 @@
-package com.suka.superahorro.fragments
+package com.suka.superahorro.fragments.CartItemDetail
 
 import android.content.Context
 import android.graphics.Bitmap

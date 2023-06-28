@@ -1,7 +1,6 @@
-package com.suka.superahorro.fragments
+package com.suka.superahorro.fragments.Login
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
