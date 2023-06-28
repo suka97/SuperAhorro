@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class Cart(var data: DbCart): Parcelable {
+    constructor(shop: String): this(DbCart(shop=shop))
 
     fun size(): Int {
         return data.items.size

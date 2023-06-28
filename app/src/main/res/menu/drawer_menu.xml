@@ -8,7 +8,15 @@
         <item
             android:id="@+id/listCartsFragment"
             android:icon="@drawable/icon_cart"
-            android:title="Carrito" />
+            android:title="Carritos" />
+
+        <item
+            android:id="@+id/listItemsFragment"
+            android:title="Items" />
+
+        <item
+            android:id="@+id/listModelsFragment"
+            android:title="Modelos" />
 
         <item
             android:id="@+id/userFragment"

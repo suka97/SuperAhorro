@@ -8,13 +8,27 @@ import kotlinx.parcelize.Parcelize
 data class DbUser(
     var id: String = "",
     var name: String = "",
-    var items: MutableList<DbItem> = mutableListOf(),
+    var items: MutableList<DbItemRef> = mutableListOf(),
+)
+
+
+data class DbItemRef(
+    var id: Int = 0,
+    var name: String = ""
 )
 
 
 data class DbItem(
-    var id: Int = 0,
-    var name: String = ""
+    var id: String = "",
+    var name: String = "",
+    var models: MutableList<DbModelRef> = mutableListOf(),
+)
+
+
+data class DbModelRef(
+    var id: String = "",
+    var name: String = "",
+    var sku: String? = null,
 )
 
 

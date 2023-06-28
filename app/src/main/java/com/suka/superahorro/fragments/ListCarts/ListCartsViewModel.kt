@@ -26,5 +26,17 @@ class ListCartsViewModel : ViewModel() {
     }
 
 
+    fun addNewCart(shopName: String, callback: () -> Unit) {
+        viewModelScope.launch {
+            val newCart = Cart(shopName)
+            isLoading.value = true
+            newCart.data.id = async { Database.addCart(newCart) }.await()
+            async { Database.saveCart(newCart) }.await()
+            isLoading.value = false
+            carts.add(newCart)
+
+            callback()
+        }
+    }
 
 }

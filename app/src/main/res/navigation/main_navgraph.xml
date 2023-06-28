@@ -40,4 +40,14 @@
             android:id="@+id/action_listCartsFragment_to_cartFragment"
             app:destination="@id/cartFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/listItemsFragment"
+        android:name="com.suka.superahorro.fragments.ListItems.ListItemsFragment"
+        android:label="Items"
+        tools:layout="@layout/fragment_list_items" />
+    <fragment
+        android:id="@+id/listModelsFragment"
+        android:name="com.suka.superahorro.fragments.ListModels.ListModelsFragment"
+        android:label="Modelos"
+        tools:layout="@layout/fragment_list_models" />
 </navigation>

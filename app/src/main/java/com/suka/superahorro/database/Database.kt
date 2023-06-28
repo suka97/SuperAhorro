@@ -21,6 +21,7 @@ object Database {
     private lateinit var user_id: String
     private lateinit var userDoc: DocumentReference
     private lateinit var cartsColl: CollectionReference
+    private lateinit var itemsColl: CollectionReference
 
     private lateinit var storageRef: StorageReference
 
@@ -29,14 +30,9 @@ object Database {
         val db = Firebase.firestore
         userDoc = db.collection("users").document(user_id)
         cartsColl = userDoc.collection("carts")
+        itemsColl = userDoc.collection("items")
 
         storageRef = Firebase.storage.reference.child("users/$user_id")
-    }
-
-    // cartItems
-    suspend fun getCart(): Cart {
-        val cart = cartsColl.document("J4WNALZhZFf78wkosMre").get().await().toObject<DbCart>() ?: throw Exception("Cart not found")
-        return Cart(cart)
     }
 
 
@@ -49,6 +45,11 @@ object Database {
 
     suspend fun saveCart(cart: Cart) {
         cartsColl.document(cart.data.id).set(cart.data).await()
+    }
+
+
+    suspend fun addCart(cart: Cart): String {
+        return cartsColl.add(cart.data).await().id
     }
 
 
@@ -67,6 +68,7 @@ object Database {
     }
 
     suspend fun addItem(item: Item) {
+        itemsColl.document(item.data.id.toString()).set(item.data).await()
         userDoc.update("items", FieldValue.arrayUnion(item.data)).await()
     }
 
