@@ -10,14 +10,16 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.suka.superahorro.R
+import com.suka.superahorro.database.DbItemRef
 import com.suka.superahorro.dbclasses.Cart
+import com.suka.superahorro.dbclasses.Item
 import com.suka.superahorro.packages.*
 
-class CartAdapter (
-    var carts: MutableList<Cart>,
+class ItemAdapter (
+    var carts: MutableList<DbItemRef>,
     var onItemClick : (Int) -> Unit,
     var onItemDelete : (Int) -> Unit
-) : RecyclerView.Adapter<CartAdapter.ItemHolder>() {
+) : RecyclerView.Adapter<ItemAdapter.ItemHolder>() {
     class ItemHolder (v: View) : RecyclerView.ViewHolder(v) {
         private var view: View
         init {
@@ -79,7 +81,7 @@ class CartAdapter (
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.recicler_carts, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.recicler_items, parent, false)
         return (ItemHolder(view))
     }
 
@@ -91,9 +93,7 @@ class CartAdapter (
         val cart = carts[position]
 
 //        holder.setPicture(item.data.model?.img)
-        holder.setName(cart.data.shop)
-        holder.setPrice(cart.data.total)
-        holder.setAmount(cart.data.items.size.toFloat())
+        holder.setName(cart.name)
         holder.getCard().setOnClickListener() {
             onItemClick(position)
         }

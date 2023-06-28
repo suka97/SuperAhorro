@@ -57,7 +57,7 @@ class ListCartsFragment : Fragment() {
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.toolbar_cart, menu)
+        inflater.inflate(R.menu.toolbar_generic_list, menu)
         toolbarMenu = menu
         super.onCreateOptionsMenu(menu, inflater)
     }
