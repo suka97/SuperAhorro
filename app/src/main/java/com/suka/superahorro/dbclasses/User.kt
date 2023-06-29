@@ -13,8 +13,8 @@ class User (var data: DbUser) {
         while (data.items.any { it.id == id }) {
             id = Random.nextInt(from = 10000, until = 99999)
         }
-        val newItem = Item(id, name)
-        data.items.add(newItem.data)
+        val newItem = Item(id=id, name=name)
+        data.items.add(newItem.toRef())
         return newItem
     }
 }

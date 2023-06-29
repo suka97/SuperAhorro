@@ -19,7 +19,7 @@ data class DbItemRef(
 
 
 data class DbItem(
-    var id: String = "",
+    var id: Int = 0,
     var name: String = "",
     var models: MutableList<DbModelRef> = mutableListOf(),
 )

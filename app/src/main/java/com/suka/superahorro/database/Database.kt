@@ -13,6 +13,7 @@ import com.google.firebase.storage.ktx.storage
 import com.suka.superahorro.dbclasses.Cart
 import com.suka.superahorro.dbclasses.CartItem
 import com.suka.superahorro.dbclasses.Item
+import com.suka.superahorro.dbclasses.Model
 import com.suka.superahorro.dbclasses.User
 import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
@@ -22,6 +23,7 @@ object Database {
     private lateinit var userDoc: DocumentReference
     private lateinit var cartsColl: CollectionReference
     private lateinit var itemsColl: CollectionReference
+    private lateinit var modelsColl: CollectionReference
 
     private lateinit var storageRef: StorageReference
 
@@ -31,6 +33,7 @@ object Database {
         userDoc = db.collection("users").document(user_id)
         cartsColl = userDoc.collection("carts")
         itemsColl = userDoc.collection("items")
+        modelsColl = userDoc.collection("models")
 
         storageRef = Firebase.storage.reference.child("users/$user_id")
     }
@@ -53,23 +56,37 @@ object Database {
     }
 
 
-    fun insertCartItem(cartItem: CartItem) {
-
-    }
-
-
-    fun removeCartItem(cartItem: CartItem) {
-
-    }
-
     suspend fun getUser(): User {
         val user = userDoc.get().await().toObject<DbUser>() ?: throw Exception("User not found")
         return User(user)
     }
 
+
     suspend fun addItem(item: Item) {
         itemsColl.document(item.data.id.toString()).set(item.data).await()
         userDoc.update("items", FieldValue.arrayUnion(item.data)).await()
+    }
+
+
+    suspend fun getItem(id: Int): Item {
+        val item = itemsColl.document(id.toString()).get().await().toObject<DbItem>() ?: throw Exception("Item not found")
+        return Item(item)
+    }
+
+
+    suspend fun getModel(id: String): Model {
+        val model = modelsColl.document(id).get().await().toObject<DbModel>() ?: throw Exception("Model not found")
+        return Model(model)
+    }
+
+
+    suspend fun addModel(model: Model): String {
+        return modelsColl.add(model.data).await().id
+    }
+
+
+    suspend fun setModel(model: Model) {
+        modelsColl.document(model.data.id).set(model.data).await()
     }
 
 
