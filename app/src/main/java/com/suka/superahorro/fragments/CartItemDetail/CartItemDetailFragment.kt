@@ -6,8 +6,12 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -54,13 +58,14 @@ class CartItemDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val args = CartItemDetailFragmentArgs.fromBundle(requireArguments())
-        viewModel.init(args.cartItem)
+        viewModel.init(args.cart, args.itemPos)
 
         // save changes on parent fragment
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                setFragmentResult("savedItem", bundleOf("savedItem" to viewModel.cartItem))
-                findNavController().navigateUp()
+                viewModel.saveCartChanges {
+                    findNavController().navigateUp()
+                }
             }
         })
 

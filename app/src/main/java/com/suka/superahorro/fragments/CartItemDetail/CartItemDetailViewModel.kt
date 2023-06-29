@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.suka.superahorro.database.Database
+import com.suka.superahorro.dbclasses.Cart
 import com.suka.superahorro.dbclasses.CartItem
 import com.suka.superahorro.dbclasses.Item
 import com.suka.superahorro.dbclasses.Model
@@ -19,12 +20,14 @@ class CartItemDetailViewModel : ViewModel() {
     val isInitialized = MutableLiveData<Boolean>(false)
     val dbAuthError = MutableLiveData<Boolean>(false)
 
+    lateinit var cart: Cart
     lateinit var cartItem: CartItem
     lateinit var item: Item
 
 
-    fun init(cartItem: CartItem) {
-        this.cartItem = cartItem
+    fun init(cart: Cart, itemPos: Int) {
+        this.cart = cart
+        this.cartItem = cart.getItem(itemPos)
     }
 
 
@@ -77,5 +80,14 @@ class CartItemDetailViewModel : ViewModel() {
 
     fun linkModelByName(name: String, callback: () -> Unit) {
         linkModel(Model(name), callback)
+    }
+
+
+    fun saveCartChanges(callback: () -> Unit) {
+        cart.setItem(cartItem)
+        viewModelScope.launch {
+            async { Database.saveCart(cart) }.await()
+            callback()
+        }
     }
 }

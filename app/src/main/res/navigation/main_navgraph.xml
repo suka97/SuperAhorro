@@ -23,8 +23,11 @@
         android:label="Detalle Item"
         tools:layout="@layout/fragment_cart_item_detail">
         <argument
-            android:name="cartItem"
-            app:argType="com.suka.superahorro.dbclasses.CartItem" />
+            android:name="cart"
+            app:argType="com.suka.superahorro.dbclasses.Cart" />
+        <argument
+            android:name="itemPos"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/userFragment"

@@ -79,16 +79,6 @@ class CartFragment : Fragment() {
         viewModel.isLoading.observe(viewLifecycleOwner) { newValue ->
             b.loading.visibility = if (newValue) View.VISIBLE else View.GONE
         }
-
-        // save changes from detail view
-        setFragmentResultListener("savedItem") { key, bundle ->
-            val cartItem = bundle.getParcelable<CartItem>("savedItem")
-            if ( cartItem != null) {
-                viewModel.cart.setItem(cartItem)
-                viewModel.saveCartChanges()
-                updateCartTotal()
-            }
-        }
     }
 
 
@@ -119,7 +109,8 @@ class CartFragment : Fragment() {
             // OnClick
             { position ->
                 val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment(
-                    viewModel.cart.getItem(position)
+                    cart = viewModel.cart,
+                    itemPos = position
                 )
                 findNavController().navigate(action)
             },
@@ -201,7 +192,10 @@ class CartFragment : Fragment() {
 
     private fun goToItemDetailNew(item_name: String) {
         val newItem = viewModel.newCartItem(item_name)
-        val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment(newItem)
+        val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment(
+            cart = viewModel.cart,
+            itemPos = newItem.cartPos
+        )
         findNavController().navigate(action)
         isAdding.value = false
     }

@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener {
             val isBackVisible = navController.previousBackStackEntry != null
             if (isBackVisible) {
-                navController.navigateUp()
+                super.onBackPressed()
             } else {
                 drawerLayout.openDrawer(GravityCompat.START)
             }
