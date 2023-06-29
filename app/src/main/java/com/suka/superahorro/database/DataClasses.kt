@@ -68,7 +68,7 @@ data class DbCart(
 
 @Parcelize
 data class DbCartItem(
-    var id: String = "",
+    var id: Int = 0,
     var name: String = "",
     var model: Model? = null,
     var amount: Float? = null,

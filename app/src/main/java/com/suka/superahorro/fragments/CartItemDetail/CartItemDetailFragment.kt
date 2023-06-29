@@ -1,6 +1,7 @@
 package com.suka.superahorro.fragments.CartItemDetail
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -21,6 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
 import com.suka.superahorro.databinding.FragmentCartItemDetailBinding
 import com.suka.superahorro.packages.REQUEST_IMAGE_CAPTURE
+import com.suka.superahorro.packages.createInputDialog
 import com.suka.superahorro.packages.number
 import com.suka.superahorro.packages.requestImage
 import com.suka.superahorro.packages.round
@@ -83,6 +85,7 @@ class CartItemDetailFragment : Fragment() {
 
     fun initHiddens() {
         b.modelCard.visibility = if (viewModel.cartItem.data.model!=null) View.VISIBLE else View.GONE
+        b.addModelBtn.visibility = if (viewModel.cartItem.data.model!=null) View.GONE else View.VISIBLE
     }
 
 
@@ -154,7 +157,13 @@ class CartItemDetailFragment : Fragment() {
                     }
 
                     DIALOG_ADDMODEL_BYNAME -> {
-
+                        val dialog = Dialog(requireActivity())
+                        createInputDialog(dialog, "SKU", "") { name ->
+                            viewModel.linkModelByName(name) {
+                                initHiddens()
+                                initTexts()
+                            }
+                        }
                     }
                 }
             }
