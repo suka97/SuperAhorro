@@ -90,6 +90,10 @@ object Database {
     suspend fun addModel(model: Model): Model {
         model.data.id = modelsColl.add(model.data).await().id
         saveModel(model)
+        if ( model.data.item_id != null ) {
+            val itemId = model.data.item_id.toString()
+            itemsColl.document(itemId).update("models", FieldValue.arrayUnion(model.toRef())).await()
+        }
         return model
     }
 
