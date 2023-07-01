@@ -24,6 +24,7 @@ import com.journeyapps.barcodescanner.ScanOptions
 import com.suka.superahorro.R
 import com.suka.superahorro.activities.LoginActivity
 import com.suka.superahorro.adapters.CartItemAdapter
+import com.suka.superahorro.database.DbItemRef
 import com.suka.superahorro.databinding.FragmentCartBinding
 import com.suka.superahorro.packages.hideKeyboard
 import com.suka.superahorro.packages.showKeyboard
@@ -102,12 +103,6 @@ class CartFragment : Fragment() {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.updateItems()
-    }
-
-
     private fun initAdapter() {
         adapter = CartItemAdapter(viewModel.cart,
             // OnClick
@@ -139,7 +134,6 @@ class CartFragment : Fragment() {
 //            adapter.updateItems(viewModel.cartItems)
             updateCartTotal()
         }
-        viewModel.updateItems()
     }
 
 
@@ -176,12 +170,12 @@ class CartFragment : Fragment() {
 
         b.newItemBtOk.setOnClickListener() {
             val itemName = b.newItemTxt.text.toString()
-            viewModel.addNewItem(itemName) {
-                goToItemDetailNew(itemName)
+            viewModel.addNewItem(itemName) { newItem ->
+                goToItemDetailNew(newItem.toRef())
             }
         }
         b.newItemTxt.setOnItemClickListener { parent, view, position, id ->
-            val selectedOption = parent.getItemAtPosition(position).toString()
+            val selectedOption = parent.getItemAtPosition(position) as DbItemRef
             goToItemDetailNew(selectedOption)
         }
     }
@@ -194,8 +188,8 @@ class CartFragment : Fragment() {
     }
 
 
-    private fun goToItemDetailNew(item_name: String) {
-        val newItem = viewModel.newCartItem(item_name)
+    private fun goToItemDetailNew(item: DbItemRef) {
+        val newItem = viewModel.insertCartItem(item)
         val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment(
             cart = viewModel.cart,
             itemPos = newItem.cartPos
@@ -211,7 +205,7 @@ class CartFragment : Fragment() {
 
 
     fun updateAutoCompletes() {
-        val items = viewModel.user.getItemsAutocomplete()
+        val items = viewModel.user.data.items
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, items)
         b.newItemTxt.setAdapter(adapter)
     }

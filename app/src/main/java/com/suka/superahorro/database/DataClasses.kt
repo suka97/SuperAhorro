@@ -15,7 +15,11 @@ data class DbUser(
 data class DbItemRef(
     var id: Int = 0,
     var name: String = ""
-)
+) {
+    override fun toString(): String {
+        return name
+    }
+}
 
 
 data class DbItem(
@@ -29,7 +33,11 @@ data class DbModelRef(
     var id: String = "",
     var name: String = "",
     var sku: String? = null,
-)
+) {
+    override fun toString(): String {
+        return name
+    }
+}
 
 
 data class DbModel(
@@ -39,7 +47,7 @@ data class DbModel(
     var item_id: String? = null,
     var unit: String? = null,
     var base_unit: String? = null,
-    //var last_price: Float? = null,
+    var last_price: Float? = null,
     var img: String? = null
 )
 

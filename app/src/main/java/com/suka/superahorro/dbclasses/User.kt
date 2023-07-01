@@ -4,9 +4,6 @@ import com.suka.superahorro.database.DbUser
 import kotlin.random.Random
 
 class User (var data: DbUser) {
-    fun getItemsAutocomplete() : List<String> {
-        return data.items.map { it.name }
-    }
 
     fun addNewItem(name: String): Item {
         var id = Random.nextInt(from = 10000, until = 99999)

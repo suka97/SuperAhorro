@@ -10,4 +10,13 @@ class Item(var data: DbItem) {
     fun toRef(): DbItemRef {
         return DbItemRef(id = data.id, name = data.name)
     }
+
+
+    fun getModelOptionsName(): MutableList<String> {
+        val options = mutableListOf<String>()
+        for (model in data.models) {
+            options.add(model.name)
+        }
+        return options
+    }
 }

@@ -1,7 +1,6 @@
 package com.suka.superahorro.fragments.CartItemDetail
 
 import android.app.Activity
-import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -10,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -24,7 +22,7 @@ import com.journeyapps.barcodescanner.ScanOptions
 import com.suka.superahorro.R
 import com.suka.superahorro.databinding.FragmentCartItemDetailBinding
 import com.suka.superahorro.packages.REQUEST_IMAGE_CAPTURE
-import com.suka.superahorro.packages.createInputDialog
+import com.suka.superahorro.packages.createAutoCompleteDialog
 import com.suka.superahorro.packages.number
 import com.suka.superahorro.packages.requestImage
 import com.suka.superahorro.packages.round
@@ -145,7 +143,9 @@ class CartItemDetailFragment : Fragment() {
         }
 
         b.addModelBtn.setOnClickListener {
-            handleAddModel()
+            viewModel.getItemData {
+                handleAddModel()
+            }
         }
 
         b.removeModelBtn.setOnClickListener {
@@ -163,17 +163,26 @@ class CartItemDetailFragment : Fragment() {
             .setItems(items) { dialog, which ->
                 when(items[which]) {
                     DIALOG_ADDMODEL_BYSKU -> {
-
-                    }
-
-                    DIALOG_ADDMODEL_BYNAME -> {
-                        val dialog = Dialog(requireActivity())
-                        createInputDialog(dialog, "SKU", "") { name ->
-                            viewModel.linkModelByName(name) {
+                        scanBarcode{
+                            viewModel.linkModelBySku(it) {
                                 initHiddens()
                                 initTexts()
                             }
                         }
+                    }
+
+                    DIALOG_ADDMODEL_BYNAME -> {
+                        createAutoCompleteDialog("Nombre", viewModel.itemDetail!!.data.models,
+                            onOkClicked = {
+
+                            },
+                            onOptionSelected = { model ->
+                                viewModel.linkModelById(model.id) {
+                                    initHiddens()
+                                    initTexts()
+                                }
+                            }
+                        )
                     }
                 }
             }
@@ -238,6 +247,28 @@ class CartItemDetailFragment : Fragment() {
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+        }
+    }
+
+
+    // zxing barcode
+    lateinit var onScanBarcode: (result: String)->Unit
+    fun scanBarcode(callback: (String)->Unit) {
+        onScanBarcode = callback
+
+        val options = ScanOptions()
+        options.setBeepEnabled(false)
+//        options.setDesiredBarcodeFormats(ScanOptions.ONE_D_CODE_TYPES)
+//        options.setPrompt("Scan a barcode")
+//        options.setCameraId(0) // Use a specific camera of the device
+//        options.setBarcodeImageEnabled(true)
+        barcodeLauncher.launch(options)
+    }
+    private val barcodeLauncher = registerForActivityResult<ScanOptions, ScanIntentResult>(
+        ScanContract()
+    ) { result: ScanIntentResult ->
+        if (result.contents != null) {
+            onScanBarcode(result.contents)
         }
     }
 }

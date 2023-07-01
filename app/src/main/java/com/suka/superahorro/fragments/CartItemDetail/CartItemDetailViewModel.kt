@@ -69,7 +69,7 @@ class CartItemDetailViewModel : ViewModel() {
     }
 
 
-    fun linkModel(model: Model, callback: ()->Unit) {
+    fun linkNewModel(model: Model, callback: ()->Unit) {
         viewModelScope.launch {
             isLoading.value = true
             model.data.id = async { Database.addModel(model) }.await()
@@ -87,8 +87,20 @@ class CartItemDetailViewModel : ViewModel() {
     }
 
 
-    fun linkModelByName(name: String, callback: () -> Unit) {
-        linkModel(Model(name), callback)
+    fun linkModelBySku(sku: String, callback: () -> Unit) {
+//        linkModel(Model(sku), callback)
+    }
+
+
+    fun linkModelById(name: String, callback: () -> Unit) {
+        viewModelScope.launch {
+            isLoading.value = true
+            val model = async { Database.getModel(name) }.await()
+            isLoading.value = false
+            cartItem.linkModel(model)
+
+            callback()
+        }
     }
 
 

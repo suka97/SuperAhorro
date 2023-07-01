@@ -117,6 +117,8 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.textfield.TextInputLayout
+                app:endIconDrawable="@drawable/icon_barcode"
+                app:endIconMode="custom"
                 android:id="@+id/modelSku_txt"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"

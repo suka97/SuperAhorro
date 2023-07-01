@@ -1,11 +1,10 @@
 package com.suka.superahorro.fragments.Cart
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.suka.superahorro.database.Database
+import com.suka.superahorro.database.DbItemRef
 import com.suka.superahorro.dbclasses.Cart
 import com.suka.superahorro.dbclasses.CartItem
 import com.suka.superahorro.dbclasses.Item
@@ -34,19 +33,6 @@ class CartViewModel : ViewModel() {
     private val viewModelScope = CoroutineScope(Dispatchers.Main + exceptionHandler)
 
 
-//    init {
-//        viewModelScope.launch {
-//            Database.init()
-//            isLoading.value = true
-//            cart = async { Database.getCart() }.await()
-//            user = async { Database.getUser() }.await()
-//            isLoading.value = false
-//
-//            isInitialized.value = true
-//        }
-//    }
-
-
     fun init(cart: Cart) {
         this.cart = cart
         viewModelScope.launch {
@@ -60,13 +46,13 @@ class CartViewModel : ViewModel() {
     }
 
 
-    fun addNewItem(name: String, callback: ()->Unit) {
+    fun addNewItem(name: String, callback: (Item)->Unit) {
         viewModelScope.launch {
             isLoading.value = true
             val newItem = user.addNewItem(name)
             async { Database.addItem(newItem) }.await()
             isLoading.value = false
-            callback()
+            callback(newItem)
         }
     }
 
@@ -80,14 +66,8 @@ class CartViewModel : ViewModel() {
     }
 
 
-    fun updateItems() {
-//        cartItems = cartItemDao?.fetchAllCartItems() ?: mutableListOf<CartItem>()
-//        onItemsChange?.invoke()
-    }
-
-
-    fun newCartItem(name: String): CartItem {
-        cart.insertItem(CartItem(name))
+    fun insertCartItem(item: DbItemRef): CartItem {
+        cart.insertItem(CartItem(item))
         return cart.getLastItem()
     }
 
