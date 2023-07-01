@@ -38,4 +38,16 @@ class ListCartsViewModel : ViewModel() {
         }
     }
 
+
+    fun deleteCart(cartIndex: Int, callback: ()->Unit) {
+        viewModelScope.launch {
+            isLoading.value = true
+            async { Database.deleteCart(carts[cartIndex].data.id) }.await()
+            isLoading.value = false
+            carts.removeAt(cartIndex)
+
+            callback()
+        }
+    }
+
 }

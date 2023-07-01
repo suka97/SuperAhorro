@@ -30,6 +30,7 @@ import com.suka.superahorro.adapters.CartItemAdapter
 import com.suka.superahorro.database.DbItemRef
 import com.suka.superahorro.databinding.FragmentCartBinding
 import com.suka.superahorro.packages.hideKeyboard
+import com.suka.superahorro.packages.setToolbarTitle
 import com.suka.superahorro.packages.showKeyboard
 
 
@@ -71,6 +72,8 @@ class CartFragment : Fragment() {
 
         val args = CartFragmentArgs.fromBundle(requireArguments())
         viewModel.init(args.cart)
+
+        setToolbarTitle(args.cart.data.shop)
 
         initHiddens()
         viewModel.dbAuthError.observe(viewLifecycleOwner) { dbAuthError ->

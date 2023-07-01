@@ -89,11 +89,12 @@ class ListCartsFragment : Fragment() {
             { position ->
                 val builder = AlertDialog.Builder(context)
                 builder.setTitle("Borrar item")
-                builder.setMessage("¿Está seguro que desea eliminar el item?")
+                builder.setMessage("¿Está seguro que desea eliminar el carrito?")
                 builder.setPositiveButton("Sí") { _, _ ->
-                    //viewModel.deleteCartItem(position)
-                    adapter.notifyDeleteItem(position)
-                    Snackbar.make(b.root, "Item eliminado", Snackbar.LENGTH_SHORT).show()
+                    viewModel.deleteCart(position) {
+                        adapter.notifyDeleteItem(position)
+                        Snackbar.make(b.root, "Carrito eliminado", Snackbar.LENGTH_SHORT).show()
+                    }
                 }
                 val dialog = builder.create()
                 dialog.show()

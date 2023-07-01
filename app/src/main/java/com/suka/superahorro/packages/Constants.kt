@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.provider.MediaStore
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
@@ -70,4 +71,10 @@ fun Fragment.requestImage() {
     } else {
         requestPermissions(arrayOf(Manifest.permission.CAMERA), 1)
     }
+}
+
+
+fun Fragment.setToolbarTitle(title: String) {
+    val activity = requireActivity() as AppCompatActivity
+    activity.supportActionBar?.setTitle(title)
 }

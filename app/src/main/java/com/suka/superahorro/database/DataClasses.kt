@@ -57,7 +57,7 @@ data class DbModel(
 @Parcelize
 data class DbCart(
     var id: String = "",
-    var shop: String? = null,
+    var shop: String = "",
     var status: String = STATUS_OPENED,
     var items: MutableList<DbCartItem> = mutableListOf(),
     var disc: Discount? = null,

@@ -162,4 +162,22 @@ object Database {
         deleteImage("models/${modelId}")
         modelsColl.document(modelId).update("img", FieldValue.delete()).await()
     }
+
+
+    suspend fun deleteCart(cartId: String) {
+        cartsColl.document(cartId).delete().await()
+    }
+
+
+    suspend fun deleteItem(itemId: Int) {
+        // reset model's parents
+        val item = getItem(itemId)
+        for ( modelRef in item.data.models ) {
+            modelsColl.document(modelRef.id).update("item_id", 0).await()
+        }
+        // delete from user document
+        userDoc.update("items", FieldValue.arrayRemove(item.toRef())).await()
+        // delete item
+        itemsColl.document(itemId.toString()).delete().await()
+    }
 }
