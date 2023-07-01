@@ -21,6 +21,7 @@ import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
 import com.suka.superahorro.R
 import com.suka.superahorro.databinding.FragmentCartItemDetailBinding
+import com.suka.superahorro.dbclasses.Model
 import com.suka.superahorro.packages.REQUEST_IMAGE_CAPTURE
 import com.suka.superahorro.packages.createAutoCompleteDialog
 import com.suka.superahorro.packages.number
@@ -30,7 +31,7 @@ import com.suka.superahorro.packages.text
 import com.suka.superahorro.packages.toStringNull
 
 
-class CartItemDetailFragment : Fragment() {
+class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotifier {
     private val viewModel: CartItemDetailViewModel by viewModels()
     private  lateinit var b: FragmentCartItemDetailBinding
 
@@ -55,7 +56,7 @@ class CartItemDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val args = CartItemDetailFragmentArgs.fromBundle(requireArguments())
-        viewModel.init(args.cart, args.itemPos)
+        viewModel.init(args.cart, args.itemPos, this)
 
         // save changes on parent fragment
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -66,10 +67,9 @@ class CartItemDetailFragment : Fragment() {
             }
         })
 
-        initHiddens()
         initViewModelObservers()
-        initTexts()
         initButtons()
+        onItemUpdated()
     }
 
 
@@ -164,23 +164,25 @@ class CartItemDetailFragment : Fragment() {
                 when(items[which]) {
                     DIALOG_ADDMODEL_BYSKU -> {
                         scanBarcode{
-                            viewModel.linkModelBySku(it) {
-                                initHiddens()
-                                initTexts()
+                            viewModel.getModelBySku(it) { model ->
+                                if ( model == null ) {
+                                    Snackbar.make(b.root, "No se encontró el modelo", Snackbar.LENGTH_SHORT).show()
+                                }
+                                else {
+                                    viewModel.cartItem.linkModel(model)
+                                    onItemUpdated()
+                                }
                             }
                         }
                     }
 
                     DIALOG_ADDMODEL_BYNAME -> {
                         createAutoCompleteDialog("Nombre", viewModel.itemDetail!!.data.models,
-                            onOkClicked = {
-
+                            onOkClicked = { modelName ->
+                                viewModel.linkNewModel(modelName)
                             },
                             onOptionSelected = { model ->
-                                viewModel.linkModelById(model.id) {
-                                    initHiddens()
-                                    initTexts()
-                                }
+                                viewModel.linkModelById(model.id)
                             }
                         )
                     }
@@ -270,5 +272,11 @@ class CartItemDetailFragment : Fragment() {
         if (result.contents != null) {
             onScanBarcode(result.contents)
         }
+    }
+
+
+    override fun onItemUpdated() {
+        initHiddens()
+        initTexts()
     }
 }

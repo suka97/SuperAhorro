@@ -75,8 +75,14 @@ object Database {
     }
 
 
-    suspend fun getModel(id: String): Model {
+    suspend fun getModelById(id: String): Model {
         val model = modelsColl.document(id).get().await().toObject<DbModel>() ?: throw Exception("Model not found")
+        return Model(model)
+    }
+
+
+    suspend fun getModelBySku(sku: String): Model? {
+        val model = modelsColl.whereEqualTo("sku", sku).get().await().toObjects(DbModel::class.java).firstOrNull() ?: return null
         return Model(model)
     }
 

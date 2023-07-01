@@ -13,6 +13,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class CartItemDetailViewModel : ViewModel() {
+    interface FragmentNotifier {
+        fun onItemUpdated()
+    }
+
     var isLoading = MutableLiveData<Boolean>(false)
     val isInitialized = MutableLiveData<Boolean>(false)
     val dbAuthError = MutableLiveData<Boolean>(false)
@@ -21,11 +25,13 @@ class CartItemDetailViewModel : ViewModel() {
 
     lateinit var cart: Cart
     lateinit var cartItem: CartItem
+    lateinit var fragmentNotifier: FragmentNotifier
 
 
-    fun init(cart: Cart, itemPos: Int) {
+    fun init(cart: Cart, itemPos: Int, fragmentNotifier: FragmentNotifier) {
         this.cart = cart
         this.cartItem = cart.getItem(itemPos)
+        this.fragmentNotifier = fragmentNotifier
     }
 
 
@@ -66,14 +72,17 @@ class CartItemDetailViewModel : ViewModel() {
     }
 
 
-    fun linkNewModel(model: Model, callback: ()->Unit) {
+    fun linkNewModel(modelName: String) {
+        val model = Model(modelName)
+        model.data.item_id = cartItem.data.id
+
         viewModelScope.launch {
             isLoading.value = true
             val newModel = async { Database.addModel(model) }.await()
             cartItem.linkModel(newModel)
             isLoading.value = false
 
-            callback()
+            fragmentNotifier.onItemUpdated()
         }
     }
 
@@ -83,19 +92,25 @@ class CartItemDetailViewModel : ViewModel() {
     }
 
 
-    fun linkModelBySku(sku: String, callback: () -> Unit) {
-//        linkModel(Model(sku), callback)
+    fun getModelBySku(sku: String, callback: (Model?) -> Unit) {
+        viewModelScope.launch {
+            isLoading.value = true
+            val model = async { Database.getModelBySku(sku) }.await()
+            isLoading.value = false
+
+            callback(model)
+        }
     }
 
 
-    fun linkModelById(name: String, callback: () -> Unit) {
+    fun linkModelById(id: String) {
         viewModelScope.launch {
             isLoading.value = true
-            val model = async { Database.getModel(name) }.await()
+            val model = async { Database.getModelById(id) }.await()
             isLoading.value = false
             cartItem.linkModel(model)
 
-            callback()
+            fragmentNotifier.onItemUpdated()
         }
     }
 
