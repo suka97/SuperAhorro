@@ -20,9 +20,10 @@ class CartItemDetailViewModel : ViewModel() {
     val isInitialized = MutableLiveData<Boolean>(false)
     val dbAuthError = MutableLiveData<Boolean>(false)
 
+    var itemDetail: Item? = null
+
     lateinit var cart: Cart
     lateinit var cartItem: CartItem
-    lateinit var item: Item
 
 
     fun init(cart: Cart, itemPos: Int) {
@@ -57,9 +58,12 @@ class CartItemDetailViewModel : ViewModel() {
 
     fun getItemData(callback: ()->Unit) {
         viewModelScope.launch {
-            isLoading.value = true
-            item = async { Database.getItem(cartItem.data.id) }.await()
-            isLoading.value = false
+            if ( itemDetail == null ) {
+                isLoading.value = true
+                itemDetail = async { Database.getItem(cartItem.data.id) }.await()
+                isLoading.value = false
+            }
+
             callback()
         }
     }
@@ -75,6 +79,11 @@ class CartItemDetailViewModel : ViewModel() {
 
             callback()
         }
+    }
+
+
+    fun unlinkModel() {
+        cartItem.data.model = null
     }
 
 

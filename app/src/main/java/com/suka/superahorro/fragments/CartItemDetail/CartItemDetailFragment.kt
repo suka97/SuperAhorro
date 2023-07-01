@@ -6,23 +6,21 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.TextWatcher
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanIntentResult
+import com.journeyapps.barcodescanner.ScanOptions
 import com.suka.superahorro.R
 import com.suka.superahorro.databinding.FragmentCartItemDetailBinding
 import com.suka.superahorro.packages.REQUEST_IMAGE_CAPTURE
@@ -32,6 +30,7 @@ import com.suka.superahorro.packages.requestImage
 import com.suka.superahorro.packages.round
 import com.suka.superahorro.packages.text
 import com.suka.superahorro.packages.toStringNull
+
 
 class CartItemDetailFragment : Fragment() {
     private val viewModel: CartItemDetailViewModel by viewModels()
@@ -147,6 +146,12 @@ class CartItemDetailFragment : Fragment() {
 
         b.addModelBtn.setOnClickListener {
             handleAddModel()
+        }
+
+        b.removeModelBtn.setOnClickListener {
+            viewModel.unlinkModel()
+            initHiddens()
+            initTexts()
         }
     }
 

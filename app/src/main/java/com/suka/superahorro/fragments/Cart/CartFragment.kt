@@ -13,17 +13,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanIntentResult
+import com.journeyapps.barcodescanner.ScanOptions
 import com.suka.superahorro.R
 import com.suka.superahorro.activities.LoginActivity
 import com.suka.superahorro.adapters.CartItemAdapter
 import com.suka.superahorro.databinding.FragmentCartBinding
-import com.suka.superahorro.dbclasses.CartItem
 import com.suka.superahorro.packages.hideKeyboard
 import com.suka.superahorro.packages.showKeyboard
 
@@ -91,6 +92,9 @@ class CartFragment : Fragment() {
         val id = when(item.itemId) {
             R.id.toolbar_cart_add -> {
                 isAdding.value = !isAdding.value!!
+            }
+            R.id.toolbar_cart_scan -> {
+                scanBarcode()
             }
             else -> ""
         }
@@ -212,4 +216,25 @@ class CartFragment : Fragment() {
         b.newItemTxt.setAdapter(adapter)
     }
 
+
+    // zxing barcode
+    fun onScanBarcode(result: String) {
+
+    }
+    fun scanBarcode() {
+        val options = ScanOptions()
+        options.setBeepEnabled(false)
+//        options.setDesiredBarcodeFormats(ScanOptions.ONE_D_CODE_TYPES)
+//        options.setPrompt("Scan a barcode")
+//        options.setCameraId(0) // Use a specific camera of the device
+//        options.setBarcodeImageEnabled(true)
+        barcodeLauncher.launch(options)
+    }
+    private val barcodeLauncher = registerForActivityResult<ScanOptions, ScanIntentResult>(
+        ScanContract()
+    ) { result: ScanIntentResult ->
+        if (result.contents != null) {
+            onScanBarcode(result.contents)
+        }
+    }
 }

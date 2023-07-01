@@ -7,6 +7,11 @@
         android:icon="@drawable/icon_add"
         app:showAsAction="always" />
     <item
+        android:id="@+id/toolbar_cart_scan"
+        android:title="Escanear"
+        android:icon="@drawable/icon_barcode"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/toolbar_cart_delete"
         android:title="Eliminar Carrito"
         app:showAsAction="never" />

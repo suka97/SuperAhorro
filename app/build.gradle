@@ -72,6 +72,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
 
+    // zxing barcode
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
+
     //group recycler view items
 //    implementation "com.github.lisawray.groupie:groupie:2.10.0"
 //    implementation "com.github.lisawray.groupie:groupie-viewbinding:2.10.0"
