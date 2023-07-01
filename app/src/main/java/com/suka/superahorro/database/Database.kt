@@ -65,7 +65,7 @@ object Database {
 
     suspend fun addItem(item: Item) {
         itemsColl.document(item.data.id.toString()).set(item.data).await()
-        userDoc.update("items", FieldValue.arrayUnion(item.data)).await()
+        userDoc.update("items", FieldValue.arrayUnion(item.toRef())).await()
     }
 
 
@@ -89,7 +89,7 @@ object Database {
 
     suspend fun addModel(model: Model): Model {
         model.data.id = modelsColl.add(model.data).await().id
-        saveModel(model)
+        modelsColl.document(model.data.id).set(model.data).await()
         if ( model.data.item_id != null ) {
             val itemId = model.data.item_id.toString()
             itemsColl.document(itemId).update("models", FieldValue.arrayUnion(model.toRef())).await()
@@ -98,8 +98,35 @@ object Database {
     }
 
 
-    suspend fun saveModel(model: Model) {
+    suspend fun saveItem(item: Item) {
+        itemsColl.document(item.data.id.toString()).set(item.data).await()
+    }
+
+
+    suspend fun updateItemModel(item: Item, model: Model) {
+        val index = item.data.models.indexOfFirst { it.id == model.data.id }
+        if ( index != -1 ) item.data.models[index] = model.toRef()
+        else item.data.models.add(model.toRef())
+        saveItem(item)
+    }
+
+
+    suspend fun saveModel(model: Model, parentItem: Item): Item {
         modelsColl.document(model.data.id).set(model.data).await()
+        updateItemModel(parentItem, model)
+        return parentItem   // return modified parentItem
+    }
+
+
+    suspend fun setModelSku(modelId: String, sku: String?, parentItem: Item?=null) {
+        // update model
+        modelsColl.document(modelId).update("sku", sku).await()
+        val model = getModelById(modelId)
+        // get parent item
+        var item = parentItem
+        if ( item == null ) item = getItem(model.data.item_id)
+        // update model in parent item
+        updateItemModel(item, model)
     }
 
 

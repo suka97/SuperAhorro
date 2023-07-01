@@ -150,8 +150,12 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
 
         b.removeModelBtn.setOnClickListener {
             viewModel.unlinkModel()
-            initHiddens()
-            initTexts()
+        }
+
+        b.modelSkuTxt.setEndIconOnClickListener {
+            scanBarcode { barcode ->
+                viewModel.updateModelSku(barcode)
+            }
         }
     }
 

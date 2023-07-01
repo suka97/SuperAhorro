@@ -72,6 +72,19 @@ class CartItemDetailViewModel : ViewModel() {
     }
 
 
+    fun updateModelSku(sku: String?) {
+        viewModelScope.launch {
+            isLoading.value = true
+            async {  Database.setModelSku(cartItem.data.model!!.id, sku) }.await()
+            isLoading.value = false
+
+            cartItem.data.model!!.sku = sku
+            itemDetail = null   // reinicio el itemDetail porque quedo desactualizado
+            fragmentNotifier.onItemUpdated()
+        }
+    }
+
+
     fun linkNewModel(modelName: String) {
         val model = Model(modelName)
         model.data.item_id = cartItem.data.id
@@ -89,6 +102,7 @@ class CartItemDetailViewModel : ViewModel() {
 
     fun unlinkModel() {
         cartItem.data.model = null
+        fragmentNotifier.onItemUpdated()
     }
 
 

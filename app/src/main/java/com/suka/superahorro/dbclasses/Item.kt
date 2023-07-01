@@ -15,11 +15,4 @@ class Item(var data: DbItem): Parcelable {
     }
 
 
-    fun getModelOptionsName(): MutableList<String> {
-        val options = mutableListOf<String>()
-        for (model in data.models) {
-            options.add(model.name)
-        }
-        return options
-    }
 }
