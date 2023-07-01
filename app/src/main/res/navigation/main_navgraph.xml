@@ -47,10 +47,18 @@
         android:id="@+id/listItemsFragment"
         android:name="com.suka.superahorro.fragments.ListItems.ListItemsFragment"
         android:label="Items"
-        tools:layout="@layout/fragment_list_items" />
+        tools:layout="@layout/fragment_list_items" >
+        <action
+            android:id="@+id/action_listItemsFragment_to_listModelsFragment"
+            app:destination="@id/listModelsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/listModelsFragment"
         android:name="com.suka.superahorro.fragments.ListModels.ListModelsFragment"
         android:label="Modelos"
-        tools:layout="@layout/fragment_list_models" />
+        tools:layout="@layout/fragment_list_models" >
+        <argument
+            android:name="parentItem"
+            app:argType="com.suka.superahorro.dbclasses.Item" />
+    </fragment>
 </navigation>

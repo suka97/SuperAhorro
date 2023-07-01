@@ -17,16 +17,10 @@ class ListModelsViewModel : ViewModel() {
     lateinit var item: Item
     lateinit var modelsList: MutableList<DbModelRef>
 
-    fun init(callback: ()->Unit) {
-        viewModelScope.launch {
-            Database.init()
-            isLoading.value = true
-            item = async { Database.getItem(24901) }.await()
-            modelsList = item.data.models
-            isLoading.value = false
-
-            callback()
-        }
+    fun init(item: Item, callback: ()->Unit) {
+        this.item = item
+        modelsList = item.data.models
+        callback()
     }
 
 

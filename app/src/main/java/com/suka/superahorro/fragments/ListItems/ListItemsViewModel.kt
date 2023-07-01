@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.suka.superahorro.database.Database
 import com.suka.superahorro.database.DbItemRef
 import com.suka.superahorro.dbclasses.Cart
+import com.suka.superahorro.dbclasses.Item
 import com.suka.superahorro.dbclasses.User
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -38,6 +39,17 @@ class ListItemsViewModel : ViewModel() {
             isLoading.value = false
 
             callback()
+        }
+    }
+
+
+    fun getItem(position: Int, callback: (item: Item)->Unit) {
+        viewModelScope.launch {
+            isLoading.value = true
+            val item = async { Database.getItem(itemsList[position].id) }.await()
+            isLoading.value = false
+
+            callback(item)
         }
     }
 }

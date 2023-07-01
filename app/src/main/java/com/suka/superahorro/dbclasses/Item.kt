@@ -1,9 +1,12 @@
 package com.suka.superahorro.dbclasses
 
+import android.os.Parcelable
 import com.suka.superahorro.database.DbItem
 import com.suka.superahorro.database.DbItemRef
+import kotlinx.parcelize.Parcelize
 
-class Item(var data: DbItem) {
+@Parcelize
+class Item(var data: DbItem): Parcelable {
     constructor(name: String) : this(DbItem(name = name))
     constructor(id: Int, name: String) : this(DbItem(id = id, name = name))
 

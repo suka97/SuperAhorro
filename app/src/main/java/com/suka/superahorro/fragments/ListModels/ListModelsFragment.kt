@@ -19,6 +19,7 @@ import com.suka.superahorro.adapters.ItemAdapter
 import com.suka.superahorro.adapters.ModelAdapter
 import com.suka.superahorro.databinding.FragmentListItemsBinding
 import com.suka.superahorro.databinding.FragmentListModelsBinding
+import com.suka.superahorro.fragments.CartItemDetail.CartItemDetailFragmentArgs
 import com.suka.superahorro.fragments.ListItems.ListItemsViewModel
 import com.suka.superahorro.packages.createInputDialog
 
@@ -48,10 +49,12 @@ class ListModelsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val args = ListModelsFragmentArgs.fromBundle(requireArguments())
+
         viewModel.isLoading.observe(viewLifecycleOwner) {
             b.loading.visibility = if (it) View.VISIBLE else View.GONE
         }
-        viewModel.init() {
+        viewModel.init(args.parentItem) {
             initAdapter()
         }
     }

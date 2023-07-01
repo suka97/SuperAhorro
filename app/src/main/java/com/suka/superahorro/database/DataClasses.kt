@@ -22,18 +22,20 @@ data class DbItemRef(
 }
 
 
+@Parcelize
 data class DbItem(
     var id: Int = 0,
     var name: String = "",
     var models: MutableList<DbModelRef> = mutableListOf(),
-)
+): Parcelable
 
 
+@Parcelize
 data class DbModelRef(
     var id: String = "",
     var name: String = "",
     var sku: String? = null,
-) {
+): Parcelable {
     override fun toString(): String {
         return name
     }
