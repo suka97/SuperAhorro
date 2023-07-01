@@ -26,10 +26,9 @@ class ListModelsViewModel : ViewModel() {
 
     fun addNewModel(modelName: String, callback: () -> Unit) {
         viewModelScope.launch {
-            val newModel = Model(modelName)
+            var newModel = Model(modelName)
             isLoading.value = true
-            newModel.data.id = async { Database.addModel(newModel) }.await()
-            async { Database.setModel(newModel) }.await()
+            newModel = async { Database.addModel(newModel) }.await()
             isLoading.value = false
 
             callback()

@@ -11,7 +11,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import com.suka.superahorro.dbclasses.Cart
-import com.suka.superahorro.dbclasses.CartItem
 import com.suka.superahorro.dbclasses.Item
 import com.suka.superahorro.dbclasses.Model
 import com.suka.superahorro.dbclasses.User
@@ -51,8 +50,10 @@ object Database {
     }
 
 
-    suspend fun addCart(cart: Cart): String {
-        return cartsColl.add(cart.data).await().id
+    suspend fun addCart(cart: Cart): Cart {
+        cart.data.id = cartsColl.add(cart.data).await().id
+        saveCart(cart)
+        return cart
     }
 
 
@@ -80,12 +81,14 @@ object Database {
     }
 
 
-    suspend fun addModel(model: Model): String {
-        return modelsColl.add(model.data).await().id
+    suspend fun addModel(model: Model): Model {
+        model.data.id = modelsColl.add(model.data).await().id
+        saveModel(model)
+        return model
     }
 
 
-    suspend fun setModel(model: Model) {
+    suspend fun saveModel(model: Model) {
         modelsColl.document(model.data.id).set(model.data).await()
     }
 
@@ -108,5 +111,18 @@ object Database {
     suspend fun deleteImage(path: String) {
         val imageRef = storageRef.child(path)
         imageRef.delete().await()
+    }
+
+
+    suspend fun setModelImage(modelId: String, bitmap: Bitmap): String? {
+        val url = uploadImage("models/${modelId}", bitmap)
+        modelsColl.document(modelId).update("img", url).await()
+        return url
+    }
+
+
+    suspend fun deleteModelImage(modelId: String) {
+        deleteImage("models/${modelId}")
+        modelsColl.document(modelId).update("img", FieldValue.delete()).await()
     }
 }

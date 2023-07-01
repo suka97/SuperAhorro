@@ -1,12 +1,9 @@
 package com.suka.superahorro.fragments.CartItemDetail
 
-import android.content.Context
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import com.suka.superahorro.database.Database
 import com.suka.superahorro.dbclasses.Cart
 import com.suka.superahorro.dbclasses.CartItem
@@ -35,7 +32,7 @@ class CartItemDetailViewModel : ViewModel() {
     fun uploadImage(bitmap: Bitmap, callback: (url: String)->Unit) {
         viewModelScope.launch {
             isLoading.value = true
-            val url = async { Database.uploadImage("models/${cartItem.data.model!!.id}", bitmap) }.await()
+            val url = async { Database.setModelImage(cartItem.data.model!!.id, bitmap) }.await()
             isLoading.value = false
             if (url!=null) {
                 cartItem.data.model!!.img = url
@@ -48,7 +45,7 @@ class CartItemDetailViewModel : ViewModel() {
     fun deleteImage(callback: ()->Unit) {
         viewModelScope.launch {
             isLoading.value = true
-            async { Database.deleteImage("models/${cartItem.data.model!!.id}") }.await()
+            async { Database.deleteModelImage(cartItem.data.model!!.id) }.await()
             isLoading.value = false
             cartItem.data.model!!.img = null
             callback()
@@ -72,9 +69,8 @@ class CartItemDetailViewModel : ViewModel() {
     fun linkNewModel(model: Model, callback: ()->Unit) {
         viewModelScope.launch {
             isLoading.value = true
-            model.data.id = async { Database.addModel(model) }.await()
-            async { Database.setModel(model) }.await()
-            cartItem.linkModel(model)
+            val newModel = async { Database.addModel(model) }.await()
+            cartItem.linkModel(newModel)
             isLoading.value = false
 
             callback()
