@@ -22,6 +22,7 @@ import com.suka.superahorro.databinding.FragmentListItemsBinding
 import com.suka.superahorro.fragments.ListCarts.ListCartsFragmentDirections
 import com.suka.superahorro.fragments.ListCarts.ListCartsViewModel
 import com.suka.superahorro.packages.createInputDialog
+import com.suka.superahorro.packages.setLoading
 
 class ListItemsFragment : Fragment() {
     private val viewModel: ListItemsViewModel by viewModels()
@@ -49,8 +50,8 @@ class ListItemsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.isLoading.observe(viewLifecycleOwner) {
-            b.loading.visibility = if (it) View.VISIBLE else View.GONE
+        viewModel.isLoading.observe(viewLifecycleOwner) {isLoading ->
+            setLoading(isLoading)
         }
         viewModel.init() {
             initAdapter()

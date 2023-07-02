@@ -27,6 +27,7 @@ import com.suka.superahorro.packages.createAutoCompleteDialog
 import com.suka.superahorro.packages.number
 import com.suka.superahorro.packages.requestImage
 import com.suka.superahorro.packages.round
+import com.suka.superahorro.packages.setLoading
 import com.suka.superahorro.packages.text
 import com.suka.superahorro.packages.toStringNull
 
@@ -92,8 +93,11 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
 
 
     fun initViewModelObservers() {
-        viewModel.isLoading.observe(viewLifecycleOwner) {
-            b.loading.visibility = if (it) View.VISIBLE else View.GONE
+        viewModel.isImgLoading.observe(viewLifecycleOwner) { isLoading ->
+            b.imgLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            setLoading(isLoading)
         }
     }
 

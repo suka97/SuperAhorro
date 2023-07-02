@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import com.suka.superahorro.activities.MainActivity
 
 
 const val GLOBAL_UNIT_AMOUNT = "kg"
@@ -77,4 +78,9 @@ fun Fragment.requestImage() {
 fun Fragment.setToolbarTitle(title: String) {
     val activity = requireActivity() as AppCompatActivity
     activity.supportActionBar?.setTitle(title)
+}
+
+fun Fragment.setLoading(isLoading: Boolean) {
+    val activity = requireActivity() as MainActivity
+    activity.isLoading.value = isLoading
 }

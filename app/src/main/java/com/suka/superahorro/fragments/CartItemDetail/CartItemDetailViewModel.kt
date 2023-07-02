@@ -18,6 +18,7 @@ class CartItemDetailViewModel : ViewModel() {
     }
 
     var isLoading = MutableLiveData<Boolean>(false)
+    var isImgLoading = MutableLiveData<Boolean>(false)
     val isInitialized = MutableLiveData<Boolean>(false)
     val dbAuthError = MutableLiveData<Boolean>(false)
 
@@ -37,9 +38,9 @@ class CartItemDetailViewModel : ViewModel() {
 
     fun uploadImage(bitmap: Bitmap, callback: (url: String)->Unit) {
         viewModelScope.launch {
-            isLoading.value = true
+            isImgLoading.value = true
             val url = async { Database.setModelImage(cartItem.data.model!!.id, bitmap) }.await()
-            isLoading.value = false
+            isImgLoading.value = false
             if (url!=null) {
                 cartItem.data.model!!.img = url
                 callback(url)

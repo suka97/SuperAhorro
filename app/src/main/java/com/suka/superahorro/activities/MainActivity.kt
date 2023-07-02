@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
@@ -29,6 +32,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
 
+    val isLoading = MutableLiveData(false)
+    private lateinit var loadingLayout: ConstraintLayout
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +47,11 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar) // set toolbar as action bar
         initDrawer()
         initNavView()
+
+        loadingLayout = findViewById(R.id.loading_layout)
+        isLoading.observe(this) { isLoading ->
+            loadingLayout.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
     }
 
 

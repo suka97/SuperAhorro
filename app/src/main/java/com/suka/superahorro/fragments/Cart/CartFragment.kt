@@ -30,6 +30,7 @@ import com.suka.superahorro.adapters.CartItemAdapter
 import com.suka.superahorro.database.DbItemRef
 import com.suka.superahorro.databinding.FragmentCartBinding
 import com.suka.superahorro.packages.hideKeyboard
+import com.suka.superahorro.packages.setLoading
 import com.suka.superahorro.packages.setToolbarTitle
 import com.suka.superahorro.packages.showKeyboard
 
@@ -94,7 +95,7 @@ class CartFragment : Fragment() {
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { newValue ->
-            b.loading.visibility = if (newValue) View.VISIBLE else View.GONE
+            setLoading(newValue)
         }
     }
 
