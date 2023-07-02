@@ -38,6 +38,7 @@ class SignupFragment : Fragment() {
         }
 
         b.signupBt.setOnClickListener{
+            resetErrors()
             if (!checkEmailOk()) return@setOnClickListener
             if (!checkPassOk()) return@setOnClickListener
 
@@ -54,13 +55,34 @@ class SignupFragment : Fragment() {
 
 
     fun onSignupError(error: SignupViewModel.SignupResult) {
-        Snackbar.make(b.root, "Datos invalidos", Snackbar.LENGTH_LONG).show()
+        when(error) {
+            SignupViewModel.SignupResult.MAIL_EXISTS -> {
+                b.emailTxt.error = "El email ya está en uso"
+            }
+            SignupViewModel.SignupResult.PASS_INVALID -> {
+                b.passTxt.error = "La contraseña debe tener al menos 6 caracteres"
+            }
+            SignupViewModel.SignupResult.MAIL_INVALID -> {
+                b.emailTxt.error = "El email no es válido"
+            }
+            SignupViewModel.SignupResult.UNDEFINED -> {
+                Snackbar.make(b.root, "Error desconocido", Snackbar.LENGTH_LONG).show()
+            }
+            else -> {}
+        }
+    }
+
+
+    fun resetErrors() {
+        b.emailTxt.error = null
+        b.passTxt.error = null
+        b.passRetypeTxt.error = null
     }
 
 
     fun checkEmailOk(): Boolean {
         if ( b.emailTxt.text().isEmpty() ) {
-            Snackbar.make(b.root, "Debe completar todos los campos", Snackbar.LENGTH_LONG).show()
+            b.emailTxt.error = "Debe completar todos los campos"
             return false
         }
         return true
@@ -69,15 +91,15 @@ class SignupFragment : Fragment() {
 
     fun checkPassOk(): Boolean {
         if ( b.passTxt.text().isEmpty() ) {
-            Snackbar.make(b.root, "Debe completar todos los campos", Snackbar.LENGTH_LONG).show()
+            b.passTxt.error = "Debe completar todos los campos"
             return false
         }
         if ( b.passRetypeTxt.text().isEmpty() ) {
-            Snackbar.make(b.root, "Debe completar todos los campos", Snackbar.LENGTH_LONG).show()
+            b.passRetypeTxt.error = "Debe completar todos los campos"
             return false
         }
         if ( b.passTxt.text() != b.passRetypeTxt.text() ) {
-            Snackbar.make(b.root, "Las contraseñas no coinciden", Snackbar.LENGTH_LONG).show()
+            b.passRetypeTxt.error = "Las contraseñas no coinciden"
             return false
         }
         return true
