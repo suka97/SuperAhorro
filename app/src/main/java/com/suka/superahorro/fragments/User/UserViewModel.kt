@@ -8,17 +8,15 @@ import com.google.firebase.ktx.Firebase
 import com.suka.superahorro.dbclasses.User
 
 class UserViewModel : ViewModel() {
-    private lateinit var context: Context
+    var isLoading = MutableLiveData<Boolean>(false)
 
-    var user = MutableLiveData<User>()
+    lateinit var user_email: String
 
 
-    fun init(context: Context) {
-        this.context = context
+    fun init(callback: ()->Unit) {
+        user_email = Firebase.auth.currentUser?.email ?:""
 
-        val mail: String = Firebase.auth.currentUser?.email ?:""
-//        val pass: String = Firebase.auth.currentUser?.uid ?:""
-//        user.value = User(mail, "")
+        callback()
     }
 
 
