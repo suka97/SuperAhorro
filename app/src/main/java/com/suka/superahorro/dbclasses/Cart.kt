@@ -1,7 +1,10 @@
 package com.suka.superahorro.dbclasses
 
 import android.os.Parcelable
+import com.google.firebase.Timestamp
+import com.suka.superahorro.database.Database
 import com.suka.superahorro.database.DbCart
+import com.suka.superahorro.database.DbModel
 import com.suka.superahorro.packages.round
 import kotlinx.parcelize.Parcelize
 
@@ -44,5 +47,23 @@ class Cart(var data: DbCart): Parcelable {
                 total += it.unit_price!! * it.amount!!
         }
         data.total = total.round(2)
+    }
+
+
+    suspend fun close() {
+        data.last_edit = Timestamp.now()
+        data.status = DbCart.STATUS_CLOSED
+        Database.saveCart(this)
+
+        for ( item in data.items ) {
+            if ( item.model == null ) continue
+            if ( item.unit_price == null ) continue
+
+            Database.setModelLastBuy(item.model!!.id, DbModel.LastBuy(
+                date = data.last_edit,
+                price = item.unit_price!!,
+                amount = item.amount!!
+            ))
+        }
     }
 }

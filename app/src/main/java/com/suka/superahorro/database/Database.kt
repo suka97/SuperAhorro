@@ -180,4 +180,9 @@ object Database {
         // delete item
         itemsColl.document(itemId.toString()).delete().await()
     }
+
+
+    suspend fun setModelLastBuy(modelId: String, buyInfo: DbModel.LastBuy) {
+        modelsColl.document(modelId).update("last_buy", buyInfo).await()
+    }
 }

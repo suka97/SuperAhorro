@@ -20,6 +20,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
@@ -112,6 +113,9 @@ class CartFragment : Fragment() {
             }
             R.id.toolbar_cart_scan -> {
                 onButtonScanClick()
+            }
+            R.id.toolbar_cart_close -> {
+                onCartClose()
             }
             else -> ""
         }
@@ -240,6 +244,19 @@ class CartFragment : Fragment() {
                 else Snackbar.make(b.root, "No se encontró el item", Snackbar.LENGTH_SHORT).show()
             }
         }
+    }
+
+
+    fun onCartClose() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Cerrar carrito")
+            .setMessage("¿Está seguro que desea cerrar el carrito?")
+            .setPositiveButton("Sí") { _, _ ->
+                viewModel.closeCart {
+                    findNavController().navigateUp()
+                }
+            }
+            .show()
     }
 
 

@@ -1,6 +1,7 @@
 package com.suka.superahorro.database
 
 import android.os.Parcelable
+import com.google.firebase.Timestamp
 import kotlinx.parcelize.Parcelize
 
 
@@ -49,15 +50,22 @@ data class DbModel(
     var item: DbItemRef = DbItemRef(),
     var unit: String? = null,
     var base_unit: String? = null,
-    var last_price: Float? = null,
-    var img: String? = null
-)
+    var img: String? = null,
+    var last_buy: LastBuy? = null,
+) {
+    data class LastBuy(
+        var date: Timestamp = Timestamp.now(),
+        var price: Float = 0f,
+        var amount: Float = 0f
+    )
+}
 
 
 @Parcelize
 data class DbCart(
     var id: String = "",
     var shop: String = "",
+    var last_edit: Timestamp = Timestamp.now(),
     var status: String = STATUS_OPENED,
     var items: MutableList<DbCartItem> = mutableListOf(),
     var disc: Discount? = null,

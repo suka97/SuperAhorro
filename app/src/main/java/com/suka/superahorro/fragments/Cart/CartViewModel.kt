@@ -94,4 +94,15 @@ class CartViewModel : ViewModel() {
         saveCartChanges()
         onItemsChange?.invoke()
     }
+
+
+    fun closeCart(callback: ()->Unit) {
+        viewModelScope.launch {
+            isLoading.value = true
+            async { cart.close() }.await()
+            isLoading.value = false
+
+            callback()
+        }
+    }
 }

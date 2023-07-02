@@ -29,7 +29,7 @@ class CartItem (var data: DbCartItem, var cartPos: Int) : Parcelable {
             base_unit = model.data.base_unit,
             img = model.data.img
         )
-        data.unit_price = model.data.last_price
+        data.unit_price = model.data.last_buy?.price
     }
 
 
