@@ -74,7 +74,7 @@ class CartItemAdapter (
 
     fun notifyDeleteItem (position: Int) {
         notifyItemRemoved(position)
-//        notifyItemRangeChanged(position, cart.size())
+        notifyItemRangeChanged(position, cart.size())
     }
 
 

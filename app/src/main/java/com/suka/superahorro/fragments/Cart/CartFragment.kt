@@ -151,7 +151,6 @@ class CartFragment : Fragment() {
         b.recCartItems.adapter = adapter
 
         viewModel.onItemsChange = {
-//            adapter.updateItems(viewModel.cartItems)
             updateCartTotal()
         }
     }

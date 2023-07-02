@@ -10,14 +10,11 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.suka.superahorro.R
-import com.suka.superahorro.database.DbItemRef
 import com.suka.superahorro.database.DbModelRef
-import com.suka.superahorro.dbclasses.Cart
-import com.suka.superahorro.dbclasses.Item
 import com.suka.superahorro.packages.*
 
 class ModelAdapter (
-    var carts: MutableList<DbModelRef>,
+    var models: MutableList<DbModelRef>,
     var onItemClick : (Int) -> Unit,
     var onItemDelete : (Int) -> Unit
 ) : RecyclerView.Adapter<ModelAdapter.ItemHolder>() {
@@ -77,7 +74,7 @@ class ModelAdapter (
 
     fun notifyDeleteItem (position: Int) {
         notifyItemRemoved(position)
-//        notifyItemRangeChanged(position, cart.size())
+        notifyItemRangeChanged(position, models.size)
     }
 
 
@@ -87,11 +84,11 @@ class ModelAdapter (
     }
 
     override fun getItemCount(): Int {
-        return carts.size
+        return models.size
     }
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
-        val cart = carts[position]
+        val cart = models[position]
 
 //        holder.setPicture(item.data.model?.img)
         holder.setName(cart.name)
