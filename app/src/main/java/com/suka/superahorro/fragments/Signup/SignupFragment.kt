@@ -11,51 +11,76 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
+import com.suka.superahorro.databinding.FragmentLoginBinding
+import com.suka.superahorro.databinding.FragmentSignupBinding
+import com.suka.superahorro.packages.setLoading
+import com.suka.superahorro.packages.text
 
 class SignupFragment : Fragment() {
-    lateinit var v : View
     private val viewModel: SignupViewModel by viewModels()
+    private  lateinit var b: FragmentSignupBinding
 
-    lateinit var btSignup : Button
-    lateinit var txtEmail : EditText
-    lateinit var txtPass : EditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        v = inflater.inflate(R.layout.fragment_signup, container, false)
-        viewModel.init(requireContext())
-
-        btSignup = v.findViewById(R.id.btSignup_signup)
-        txtEmail = v.findViewById(R.id.txtEmail_signup)
-        txtPass = v.findViewById(R.id.txtPass_signup)
-
-        return v
+        b = FragmentSignupBinding.inflate(inflater, container, false)
+        return b.root
     }
 
 
-    override fun onStart() {
-        super.onStart()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        btSignup.setOnClickListener{
-            val email = txtEmail.text.toString()
-            val pass = txtPass.text.toString()
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            setLoading(isLoading)
+        }
 
-            if (email.isEmpty() || pass.isEmpty()) {
-                Snackbar.make(v, "Debe completar todos los campos", Snackbar.LENGTH_LONG).show()
-                return@setOnClickListener
-            }
+        b.signupBt.setOnClickListener{
+            if (!checkEmailOk()) return@setOnClickListener
+            if (!checkPassOk()) return@setOnClickListener
 
-            if ( viewModel.signup(email, pass) ) {
-                Snackbar.make(v, "Usuario creado correctamente", Snackbar.LENGTH_LONG).show()
-                findNavController().navigateUp()
-            }
-            else {
-                Snackbar.make(v, "Ya existe un usuario con ese email", Snackbar.LENGTH_LONG).show()
-                return@setOnClickListener
+            viewModel.signup(b.emailTxt.text(), b.passTxt.text()) { result ->
+                if (result == SignupViewModel.SignupResult.SUCCESS) {
+                    Snackbar.make(b.root, "Usuario creado correctamente", Snackbar.LENGTH_LONG)
+                        .show()
+                    findNavController().navigateUp()
+                }
+                else onSignupError(result)
             }
         }
+    }
+
+
+    fun onSignupError(error: SignupViewModel.SignupResult) {
+        Snackbar.make(b.root, "Datos invalidos", Snackbar.LENGTH_LONG).show()
+    }
+
+
+    fun checkEmailOk(): Boolean {
+        if ( b.emailTxt.text().isEmpty() ) {
+            Snackbar.make(b.root, "Debe completar todos los campos", Snackbar.LENGTH_LONG).show()
+            return false
+        }
+        return true
+    }
+
+
+    fun checkPassOk(): Boolean {
+        if ( b.passTxt.text().isEmpty() ) {
+            Snackbar.make(b.root, "Debe completar todos los campos", Snackbar.LENGTH_LONG).show()
+            return false
+        }
+        if ( b.passRetypeTxt.text().isEmpty() ) {
+            Snackbar.make(b.root, "Debe completar todos los campos", Snackbar.LENGTH_LONG).show()
+            return false
+        }
+        if ( b.passTxt.text() != b.passRetypeTxt.text() ) {
+            Snackbar.make(b.root, "Las contraseñas no coinciden", Snackbar.LENGTH_LONG).show()
+            return false
+        }
+        return true
     }
 
 }

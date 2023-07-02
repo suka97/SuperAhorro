@@ -18,6 +18,7 @@ class LoginViewModel : ViewModel() {
 
 
     fun login(email: String?=null, pass: String?=null) {
+        isLoading.value = true
         val fireAuth = Firebase.auth
         if ( fireAuth.currentUser != null ) {
             loginListener?.onLoginSuccess()
@@ -27,15 +28,14 @@ class LoginViewModel : ViewModel() {
         if ( email == null || pass == null ) {
             return
         }
-        isLoading.value = true
         Firebase.auth.signInWithEmailAndPassword(email, pass)
             .addOnCompleteListener { task ->
-                isLoading.value = false
                 if (task.isSuccessful) {
                     val user = fireAuth.currentUser
                     Log.d("firebase", "signInWithEmail:success")
                     loginListener?.onLoginSuccess()
                 } else {
+                    isLoading.value = false
                     Log.d("firebase", "signInWithEmail:failure")
                     loginListener?.onLoginError()
                 }
