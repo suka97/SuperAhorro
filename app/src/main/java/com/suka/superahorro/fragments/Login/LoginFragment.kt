@@ -15,7 +15,7 @@ import com.suka.superahorro.databinding.FragmentLoginBinding
 import com.suka.superahorro.packages.setLoading
 import com.suka.superahorro.packages.text
 
-class LoginFragment : Fragment(), LoginViewModel.LoginListener {
+class LoginFragment : Fragment() {
     private val viewModel: LoginViewModel by viewModels()
     private  lateinit var b: FragmentLoginBinding
 
@@ -29,20 +29,12 @@ class LoginFragment : Fragment(), LoginViewModel.LoginListener {
     }
 
 
-    override fun onLoginSuccess() {
-        startActivity(Intent(context, MainActivity::class.java))
-        requireActivity().finish()
-    }
-
-    override fun onLoginError() {
-        Snackbar.make(b.root, "Login error", Snackbar.LENGTH_SHORT).show()
-    }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.loginListener = this
+        initTexts()
+
+        viewModel.loginListener = this::onLoginListener
         viewModel.login()
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             setLoading(isLoading)
@@ -62,6 +54,32 @@ class LoginFragment : Fragment(), LoginViewModel.LoginListener {
         b.signupBt.setOnClickListener() {
             val action = LoginFragmentDirections.actionLoginFragmentToSignupFragment()
             findNavController().navigate(action)
+        }
+    }
+
+
+    fun initTexts() {
+        b.emailTxt.editText?.setText("")
+        b.passTxt.editText?.setText("")
+        b.emailTxt.error = null
+        b.passTxt.error = null
+    }
+
+
+    fun onLoginListener(result: LoginViewModel.LoginResult) {
+        when (result) {
+            LoginViewModel.LoginResult.SUCCESS -> {
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+                requireActivity().finish()
+            }
+            LoginViewModel.LoginResult.INVALID_CREDENTIALS -> {
+                b.emailTxt.error = "Credenciales inválidas"
+                b.passTxt.error = "Credenciales inválidas"
+            }
+            LoginViewModel.LoginResult.UNDEFINED -> {
+                Snackbar.make(b.root, "Login Error", Snackbar.LENGTH_SHORT).show()
+            }
         }
     }
 

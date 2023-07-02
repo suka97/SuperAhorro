@@ -10,34 +10,36 @@ import com.google.firebase.ktx.Firebase
 class LoginViewModel : ViewModel() {
     val isLoading = MutableLiveData<Boolean>(false)
 
-    interface LoginListener {
-        fun onLoginSuccess()
-        fun onLoginError()
+    enum class LoginResult {
+        SUCCESS, INVALID_CREDENTIALS, UNDEFINED
     }
-    var loginListener: LoginListener? = null
+    lateinit var loginListener: (LoginResult)->Unit
 
 
     fun login(email: String?=null, pass: String?=null) {
         isLoading.value = true
         val fireAuth = Firebase.auth
         if ( fireAuth.currentUser != null ) {
-            loginListener?.onLoginSuccess()
+            loginListener(LoginResult.SUCCESS)
             return
         }
 
         if ( email == null || pass == null ) {
+            isLoading.value = false
             return
         }
-        Firebase.auth.signInWithEmailAndPassword(email, pass)
+        val authEmail = email.trim()
+        val authPass = pass.trim()
+        Firebase.auth.signInWithEmailAndPassword(authEmail, authPass)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val user = fireAuth.currentUser
                     Log.d("firebase", "signInWithEmail:success")
-                    loginListener?.onLoginSuccess()
+                    loginListener(LoginResult.SUCCESS)
                 } else {
                     isLoading.value = false
                     Log.d("firebase", "signInWithEmail:failure")
-                    loginListener?.onLoginError()
+                    loginListener(LoginResult.INVALID_CREDENTIALS)
                 }
             }
     }
