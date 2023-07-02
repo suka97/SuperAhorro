@@ -82,9 +82,9 @@ class ListCartsFragment : Fragment() {
         adapter = CartAdapter(viewModel.carts,
             // OnClick
             { position ->
-                val action =
-                    ListCartsFragmentDirections.actionListCartsFragmentToCartFragment(viewModel.carts[position])
-                findNavController().navigate(action)
+//                val action =
+//                    ListCartsFragmentDirections.actionListCartsFragmentToCartFragment(viewModel.carts[position])
+//                findNavController().navigate(action)
             },
             // OnLongClick
             { position ->

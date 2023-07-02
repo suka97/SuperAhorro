@@ -1,4 +1,4 @@
-package com.suka.superahorro.fragments.ListItems
+package com.suka.superahorro.fragments.ListShops
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -17,17 +17,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
 import com.suka.superahorro.adapters.CartAdapter
-import com.suka.superahorro.adapters.ItemAdapter
-import com.suka.superahorro.databinding.FragmentListItemsBinding
+import com.suka.superahorro.databinding.FragmentListShopsBinding
+import com.suka.superahorro.fragments.ListCarts.ListCartsViewModel
 import com.suka.superahorro.packages.createInputDialog
 import com.suka.superahorro.packages.setLoading
 
-class ListItemsFragment : Fragment() {
-    private val viewModel: ListItemsViewModel by viewModels()
-    private  lateinit var b: FragmentListItemsBinding
+class ListShopsFragment : Fragment() {
+    private val viewModel: ListCartsViewModel by viewModels()
+    private  lateinit var b: FragmentListShopsBinding
     private lateinit var toolbarMenu: Menu
 
-    lateinit var adapter : ItemAdapter
+    lateinit var adapter : CartAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +40,7 @@ class ListItemsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        b = FragmentListItemsBinding.inflate(inflater, container, false)
+        b = FragmentListShopsBinding.inflate(inflater, container, false)
         return b.root
     }
 
@@ -48,7 +48,7 @@ class ListItemsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.isLoading.observe(viewLifecycleOwner) {isLoading ->
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             setLoading(isLoading)
         }
         viewModel.init() {
@@ -66,8 +66,8 @@ class ListItemsFragment : Fragment() {
         val id = when(item.itemId) {
             R.id.toolbar_cart_add -> {
                 val dialog = Dialog(requireActivity())
-                createInputDialog(dialog, "Nuevo Item", "") { name ->
-                    viewModel.addNewItem(name) {
+                createInputDialog(dialog, "Nuevo Carrito", "") { name ->
+                    viewModel.addNewCart(name) {
                         adapter.notifyDataSetChanged()
                     }
                 }
@@ -79,36 +79,41 @@ class ListItemsFragment : Fragment() {
 
 
     private fun initAdapter() {
-        adapter = ItemAdapter(viewModel.itemsList,
+        adapter = CartAdapter(viewModel.carts,
             // OnClick
             { position ->
-                viewModel.getItem(position) { item ->
-                    val action = ListItemsFragmentDirections.actionListItemsFragmentToListModelsFragment(item)
-                    findNavController().navigate(action)
-                }
+                val action =
+                    ListShopsFragmentDirections.actionListShopsFragmentToCartFragment(viewModel.carts[position])
+                findNavController().navigate(action)
             },
             // OnLongClick
             { position ->
                 val builder = AlertDialog.Builder(context)
                 builder.setTitle("Borrar item")
-                builder.setMessage("¿Está seguro que desea eliminar el item?")
+                builder.setMessage("¿Está seguro que desea eliminar el carrito?")
                 builder.setPositiveButton("Sí") { _, _ ->
-                    //viewModel.deleteCartItem(position)
-                    adapter.notifyDeleteItem(position)
-                    Snackbar.make(b.root, "Item eliminado", Snackbar.LENGTH_SHORT).show()
+                    viewModel.deleteCart(position) {
+                        adapter.notifyDeleteItem(position)
+                        Snackbar.make(b.root, "Carrito eliminado", Snackbar.LENGTH_SHORT).show()
+                    }
                 }
                 val dialog = builder.create()
                 dialog.show()
             }
         )
-        b.recItems.layoutManager = LinearLayoutManager(context)
-        b.recItems.adapter = adapter
+        b.recShops.layoutManager = LinearLayoutManager(context)
+        b.recShops.adapter = adapter
 
 //        viewModel.onItemsChange = {
 ////            adapter.updateItems(viewModel.cartItems)
 //            updateCartTotal()
 //        }
 //        viewModel.updateItems()
+    }
+
+
+    private fun initTopBar() {
+
     }
 
 }
