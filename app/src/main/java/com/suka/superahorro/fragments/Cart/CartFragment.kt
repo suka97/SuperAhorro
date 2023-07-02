@@ -111,7 +111,7 @@ class CartFragment : Fragment() {
                 isAdding.value = !isAdding.value!!
             }
             R.id.toolbar_cart_scan -> {
-                scanBarcode()
+                onButtonScanClick()
             }
             else -> ""
         }
@@ -227,17 +227,28 @@ class CartFragment : Fragment() {
     }
 
 
-    // zxing barcode
-    fun onScanBarcode(result: String) {
-
+    fun onButtonScanClick() {
+        scanBarcode { barcode ->
+            viewModel.addItemBySku(barcode) { newPos ->
+                if ( newPos != null ) {
+                    val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment(
+                        cart = viewModel.cart,
+                        itemPos = newPos
+                    )
+                    findNavController().navigate(action)
+                }
+                else Snackbar.make(b.root, "No se encontró el item", Snackbar.LENGTH_SHORT).show()
+            }
+        }
     }
-    fun scanBarcode() {
+
+
+    // zxing barcode
+    lateinit var onScanBarcode: (result: String)->Unit
+    fun scanBarcode(callback: (String)->Unit) {
+        onScanBarcode = callback
         val options = ScanOptions()
         options.setBeepEnabled(false)
-//        options.setDesiredBarcodeFormats(ScanOptions.ONE_D_CODE_TYPES)
-//        options.setPrompt("Scan a barcode")
-//        options.setCameraId(0) // Use a specific camera of the device
-//        options.setBarcodeImageEnabled(true)
         barcodeLauncher.launch(options)
     }
     private val barcodeLauncher = registerForActivityResult<ScanOptions, ScanIntentResult>(

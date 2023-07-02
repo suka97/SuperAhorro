@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.suka.superahorro.database.Database
+import com.suka.superahorro.database.DbItemRef
 import com.suka.superahorro.dbclasses.Cart
 import com.suka.superahorro.dbclasses.CartItem
 import com.suka.superahorro.dbclasses.Item
@@ -88,7 +89,7 @@ class CartItemDetailViewModel : ViewModel() {
 
     fun linkNewModel(modelName: String) {
         val model = Model(modelName)
-        model.data.item_id = cartItem.data.id
+        model.data.item = cartItem.toItemRef()
 
         viewModelScope.launch {
             isLoading.value = true

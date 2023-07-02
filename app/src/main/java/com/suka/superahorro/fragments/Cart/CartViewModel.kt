@@ -57,6 +57,23 @@ class CartViewModel : ViewModel() {
     }
 
 
+    fun addItemBySku(sku: String, callback: (newPos: Int?)->Unit) {
+        viewModelScope.launch {
+            isLoading.value = true
+            val model = async { Database.getModelBySku(sku) }.await()
+            isLoading.value = false
+
+            if ( model != null ) {
+                var newCartItem = CartItem(model.data.item)
+                newCartItem.data.model = model.toCartRef()
+                cart.insertItem(newCartItem)
+                callback(cart.data.items.lastIndex)
+            }
+            else callback(null)
+        }
+    }
+
+
     fun saveCartChanges(showLoading: Boolean = false) {
         viewModelScope.launch {
             if (showLoading) isLoading.value = true

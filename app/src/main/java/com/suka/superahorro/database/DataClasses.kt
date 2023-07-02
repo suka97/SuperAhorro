@@ -46,7 +46,7 @@ data class DbModel(
     var id: String = "",
     var sku: String? = null,
     var name: String = "",
-    var item_id: Int = 0,
+    var item: DbItemRef = DbItemRef(),
     var unit: String? = null,
     var base_unit: String? = null,
     var last_price: Float? = null,

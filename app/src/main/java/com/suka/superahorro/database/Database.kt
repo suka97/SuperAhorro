@@ -90,8 +90,8 @@ object Database {
     suspend fun addModel(model: Model): Model {
         model.data.id = modelsColl.add(model.data).await().id
         modelsColl.document(model.data.id).set(model.data).await()
-        if ( model.data.item_id != null ) {
-            val itemId = model.data.item_id.toString()
+        if ( model.data.item != null ) {
+            val itemId = model.data.item.id.toString()
             itemsColl.document(itemId).update("models", FieldValue.arrayUnion(model.toRef())).await()
         }
         return model
@@ -124,7 +124,7 @@ object Database {
         val model = getModelById(modelId)
         // get parent item
         var item = parentItem
-        if ( item == null ) item = getItem(model.data.item_id)
+        if ( item == null ) item = getItem(model.data.item.id)
         // update model in parent item
         updateItemModel(item, model)
     }

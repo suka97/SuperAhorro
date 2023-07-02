@@ -31,4 +31,12 @@ class CartItem (var data: DbCartItem, var cartPos: Int) : Parcelable {
         )
         data.unit_price = model.data.last_price
     }
+
+
+    fun toItemRef(): DbItemRef {
+        return DbItemRef(
+            id = data.id,
+            name = data.name
+        )
+    }
 }
