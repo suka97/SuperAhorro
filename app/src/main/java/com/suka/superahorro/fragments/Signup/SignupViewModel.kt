@@ -9,6 +9,9 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.suka.superahorro.database.Database
+import com.suka.superahorro.dbclasses.User
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class SignupViewModel : ViewModel() {
@@ -22,21 +25,27 @@ class SignupViewModel : ViewModel() {
         val authMail = mail.trim()
         val authPass = pass.trim()
         isLoading.value = true
-        viewModelScope.launch {
-            Firebase.auth.createUserWithEmailAndPassword(authMail, authPass)
-                .addOnCompleteListener { task ->
+        Firebase.auth.createUserWithEmailAndPassword(authMail, authPass)
+            .addOnCompleteListener { task ->
+                if ( task.isSuccessful ) signupSuccess(callBack)
+                else {
                     var result = SignupResult.UNDEFINED
-                    if ( task.isSuccessful ) result = SignupResult.SUCCESS
-                    else {
-                        val exc = task.exception
-                        if (exc is FirebaseAuthWeakPasswordException) result = SignupResult.PASS_INVALID
-                        else if (exc is FirebaseAuthInvalidCredentialsException) result = SignupResult.MAIL_INVALID
-                        else if (exc is FirebaseAuthUserCollisionException) result = SignupResult.MAIL_EXISTS
+                    val exc = task.exception
+                    if (exc is FirebaseAuthWeakPasswordException) result = SignupResult.PASS_INVALID
+                    else if (exc is FirebaseAuthInvalidCredentialsException) result = SignupResult.MAIL_INVALID
+                    else if (exc is FirebaseAuthUserCollisionException) result = SignupResult.MAIL_EXISTS
 
-                        isLoading.value = false
-                    }
+                    isLoading.value = false
                     callBack(result)
                 }
+            }
+    }
+
+
+    private fun signupSuccess(callBack: (SignupResult) -> Unit) {
+        viewModelScope.launch {
+            async { Database.saveUser(User(Firebase.auth.currentUser!!.uid)) }.await()
+            callBack(SignupResult.SUCCESS)
         }
     }
 }

@@ -36,7 +36,6 @@ class CartViewModel : ViewModel() {
     fun init(cart: Cart) {
         this.cart = cart
         viewModelScope.launch {
-            Database.init()
             isLoading.value = true
             user = async { Database.getUser() }.await()
             isLoading.value = false

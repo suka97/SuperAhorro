@@ -16,7 +16,6 @@ class ListCartsViewModel : ViewModel() {
 
     fun init(callback: ()->Unit) {
         viewModelScope.launch {
-            Database.init()
             isLoading.value = true
             carts = async { Database.getOpenedCarts() }.await()
             isLoading.value = false

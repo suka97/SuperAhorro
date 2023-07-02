@@ -20,7 +20,6 @@ class ListItemsViewModel : ViewModel() {
 
     fun init(callback: ()->Unit) {
         viewModelScope.launch {
-            Database.init()
             isLoading.value = true
             user = async { Database.getUser() }.await()
             itemsList = user.data.items

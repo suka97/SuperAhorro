@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.suka.superahorro.database.Database
 
 class LoginViewModel : ViewModel() {
     val isLoading = MutableLiveData<Boolean>(false)
@@ -20,6 +21,7 @@ class LoginViewModel : ViewModel() {
         isLoading.value = true
         val fireAuth = Firebase.auth
         if ( fireAuth.currentUser != null ) {
+            Database.init()
             loginListener(LoginResult.SUCCESS)
             return
         }
@@ -33,6 +35,7 @@ class LoginViewModel : ViewModel() {
         Firebase.auth.signInWithEmailAndPassword(authEmail, authPass)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    Database.init()
                     val user = fireAuth.currentUser
                     Log.d("firebase", "signInWithEmail:success")
                     loginListener(LoginResult.SUCCESS)

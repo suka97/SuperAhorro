@@ -38,6 +38,11 @@ object Database {
     }
 
 
+    suspend fun saveUser(user: User) {
+        userDoc.set(user.data).await()
+    }
+
+
     suspend fun getOpenedCarts(): MutableList<Cart> {
         val req = cartsColl.whereEqualTo("status", DbCart.STATUS_OPENED).get().await()
         val dbcarts = req.toObjects(DbCart::class.java)
