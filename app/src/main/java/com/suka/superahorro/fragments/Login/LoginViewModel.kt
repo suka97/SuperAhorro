@@ -12,7 +12,7 @@ class LoginViewModel : ViewModel() {
     val isLoading = MutableLiveData<Boolean>(false)
 
     enum class LoginResult {
-        SUCCESS, INVALID_CREDENTIALS, UNDEFINED
+        SUCCESS, INVALID_CREDENTIALS, UNDEFINED, EMAIL_NOT_VERIFIED, NOP
     }
     lateinit var loginListener: (LoginResult)->Unit
 
@@ -21,30 +21,42 @@ class LoginViewModel : ViewModel() {
         isLoading.value = true
         val fireAuth = Firebase.auth
         if ( fireAuth.currentUser != null ) {
-            Database.init()
-            loginListener(LoginResult.SUCCESS)
-            return
+            loginSuccess(); return
         }
 
         if ( email == null || pass == null ) {
-            isLoading.value = false
-            return
+            loginError(LoginResult.NOP); return
         }
         val authEmail = email.trim()
         val authPass = pass.trim()
         Firebase.auth.signInWithEmailAndPassword(authEmail, authPass)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Database.init()
-                    val user = fireAuth.currentUser
                     Log.d("firebase", "signInWithEmail:success")
-                    loginListener(LoginResult.SUCCESS)
+                    loginSuccess()
                 } else {
-                    isLoading.value = false
                     Log.d("firebase", "signInWithEmail:failure")
-                    loginListener(LoginResult.INVALID_CREDENTIALS)
+                    loginError(LoginResult.INVALID_CREDENTIALS)
                 }
             }
+    }
+
+
+    private fun loginError(result: LoginResult) {
+        Firebase.auth.signOut()
+        isLoading.value = false
+        loginListener(result)
+    }
+
+
+    private fun loginSuccess() {
+        if ( !Firebase.auth.currentUser!!.isEmailVerified ) {
+            loginError(LoginResult.EMAIL_NOT_VERIFIED); return
+        }
+
+//        isLoading.value = false
+        Database.init()
+        loginListener(LoginResult.SUCCESS)
     }
 
 }

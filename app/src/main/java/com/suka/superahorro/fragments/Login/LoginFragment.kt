@@ -80,6 +80,10 @@ class LoginFragment : Fragment() {
             LoginViewModel.LoginResult.UNDEFINED -> {
                 Snackbar.make(b.root, "Login Error", Snackbar.LENGTH_SHORT).show()
             }
+            LoginViewModel.LoginResult.EMAIL_NOT_VERIFIED -> {
+                Snackbar.make(b.root, "Debe verificar su email", Snackbar.LENGTH_SHORT).show()
+            }
+            else -> {}
         }
     }
 

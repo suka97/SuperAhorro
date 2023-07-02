@@ -3,7 +3,7 @@ package com.suka.superahorro.fragments.Signup
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuthEmailException
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
@@ -13,6 +13,7 @@ import com.suka.superahorro.database.Database
 import com.suka.superahorro.dbclasses.User
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+
 
 class SignupViewModel : ViewModel() {
     val isLoading = MutableLiveData<Boolean>(false)
@@ -43,7 +44,9 @@ class SignupViewModel : ViewModel() {
 
 
     private fun signupSuccess(callBack: (SignupResult) -> Unit) {
+        FirebaseAuth.getInstance().getCurrentUser()!!.sendEmailVerification()
         viewModelScope.launch {
+            Database.init()
             async { Database.saveUser(User(Firebase.auth.currentUser!!.uid)) }.await()
             callBack(SignupResult.SUCCESS)
         }
