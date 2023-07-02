@@ -59,4 +59,16 @@ class LoginViewModel : ViewModel() {
         loginListener(LoginResult.SUCCESS)
     }
 
+
+    var sendingResetEmail = false
+    fun resetPassword(email: String, callback: ()->Unit) {
+        if ( sendingResetEmail ) return
+        sendingResetEmail = true
+        Firebase.auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                sendingResetEmail = false
+                if (task.isSuccessful) callback()
+            }
+    }
+
 }

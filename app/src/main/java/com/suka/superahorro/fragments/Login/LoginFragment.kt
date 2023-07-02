@@ -49,6 +49,14 @@ class LoginFragment : Fragment() {
             val action = LoginFragmentDirections.actionLoginFragmentToSignupFragment(b.emailTxt.text())
             findNavController().navigate(action)
         }
+        b.forgetPwdBt.setOnClickListener() {
+            resetErrors()
+            if ( checkEmailOk() ) {
+                viewModel.resetPassword(b.emailTxt.text()) {
+                    Snackbar.make(b.root, "Se ha enviado un email para restablecer la contraseña", Snackbar.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
 
