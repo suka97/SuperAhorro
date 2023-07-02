@@ -8,8 +8,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class LoginViewModel : ViewModel() {
-    private lateinit var context: Context
-
     val isLoading = MutableLiveData<Boolean>(false)
 
     interface LoginListener {
@@ -17,11 +15,6 @@ class LoginViewModel : ViewModel() {
         fun onLoginError()
     }
     var loginListener: LoginListener? = null
-
-
-    fun init(context: Context) {
-        this.context = context
-    }
 
 
     fun login(email: String?=null, pass: String?=null) {

@@ -22,8 +22,9 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.suka.superahorro.R
+import com.suka.superahorro.packages.LoadingListener
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), LoadingListener {
 
     private lateinit var navController: NavController
 
@@ -99,5 +100,10 @@ class MainActivity : AppCompatActivity() {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         navView.setupWithNavController(navController)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+    }
+
+
+    override fun setLoading(isLoading: Boolean) {
+        this.isLoading.value = isLoading
     }
 }

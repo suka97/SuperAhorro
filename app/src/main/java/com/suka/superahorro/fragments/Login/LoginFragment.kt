@@ -12,6 +12,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.activities.MainActivity
 import com.suka.superahorro.databinding.FragmentLoginBinding
+import com.suka.superahorro.packages.setLoading
+import com.suka.superahorro.packages.text
 
 class LoginFragment : Fragment(), LoginViewModel.LoginListener {
     private val viewModel: LoginViewModel by viewModels()
@@ -22,14 +24,7 @@ class LoginFragment : Fragment(), LoginViewModel.LoginListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel.init(requireContext())
         b = FragmentLoginBinding.inflate(inflater, container, false)
-
-        viewModel.loginListener = this
-        viewModel.isLoading.observe(viewLifecycleOwner) { newValue ->
-            Log.d("loading", "loading: $newValue")
-        }
-
         return b.root
     }
 
@@ -44,13 +39,18 @@ class LoginFragment : Fragment(), LoginViewModel.LoginListener {
     }
 
 
-    override fun onStart() {
-        super.onStart()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.loginListener = this
         viewModel.login()
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            setLoading(isLoading)
+        }
 
         b.loginBt.setOnClickListener() {
-            val userMail = b.emailTxt.text.toString()
-            val userPass = b.passTxt.text.toString()
+            val userMail = b.emailTxt.text()
+            val userPass = b.passTxt.text()
 
             if ( userMail.isEmpty() || userPass.isEmpty() ) {
                 Snackbar.make(b.root, "Debe completar todos los campos", Snackbar.LENGTH_SHORT).show()

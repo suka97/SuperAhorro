@@ -80,7 +80,11 @@ fun Fragment.setToolbarTitle(title: String) {
     activity.supportActionBar?.setTitle(title)
 }
 
+
+interface LoadingListener {
+    fun setLoading(isLoading: Boolean)
+}
 fun Fragment.setLoading(isLoading: Boolean) {
-    val activity = requireActivity() as MainActivity
-    activity.isLoading.value = isLoading
+    val activity = requireActivity() as LoadingListener
+    activity.setLoading(isLoading)
 }
