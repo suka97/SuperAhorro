@@ -18,5 +18,9 @@
         android:id="@+id/signupFragment"
         android:name="com.suka.superahorro.fragments.Signup.SignupFragment"
         android:label="fragment_signup"
-        tools:layout="@layout/fragment_signup" />
+        tools:layout="@layout/fragment_signup" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+    </fragment>
 </navigation>

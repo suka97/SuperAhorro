@@ -13,7 +13,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
 import com.suka.superahorro.databinding.FragmentLoginBinding
 import com.suka.superahorro.databinding.FragmentSignupBinding
+import com.suka.superahorro.fragments.CartItemDetail.CartItemDetailFragmentArgs
 import com.suka.superahorro.packages.setLoading
+import com.suka.superahorro.packages.setText
 import com.suka.superahorro.packages.text
 
 class SignupFragment : Fragment() {
@@ -32,6 +34,9 @@ class SignupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val args = SignupFragmentArgs.fromBundle(requireArguments())
+        b.emailTxt.setText(args.email)
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             setLoading(isLoading)

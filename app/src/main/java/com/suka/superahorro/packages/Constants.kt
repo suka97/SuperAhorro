@@ -43,6 +43,10 @@ fun TextInputLayout.number(): Float? {
     return this.editText?.text.toString().toFloatOrNull()
 }
 
+fun TextInputLayout.setText(text: String) {
+    this.editText?.setText(text)
+}
+
 
 fun generateRandomString(length: Int): String {
     val charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"

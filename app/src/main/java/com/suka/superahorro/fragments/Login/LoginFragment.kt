@@ -32,8 +32,6 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initTexts()
-
         viewModel.loginListener = this::onLoginListener
         viewModel.login()
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -41,32 +39,38 @@ class LoginFragment : Fragment() {
         }
 
         b.loginBt.setOnClickListener() {
-            val userMail = b.emailTxt.text()
-            val userPass = b.passTxt.text()
+            resetErrors()
 
-            if ( userMail.isEmpty() || userPass.isEmpty() ) {
-                Snackbar.make(b.root, "Debe completar todos los campos", Snackbar.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            viewModel.login(userMail, userPass)
+            if ( checkEmailOk() && checkPassOk() )
+                viewModel.login(b.emailTxt.text(), b.passTxt.text())
         }
         b.signupBt.setOnClickListener() {
-            val action = LoginFragmentDirections.actionLoginFragmentToSignupFragment()
+            resetErrors()
+            val action = LoginFragmentDirections.actionLoginFragmentToSignupFragment(b.emailTxt.text())
             findNavController().navigate(action)
         }
     }
 
 
-    fun initTexts() {
-        b.emailTxt.editText?.setText("")
-        b.passTxt.editText?.setText("")
-        b.emailTxt.error = null
-        b.passTxt.error = null
+    fun checkEmailOk(): Boolean {
+        if (b.emailTxt.text().isEmpty()) {
+            b.emailTxt.error = "Debe ingresar un email"
+            return false
+        }
+        return true
+    }
+
+    fun checkPassOk(): Boolean {
+        if (b.passTxt.text().isEmpty()) {
+            b.passTxt.error = "Debe ingresar una contraseña"
+            return false
+        }
+        return true
     }
 
 
     fun onLoginListener(result: LoginViewModel.LoginResult) {
+        resetErrors()
         when (result) {
             LoginViewModel.LoginResult.SUCCESS -> {
                 val intent = Intent(requireContext(), MainActivity::class.java)
@@ -85,6 +89,12 @@ class LoginFragment : Fragment() {
             }
             else -> {}
         }
+    }
+
+
+    fun resetErrors() {
+        b.emailTxt.error = null
+        b.passTxt.error = null
     }
 
 }
