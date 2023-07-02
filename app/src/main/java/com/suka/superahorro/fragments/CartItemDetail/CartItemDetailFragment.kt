@@ -3,6 +3,7 @@ package com.suka.superahorro.fragments.CartItemDetail
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -14,6 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.journeyapps.barcodescanner.ScanContract
@@ -27,6 +31,7 @@ import com.suka.superahorro.packages.createAutoCompleteDialog
 import com.suka.superahorro.packages.number
 import com.suka.superahorro.packages.requestImage
 import com.suka.superahorro.packages.round
+import com.suka.superahorro.packages.setGlidePicture
 import com.suka.superahorro.packages.setLoading
 import com.suka.superahorro.packages.text
 import com.suka.superahorro.packages.toStringNull
@@ -238,15 +243,15 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
 
 
     fun setPicture (picture_url: String?) {
-        var img: ImageView = b.modelImg
-        if ( picture_url == null )
-            img.setImageResource(R.drawable.default_item)
-        else {
-            Glide.with(img.context)
-                .load(picture_url)
-                .placeholder(R.drawable.default_item)
-                .into(img)
-        }
+        setGlidePicture(url=picture_url, imgView=b.modelImg, placeholder=R.drawable.default_item,
+            onSuccess = {
+                viewModel.isImgLoading.value = false
+            },
+            onError = {
+                Snackbar.make(b.root, "Error al cargar la imagen", Snackbar.LENGTH_SHORT).show()
+                viewModel.isImgLoading.value = false
+            }
+        )
     }
 
     private fun getTextWatcher(callback: ()->Unit): TextWatcher {

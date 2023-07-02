@@ -4,14 +4,21 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.provider.MediaStore
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import com.suka.superahorro.R
 import com.suka.superahorro.activities.MainActivity
 
 
@@ -91,4 +98,26 @@ interface LoadingListener {
 fun Fragment.setLoading(isLoading: Boolean) {
     val activity = requireActivity() as LoadingListener
     activity.setLoading(isLoading)
+}
+
+
+fun setGlidePicture(imgView: ImageView, url: String?, placeholder: Int, onSuccess: (()->Unit)? = null, onError: ((GlideException?)->Unit)? = null) {
+    if ( url == null )
+        imgView.setImageResource(R.drawable.default_item)
+    else {
+        Glide.with(imgView.context)
+            .load(url)
+            .placeholder(R.drawable.default_item)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(e: GlideException?, model: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                    if (onError != null) onError(e)
+                    return true
+                }
+                override fun onResourceReady(resource: Drawable?, model: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                    if (onSuccess != null) onSuccess()
+                    return false
+                }
+            })
+            .into(imgView)
+    }
 }

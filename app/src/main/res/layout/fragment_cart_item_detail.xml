@@ -33,8 +33,6 @@
             android:layout_height="wrap_content"
             android:hint="Cantidad"
             android:padding="2dp"
-            app:endIconDrawable="@drawable/icon_edit"
-            app:endIconMode="custom"
             app:suffixText="kg">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -144,8 +142,6 @@
                 android:hint="Modelo"
                 android:padding="2dp"
                 app:endIconDrawable="@drawable/icon_list"
-                app:endIconMode="custom"
-                app:endIconTint="@color/select1"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -190,8 +186,6 @@
         android:layout_height="wrap_content"
         android:hint="Nombre"
         android:padding="2dp"
-        app:endIconDrawable="@drawable/icon_list"
-        app:endIconMode="custom"
         app:endIconTint="@color/select1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

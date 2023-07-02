@@ -41,7 +41,7 @@ class CartItemDetailViewModel : ViewModel() {
         viewModelScope.launch {
             isImgLoading.value = true
             val url = async { Database.setModelImage(cartItem.data.model!!.id, bitmap) }.await()
-            isImgLoading.value = false
+//            isImgLoading.value = false
             if (url!=null) {
                 cartItem.data.model!!.img = url
                 callback(url)
