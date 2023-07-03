@@ -115,26 +115,6 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.textfield.TextInputLayout
-                app:endIconDrawable="@drawable/icon_barcode"
-                app:endIconMode="custom"
-                android:id="@+id/modelSku_txt"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="SKU"
-                android:padding="2dp"
-                app:layout_constraintTop_toBottomOf="@id/modelName_txt">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    style="@style/TextField_Input1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:editable="false"
-                    android:text="100200310" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/modelName_txt"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
@@ -150,7 +130,76 @@
                     android:layout_height="wrap_content"
                     android:editable="false"
                     android:text="Galletitas Crackers x10ud y sigue de largo" />
+            </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/modelSku_txt"
+                app:endIconDrawable="@drawable/icon_barcode"
+                app:endIconMode="custom"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="SKU"
+                android:padding="2dp"
+                app:layout_constraintTop_toBottomOf="@id/modelName_txt">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/TextField_Input1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:editable="false"
+                    android:text="100200310" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/modelBrand_txt"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Marca"
+                android:padding="2dp"
+                app:layout_constraintTop_toBottomOf="@id/modelSku_txt">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/TextField_Input1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:editable="false"
+                    android:text="La Virginia" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/modelSaleMode_txt"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Modo de Venta"
+                android:padding="2dp"
+                app:layout_constraintTop_toBottomOf="@id/modelBrand_txt">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/TextField_Input1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:editable="false"
+                    android:text="Lata 100g peso escurrido" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/modelNote_txt"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nota"
+                android:padding="2dp"
+                app:layout_constraintTop_toBottomOf="@id/modelSaleMode_txt">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/TextField_Input1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:editable="false"
+                    android:text="No es muy bueno" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -161,7 +210,7 @@
                 android:text="Desvincular Modelo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/modelSku_txt" />
+                app:layout_constraintTop_toBottomOf="@id/modelNote_txt" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
