@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
@@ -86,22 +87,25 @@ class ListModelsFragment : Fragment() {
         adapter = ModelAdapter(viewModel.modelsList,
             // OnClick
             { position ->
-//                val action =
-//                    ListCartsFragmentDirections.actionListCartsFragmentToCartFragment(viewModel.itemsList[position])
-//                findNavController().navigate(action)
+                val action =
+                    ListModelsFragmentDirections.actionListModelsFragmentToModelDetailFragment(
+                        parentItem = viewModel.item,
+                        modelRef = viewModel.modelsList[position]
+                    )
+                findNavController().navigate(action)
             },
             // OnLongClick
             { position ->
-                val builder = AlertDialog.Builder(context)
-                builder.setTitle("Borrar item")
-                builder.setMessage("¿Está seguro que desea eliminar el item?")
-                builder.setPositiveButton("Sí") { _, _ ->
-                    //viewModel.deleteCartItem(position)
-                    adapter.notifyDeleteItem(position)
-                    Snackbar.make(b.root, "Item eliminado", Snackbar.LENGTH_SHORT).show()
-                }
-                val dialog = builder.create()
-                dialog.show()
+//                val builder = AlertDialog.Builder(context)
+//                builder.setTitle("Borrar item")
+//                builder.setMessage("¿Está seguro que desea eliminar el item?")
+//                builder.setPositiveButton("Sí") { _, _ ->
+//                    viewModel.deleteCartItem(position)
+//                    adapter.notifyDeleteItem(position)
+//                    Snackbar.make(b.root, "Item eliminado", Snackbar.LENGTH_SHORT).show()
+//                }
+//                val dialog = builder.create()
+//                dialog.show()
             }
         )
         b.recModels.layoutManager = LinearLayoutManager(context)

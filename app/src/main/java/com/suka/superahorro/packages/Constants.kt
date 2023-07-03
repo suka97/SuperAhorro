@@ -38,7 +38,7 @@ fun Float.round(decimals: Int = 2): Float {
 
 fun Float?.toStringNull(): String {
     if (this == null) return ""
-    return this.toString()
+    return this.round(2).toString()
 }
 
 
@@ -50,7 +50,7 @@ fun TextInputLayout.number(): Float? {
     return this.editText?.text.toString().toFloatOrNull()
 }
 
-fun TextInputLayout.setText(text: String) {
+fun TextInputLayout.setText(text: String?) {
     this.editText?.setText(text)
 }
 

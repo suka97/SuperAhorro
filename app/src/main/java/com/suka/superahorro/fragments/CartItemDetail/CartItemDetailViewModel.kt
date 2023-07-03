@@ -88,7 +88,7 @@ class CartItemDetailViewModel : ViewModel() {
 
 
     fun linkNewModel(modelName: String) {
-        val model = Model(modelName)
+        val model = Model(modelName, cartItem.toItemRef())
         model.data.item = cartItem.toItemRef()
 
         viewModelScope.launch {

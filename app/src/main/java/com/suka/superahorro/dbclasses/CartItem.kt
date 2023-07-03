@@ -22,7 +22,11 @@ class CartItem (var data: DbCartItem, var cartPos: Int) : Parcelable {
 
     fun linkModel(model: Model) {
         data.model = model.toCartRef()
-//        data.unit_price = model.data.last_buy?.price
+        val lastBuy = model.getLastBuy()
+        if ( lastBuy != null ) {
+            data.unit_price = lastBuy.price
+            data.amount = lastBuy.amount
+        }
     }
 
 

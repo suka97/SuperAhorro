@@ -56,6 +56,9 @@
         <argument
             android:name="parentItem"
             app:argType="com.suka.superahorro.dbclasses.Item" />
+        <action
+            android:id="@+id/action_listModelsFragment_to_modelDetailFragment"
+            app:destination="@id/modelDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/listShopsFragment"
@@ -65,5 +68,17 @@
         <action
             android:id="@+id/action_listShopsFragment_to_cartFragment"
             app:destination="@id/cartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/modelDetailFragment"
+        android:name="com.suka.superahorro.fragments.ModelDetail.ModelDetailFragment"
+        android:label="fragment_model_detail"
+        tools:layout="@layout/fragment_model_detail" >
+        <argument
+            android:name="parentItem"
+            app:argType="com.suka.superahorro.dbclasses.Item" />
+        <argument
+            android:name="modelRef"
+            app:argType="com.suka.superahorro.database.DbModelRef" />
     </fragment>
 </navigation>

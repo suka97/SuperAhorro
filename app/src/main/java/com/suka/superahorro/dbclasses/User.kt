@@ -1,5 +1,6 @@
 package com.suka.superahorro.dbclasses
 
+import com.suka.superahorro.database.DbUnit
 import com.suka.superahorro.database.DbUser
 import kotlin.random.Random
 
@@ -14,5 +15,11 @@ class User (var data: DbUser) {
         val newItem = Item(id=id, name=name)
         data.items.add(newItem.toRef())
         return newItem
+    }
+
+
+    fun getUnit(id: Int?): DbUnit? {
+        if ( id == null ) return null
+        return data.units.find { it.id == id }
     }
 }

@@ -2,11 +2,13 @@ package com.suka.superahorro.dbclasses
 
 import com.google.firebase.Timestamp
 import com.suka.superahorro.database.DbCartItem
+import com.suka.superahorro.database.DbItem
+import com.suka.superahorro.database.DbItemRef
 import com.suka.superahorro.database.DbModel
 import com.suka.superahorro.database.DbModelRef
 
 class Model(var data: DbModel) {
-    constructor(name: String) : this(DbModel(name=name))
+    constructor(name: String, parentItem: DbItemRef) : this(DbModel(name=name, item=parentItem))
 
     data class LastBuy(
         var date: Timestamp,
