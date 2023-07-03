@@ -10,6 +10,16 @@ data class DbUser(
     var id: String = "",
     var name: String = "",
     var items: MutableList<DbItemRef> = mutableListOf(),
+    var units: MutableList<DbUnit> = mutableListOf(),
+)
+
+
+data class DbUnit(
+    var id: Int = 0,
+    var name_short: String = "",
+    var name_long: String = "",
+    var sell_unit: String = "",
+    var sell_amount: Float = 0f,
 )
 
 
@@ -48,10 +58,13 @@ data class DbModel(
     var sku: String? = null,
     var name: String = "",
     var item: DbItemRef = DbItemRef(),
-    var unit: String? = null,
-    var base_unit: String? = null,
     var img: String? = null,
     var last_buy: LastBuy? = null,
+    var brand: String? = null,
+    var sale_mode: String? = null,  // "Lata 100g, 1kg, 5kg"
+    var base_unit: String? = null,
+    var content: Float? = null,
+    var note: String? = null,
 ) {
     data class LastBuy(
         var date: Timestamp = Timestamp.now(),
