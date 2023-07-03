@@ -59,19 +59,17 @@ data class DbModel(
     var name: String = "",
     var item: DbItemRef = DbItemRef(),
     var img: String? = null,
-    var last_buy: LastBuy? = null,
     var brand: String? = null,
     var sale_mode: String? = null,  // "Lata 100g, 1kg, 5kg"
-    var base_unit: String? = null,
+    var base_unit: Int? = null,
     var content: Float? = null,
     var note: String? = null,
-) {
-    data class LastBuy(
-        var date: Timestamp = Timestamp.now(),
-        var price: Float = 0f,
-        var amount: Float = 0f
-    )
-}
+
+    var hist_prices: MutableList<Float> = mutableListOf(),
+    var hist_dates: MutableList<Timestamp> = mutableListOf(),
+    var hist_carts: MutableList<String> = mutableListOf(),  // cart ids
+    var hist_amounts: MutableList<Float> = mutableListOf(),
+)
 
 
 @Parcelize
@@ -110,8 +108,11 @@ data class DbCartItem(
         var id: String = "",
         var sku: String? = null,
         var name: String = "",
-        var unit: String? = null,
-        var base_unit: String? = null,
-        var img: String? = null
+        var img: String? = null,
+        var brand: String? = null,
+        var sale_mode: String? = null,  // "Lata 100g, 1kg, 5kg"
+        var base_unit: Int? = null,
+        var content: Float? = null,
+        var note: String? = null,
     ) : Parcelable
 }

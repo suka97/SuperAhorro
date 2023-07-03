@@ -187,7 +187,12 @@ object Database {
     }
 
 
-    suspend fun setModelLastBuy(modelId: String, buyInfo: DbModel.LastBuy) {
-        modelsColl.document(modelId).update("last_buy", buyInfo).await()
+    suspend fun setModelLastBuy(modelId: String, buyInfo: Model.LastBuy) {
+        val model = getModelById(modelId)
+        model.data.hist_dates.add(buyInfo.date)
+        model.data.hist_prices.add(buyInfo.price)
+        model.data.hist_amounts.add(buyInfo.amount)
+        model.data.hist_carts.add(buyInfo.cart)
+        modelsColl.document(modelId).set(model.data).await()
     }
 }

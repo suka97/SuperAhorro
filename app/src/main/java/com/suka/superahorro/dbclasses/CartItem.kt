@@ -21,15 +21,8 @@ class CartItem (var data: DbCartItem, var cartPos: Int) : Parcelable {
 
 
     fun linkModel(model: Model) {
-        data.model = DbCartItem.Model(
-            id = model.data.id,
-            sku = model.data.sku,
-            name = model.data.name,
-            unit = model.data.unit,
-            base_unit = model.data.base_unit,
-            img = model.data.img
-        )
-        data.unit_price = model.data.last_buy?.price
+        data.model = model.toCartRef()
+//        data.unit_price = model.data.last_buy?.price
     }
 
 

@@ -59,10 +59,11 @@ class Cart(var data: DbCart): Parcelable {
             if ( item.model == null ) continue
             if ( item.unit_price == null ) continue
 
-            Database.setModelLastBuy(item.model!!.id, DbModel.LastBuy(
+            Database.setModelLastBuy(item.model!!.id, Model.LastBuy(
                 date = data.last_edit,
                 price = item.unit_price!!,
-                amount = item.amount!!
+                amount = item.amount!!,
+                cart = data.id
             ))
         }
     }
