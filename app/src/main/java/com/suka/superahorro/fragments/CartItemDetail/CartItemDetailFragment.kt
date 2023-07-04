@@ -7,6 +7,9 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -24,6 +27,7 @@ import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
 import com.suka.superahorro.R
+import com.suka.superahorro.database.DbModelRef
 import com.suka.superahorro.databinding.FragmentCartItemDetailBinding
 import com.suka.superahorro.dbclasses.Model
 import com.suka.superahorro.packages.REQUEST_IMAGE_CAPTURE
@@ -33,6 +37,7 @@ import com.suka.superahorro.packages.requestImage
 import com.suka.superahorro.packages.round
 import com.suka.superahorro.packages.setGlidePicture
 import com.suka.superahorro.packages.setLoading
+import com.suka.superahorro.packages.setText
 import com.suka.superahorro.packages.text
 import com.suka.superahorro.packages.toStringNull
 
@@ -40,12 +45,19 @@ import com.suka.superahorro.packages.toStringNull
 class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotifier {
     private val viewModel: CartItemDetailViewModel by viewModels()
     private  lateinit var b: FragmentCartItemDetailBinding
+    private lateinit var toolbarMenu: Menu
 
     private var autoCallbacksEnabled = true
 
     companion object {
         const val DIALOG_ADDMODEL_BYSKU = "Por SKU"
         const val DIALOG_ADDMODEL_BYNAME = "Por nombre"
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
 
@@ -79,6 +91,22 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
     }
 
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.toolbar_cart_item, menu)
+        toolbarMenu = menu
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = when(item.itemId) {
+            R.id.toolbar_cart_item_open_model -> {
+                goToModelDetail()
+            }
+            else -> ""
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
     // get image from camera
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -88,6 +116,21 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
                 setPicture(url)
             }
         }
+    }
+
+
+    fun goToModelDetail() {
+        val model: DbModelRef? = viewModel.cartItem.toModelRef()
+        if ( model == null ) {
+            Snackbar.make(requireView(), "No hay modelo seleccionado", Snackbar.LENGTH_SHORT).show()
+            return
+        }
+        
+        val action = CartItemDetailFragmentDirections.actionCartItemDetailFragmentToModelDetailFragment(
+            modelRef = model,
+            parentItem = viewModel.cartItem.toItemRef()
+        )
+        findNavController().navigate(action)
     }
 
 
@@ -109,12 +152,15 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
 
     fun initTexts() {
         val cartItem = viewModel.cartItem
-        b.nameTxt.editText?.setText(cartItem.data.name)
-        b.amountTxt.editText?.setText(cartItem.data.amount.toStringNull())
-        b.unitPriceTxt.editText?.setText(cartItem.data.unit_price.toStringNull())
-        b.totalPriceTxt.editText?.setText(cartItem.getTotalPrice().toStringNull())
-        b.modelNameTxt.editText?.setText(cartItem.data.model?.name)
-        b.modelSkuTxt.editText?.setText(cartItem.data.model?.sku)
+        b.nameTxt.setText(cartItem.data.name)
+        b.amountTxt.setText(cartItem.data.amount.toStringNull())
+        b.unitPriceTxt.setText(cartItem.data.unit_price.toStringNull())
+        b.totalPriceTxt.setText(cartItem.getTotalPrice().toStringNull())
+        b.modelNameTxt.setText(cartItem.data.model?.name)
+        b.modelSkuTxt.setText(cartItem.data.model?.sku)
+        b.modelBrandTxt.setText(cartItem.data.model?.brand)
+        b.modelSaleModeTxt.setText(cartItem.data.model?.sale_mode)
+        b.modelNoteTxt.setText(cartItem.data.model?.note)
         setPicture(cartItem.data.model?.img)
 
         // update callbacks

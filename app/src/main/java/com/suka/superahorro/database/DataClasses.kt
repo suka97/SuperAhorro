@@ -23,10 +23,11 @@ data class DbUnit(
 )
 
 
+@Parcelize
 data class DbItemRef(
     var id: Int = 0,
     var name: String = ""
-) {
+): Parcelable {
     override fun toString(): String {
         return name
     }

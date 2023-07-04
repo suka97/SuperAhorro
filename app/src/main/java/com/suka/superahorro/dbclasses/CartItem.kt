@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.suka.superahorro.database.Database
 import com.suka.superahorro.database.DbCartItem
 import com.suka.superahorro.database.DbItemRef
+import com.suka.superahorro.database.DbModelRef
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -34,6 +35,16 @@ class CartItem (var data: DbCartItem, var cartPos: Int) : Parcelable {
         return DbItemRef(
             id = data.id,
             name = data.name
+        )
+    }
+
+
+    fun toModelRef(): DbModelRef? {
+        if (data.model == null) return null
+        return DbModelRef(
+            id = data.model!!.id,
+            name = data.model!!.name,
+            sku = data.model!!.sku
         )
     }
 }

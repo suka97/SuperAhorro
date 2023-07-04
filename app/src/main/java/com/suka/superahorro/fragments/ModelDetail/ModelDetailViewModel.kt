@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.suka.superahorro.database.Database
 import com.suka.superahorro.database.DbCartItem
+import com.suka.superahorro.database.DbItemRef
 import com.suka.superahorro.database.DbModelRef
 import com.suka.superahorro.dbclasses.Item
 import com.suka.superahorro.dbclasses.Model
@@ -21,12 +22,12 @@ class ModelDetailViewModel : ViewModel() {
     lateinit var parentItem: Item
 
 
-    fun init(modelRef: DbModelRef, parentItem: Item, callback: ()->Unit) {
-        this.parentItem = parentItem
+    fun init(modelRef: DbModelRef, parentItemRef: DbItemRef, callback: ()->Unit) {
         viewModelScope.launch {
             isLoading.value = true
             user = async { Database.getUser() }.await()
             model = async { Database.getModelById(modelRef.id) }.await()
+            parentItem = async { Database.getItem(parentItemRef.id) }.await()
             isLoading.value = false
 
             callback()

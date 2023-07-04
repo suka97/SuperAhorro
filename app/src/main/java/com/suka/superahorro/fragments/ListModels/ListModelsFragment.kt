@@ -89,7 +89,7 @@ class ListModelsFragment : Fragment() {
             { position ->
                 val action =
                     ListModelsFragmentDirections.actionListModelsFragmentToModelDetailFragment(
-                        parentItem = viewModel.item,
+                        parentItem = viewModel.item.toRef(),
                         modelRef = viewModel.modelsList[position]
                     )
                 findNavController().navigate(action)

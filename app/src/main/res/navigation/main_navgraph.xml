@@ -28,6 +28,9 @@
         <argument
             android:name="itemPos"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_cartItemDetailFragment_to_modelDetailFragment"
+            app:destination="@id/modelDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/userFragment"
@@ -72,11 +75,11 @@
     <fragment
         android:id="@+id/modelDetailFragment"
         android:name="com.suka.superahorro.fragments.ModelDetail.ModelDetailFragment"
-        android:label="fragment_model_detail"
-        tools:layout="@layout/fragment_model_detail" >
+        android:label="Detalle Modelo"
+        tools:layout="@layout/fragment_model_detail">
         <argument
             android:name="parentItem"
-            app:argType="com.suka.superahorro.dbclasses.Item" />
+            app:argType="com.suka.superahorro.database.DbItemRef" />
         <argument
             android:name="modelRef"
             app:argType="com.suka.superahorro.database.DbModelRef" />
