@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.media.Image
 import android.os.Bundle
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -26,6 +27,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
+import com.stfalcon.imageviewer.StfalconImageViewer
 import com.suka.superahorro.R
 import com.suka.superahorro.database.DbModelRef
 import com.suka.superahorro.databinding.FragmentCartItemDetailBinding
@@ -125,7 +127,7 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
             Snackbar.make(requireView(), "No hay modelo seleccionado", Snackbar.LENGTH_SHORT).show()
             return
         }
-        
+
         val action = CartItemDetailFragmentDirections.actionCartItemDetailFragmentToModelDetailFragment(
             modelRef = model,
             parentItem = viewModel.cartItem.toItemRef()

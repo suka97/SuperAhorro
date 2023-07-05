@@ -1,13 +1,17 @@
 package com.suka.superahorro.fragments.ModelDetail
 
+import android.media.Image
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.stfalcon.imageviewer.StfalconImageViewer
 import com.suka.superahorro.R
 import com.suka.superahorro.databinding.FragmentCartItemDetailBinding
 import com.suka.superahorro.databinding.FragmentModelDetailBinding
@@ -38,6 +42,7 @@ class ModelDetailFragment : Fragment() {
         val args = ModelDetailFragmentArgs.fromBundle(requireArguments())
         viewModel.init(args.modelRef, args.parentItem) {
             initTexts()
+            initImageFullscreen()
         }
 
         initViewModelObservers()
@@ -54,6 +59,17 @@ class ModelDetailFragment : Fragment() {
         b.saleModeTxt.setText(viewModel.model.data.sale_mode)
         b.noteTxt.setText(viewModel.model.data.note)
         setPicture(viewModel.model.data.img)
+    }
+
+
+    fun initImageFullscreen() {
+        b.modelImg.setOnClickListener {
+            if (viewModel.model.data.img == null) return@setOnClickListener
+            val images = listOf(viewModel.model.data.img)
+            StfalconImageViewer.Builder<String>(context, images) { view: ImageView, image: String ->
+                Glide.with(requireContext()).load(image).into(view)
+            }.show()
+        }
     }
 
 
