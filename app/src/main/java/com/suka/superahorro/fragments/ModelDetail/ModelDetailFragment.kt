@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.stfalcon.imageviewer.StfalconImageViewer
 import com.suka.superahorro.R
@@ -42,6 +43,7 @@ class ModelDetailFragment : Fragment() {
         val args = ModelDetailFragmentArgs.fromBundle(requireArguments())
         viewModel.init(args.modelRef, args.parentItem) {
             initTexts()
+            initButtons()
         }
 
         initViewModelObservers()
@@ -80,6 +82,28 @@ class ModelDetailFragment : Fragment() {
 //        }
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             setLoading(isLoading)
+        }
+    }
+
+
+    fun initButtons() {
+        val choices = viewModel.user.getUnitsNames()
+        var checkedItem = 0
+
+        b.baseUnitTxt.editText?.setOnClickListener() {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Seleccione la unidad")
+                .setNeutralButton("Cancelar") { dialog, which ->
+                    // Respond to neutral button press
+                }
+                .setPositiveButton("Ok") { dialog, which ->
+                    Snackbar.make(b.root, checkedItem.toString(), Snackbar.LENGTH_SHORT).show()
+                }
+                // Single-choice items (initialized with checked item)
+                .setSingleChoiceItems(choices, checkedItem) { dialog, which ->
+                    checkedItem = which
+                }
+                .show()
         }
     }
 

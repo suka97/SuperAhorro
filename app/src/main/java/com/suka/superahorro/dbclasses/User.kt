@@ -22,4 +22,9 @@ class User (var data: DbUser) {
         if ( id == null ) return null
         return data.units.find { it.id == id }
     }
+
+
+    fun getUnitsNames(): Array<String> {
+        return data.units.map { it.name_long }.toTypedArray()
+    }
 }
