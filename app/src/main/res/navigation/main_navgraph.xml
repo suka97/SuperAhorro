@@ -84,4 +84,9 @@
             android:name="modelRef"
             app:argType="com.suka.superahorro.database.DbModelRef" />
     </fragment>
+    <fragment
+        android:id="@+id/listUnitsFragment"
+        android:name="com.suka.superahorro.fragments.ListUnits.ListUnitsFragment"
+        android:label="Unidades"
+        tools:layout="@layout/fragment_list_units" />
 </navigation>

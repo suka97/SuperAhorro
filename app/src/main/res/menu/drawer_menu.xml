@@ -15,9 +15,9 @@
             android:icon="@drawable/icon_items"
             android:title="Items" />
 
-<!--        <item-->
-<!--            android:id="@+id/listModelsFragment"-->
-<!--            android:title="Modelos" />-->
+        <item
+            android:id="@+id/listUnitsFragment"
+            android:title="Unidades" />
 
         <item
             android:id="@+id/userFragment"

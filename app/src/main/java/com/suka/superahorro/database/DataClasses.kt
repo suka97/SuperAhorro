@@ -19,7 +19,7 @@ data class DbUnit(
     var name_short: String = "",
     var name_long: String = "",
     var sell_unit: String = "",
-    var sell_amount: Float = 0f,
+    var sell_mult: Float = 0f,
 )
 
 
