@@ -1,24 +1,16 @@
 package com.suka.superahorro.fragments.ModelDetail
 
-import android.media.Image
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
-import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.stfalcon.imageviewer.StfalconImageViewer
 import com.suka.superahorro.R
-import com.suka.superahorro.databinding.FragmentCartItemDetailBinding
 import com.suka.superahorro.databinding.FragmentModelDetailBinding
-import com.suka.superahorro.fragments.CartItemDetail.CartItemDetailFragmentArgs
-import com.suka.superahorro.fragments.CartItemDetail.CartItemDetailViewModel
-import com.suka.superahorro.packages.round
 import com.suka.superahorro.packages.setGlidePicture
 import com.suka.superahorro.packages.setLoading
 import com.suka.superahorro.packages.setText
@@ -87,8 +79,9 @@ class ModelDetailFragment : Fragment() {
 
 
     fun initButtons() {
-        val choices = viewModel.user.getUnitsNames()
-        var checkedItem = 0
+        val units = viewModel.user.data.units
+        var selecIndex = units.indexOfFirst { it.id == viewModel.model.data.base_unit }
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_single_choice, units)
 
         b.baseUnitTxt.editText?.setOnClickListener() {
             MaterialAlertDialogBuilder(requireContext())
@@ -97,11 +90,12 @@ class ModelDetailFragment : Fragment() {
                     // Respond to neutral button press
                 }
                 .setPositiveButton("Ok") { dialog, which ->
-                    Snackbar.make(b.root, checkedItem.toString(), Snackbar.LENGTH_SHORT).show()
+                    viewModel.model.data.base_unit = units[selecIndex].id
+                    initTexts()
                 }
                 // Single-choice items (initialized with checked item)
-                .setSingleChoiceItems(choices, checkedItem) { dialog, which ->
-                    checkedItem = which
+                .setSingleChoiceItems(adapter, selecIndex) { dialog, which ->
+                    selecIndex = which
                 }
                 .show()
         }
