@@ -32,6 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Cantidad"
+            app:expandedHintEnabled="false"
             android:padding="2dp"
             app:suffixText="kg">
 
@@ -52,6 +53,7 @@
             android:layout_height="wrap_content"
             android:hint="Precio Unitario"
             android:padding="2dp"
+            app:expandedHintEnabled="false"
             app:suffixText="$/kg">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -60,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="number|numberDecimal"
                 android:selectAllOnFocus="true"
-                android:text="100.00" />
+                android:text="" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,6 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Precio Total"
+            app:expandedHintEnabled="false"
             android:padding="2dp"
             app:suffixText="$">
 
@@ -78,8 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:selectAllOnFocus="true"
-                android:text="2000.00" />
+                android:selectAllOnFocus="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
