@@ -116,6 +116,7 @@
         android:layout_height="wrap_content"
         android:hint="Unidad Base"
         android:padding="2dp"
+        android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/content_txt"
         app:layout_constraintTop_toBottomOf="@id/brand_txt">
@@ -125,6 +126,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:editable="false"
+            android:focusable="false"
+            android:clickable="true"
             android:text="g" />
     </com.google.android.material.textfield.TextInputLayout>
 
