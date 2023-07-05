@@ -27,4 +27,24 @@ class ListUnitsViewModel : ViewModel() {
             callback()
         }
     }
+
+
+    fun saveUnits(callback: ()->Unit) {
+        viewModelScope.launch {
+            isLoading.value = true
+            user.data.units = units
+            Database.saveUser(user)
+            isLoading.value = false
+
+            callback()
+        }
+    }
+
+
+    fun addNewUnit(nameLong: String, callback: ()->Unit) {
+        viewModelScope.launch {
+            units.add(DbUnit(name_long = nameLong))
+            callback()
+        }
+    }
 }

@@ -1,5 +1,7 @@
 package com.suka.superahorro.adapters
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.internal.TextWatcherAdapter
 import com.google.android.material.textfield.TextInputLayout
 import com.suka.superahorro.R
 import com.suka.superahorro.database.DbItemRef
@@ -26,13 +29,56 @@ class UnitAdapter (
             this.view = v
         }
 
-        fun getCard() : CardView {
-            return view.findViewById(R.id.cardItem)
+        fun setTexts (unit: DbUnit) {
+            val nameLong: TextInputLayout = view.findViewById(R.id.nameLong_txt)
+            nameLong.setText(unit.name_long)
+
+            val nameShort: TextInputLayout = view.findViewById(R.id.nameShort_txt)
+            nameShort.setText(unit.name_short)
+
+            val sellUnit: TextInputLayout = view.findViewById(R.id.sellUnit_txt)
+            sellUnit.setText(unit.sell_unit)
+
+            val sellMult: TextInputLayout = view.findViewById(R.id.sellMult_txt)
+            sellMult.setText(unit.sell_mult.toString())
         }
 
-        fun setNameLong (name: String?) {
-            var txtName: TextInputLayout = view.findViewById(R.id.nameLong_txt)
-            txtName.setText(name)
+
+        fun setTextWatchers(callback: (unit: DbUnit)->Unit) {
+            val nameLong: TextInputLayout = view.findViewById(R.id.nameLong_txt)
+            nameLong.editText?.addTextChangedListener(SimpleTextWatcher {
+                callback(getUnit())
+            })
+
+            val nameShort: TextInputLayout = view.findViewById(R.id.nameShort_txt)
+            nameShort.editText?.addTextChangedListener(SimpleTextWatcher {
+                callback(getUnit())
+            })
+
+            val sellUnit: TextInputLayout = view.findViewById(R.id.sellUnit_txt)
+            sellUnit.editText?.addTextChangedListener(SimpleTextWatcher {
+                callback(getUnit())
+            })
+
+            val sellMult: TextInputLayout = view.findViewById(R.id.sellMult_txt)
+            sellMult.editText?.addTextChangedListener(SimpleTextWatcher {
+                callback(getUnit())
+            })
+        }
+
+
+        fun getUnit(): DbUnit {
+            val nameLong: TextInputLayout = view.findViewById(R.id.nameLong_txt)
+            val nameShort: TextInputLayout = view.findViewById(R.id.nameShort_txt)
+            val sellUnit: TextInputLayout = view.findViewById(R.id.sellUnit_txt)
+            val sellMult: TextInputLayout = view.findViewById(R.id.sellMult_txt)
+
+            return DbUnit(
+                name_long = nameLong.text(),
+                name_short = nameShort.text(),
+                sell_unit = sellUnit.text(),
+                sell_mult = sellMult.number(),
+            )
         }
 
     }
@@ -53,8 +99,9 @@ class UnitAdapter (
     }
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
-        val unit = units[position]
-
-        holder.setNameLong(unit.name_long)
+        holder.setTexts(units[position])
+        holder.setTextWatchers {
+            units[position] = it
+        }
     }
 }

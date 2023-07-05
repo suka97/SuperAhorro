@@ -25,12 +25,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:hint="Nombre Completo"
+                app:expandedHintEnabled="false"
                 android:padding="2dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/TextField_Input1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
                     android:text="gramos" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -41,6 +43,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:hint="Nombre Corto"
+                app:expandedHintEnabled="false"
                 android:padding="2dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -64,12 +67,14 @@
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:hint="Multiplicador Venta"
+                app:expandedHintEnabled="false"
                 android:padding="2dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/TextField_Input1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="number|numberDecimal"
                     android:text="1000" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -80,12 +85,14 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:hint="Unid Venta"
+                app:expandedHintEnabled="false"
                 android:padding="2dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/TextField_Input1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
                     android:text="kg" />
             </com.google.android.material.textfield.TextInputLayout>
 

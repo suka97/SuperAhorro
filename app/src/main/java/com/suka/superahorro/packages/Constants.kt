@@ -43,12 +43,12 @@ fun Float?.toStringNull(): String {
 }
 
 
-fun TextInputLayout.text(): String {
-    return this.editText?.text.toString()
+fun TextInputLayout.text(): String? {
+    return this.editText?.text?.toString()
 }
 
 fun TextInputLayout.number(): Float? {
-    return this.editText?.text.toString().toFloatOrNull()
+    return this.text()?.toFloatOrNull()
 }
 
 fun TextInputLayout.setText(text: String?) {
