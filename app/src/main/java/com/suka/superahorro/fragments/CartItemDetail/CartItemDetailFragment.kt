@@ -177,16 +177,9 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
             Snackbar.make(b.root, "Icon clicked", Snackbar.LENGTH_SHORT).show()
         }
 
-        b.modelImg.setOnClickListener{
-            if (viewModel.isLoading.value == true) return@setOnClickListener
-            if (viewModel.cartItem.data.model == null) {
-                Snackbar.make(b.root, "Debe haber un modelo seleccionado", Snackbar.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            if (viewModel.cartItem.data.model!!.img == null) {
-                requestImage()
-            }
-            else {
+        b.modelImg.setOnLongClickListener(){
+            if (viewModel.isLoading.value == true) return@setOnLongClickListener true
+            if (viewModel.cartItem.data.model != null) {
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle("Eliminar imagen")
                     .setMessage("¿Está seguro que desea eliminar la imagen?")
@@ -197,6 +190,7 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
                     }
                     .show()
             }
+            true
         }
 
         b.addModelBtn.setOnClickListener {
@@ -292,6 +286,11 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
 
     fun setPicture (picture_url: String?) {
         setGlidePicture(url=picture_url, imgView=b.modelImg, placeholder=R.drawable.default_item,
+            onNullClick = {
+                if (viewModel.cartItem.data.model == null)
+                    Snackbar.make(b.root, "Debe haber un modelo seleccionado", Snackbar.LENGTH_SHORT).show()
+                else requestImage()
+            },
             onSuccess = {
                 viewModel.isImgLoading.value = false
             },

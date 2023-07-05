@@ -18,6 +18,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import com.stfalcon.imageviewer.StfalconImageViewer
 import com.suka.superahorro.R
 import com.suka.superahorro.activities.MainActivity
 
@@ -101,9 +102,11 @@ fun Fragment.setLoading(isLoading: Boolean) {
 }
 
 
-fun setGlidePicture(imgView: ImageView, url: String?, placeholder: Int, onSuccess: (()->Unit)? = null, onError: ((GlideException?)->Unit)? = null) {
-    if ( url == null )
+fun setGlidePicture(imgView: ImageView, url: String?, placeholder: Int, onNullClick: ((View)->Unit)? = null, onSuccess: (()->Unit)? = null, onError: ((GlideException?)->Unit)? = null) {
+    if ( url == null ) {
         imgView.setImageResource(R.drawable.default_item)
+        imgView.setOnClickListener(onNullClick)
+    }
     else {
         Glide.with(imgView.context)
             .load(url)
@@ -119,5 +122,12 @@ fun setGlidePicture(imgView: ImageView, url: String?, placeholder: Int, onSucces
                 }
             })
             .into(imgView)
+
+        imgView.setOnClickListener {
+            val images = listOf(url)
+            StfalconImageViewer.Builder<String>(imgView.context, images) { view: ImageView, image: String ->
+                Glide.with(view.context).load(image).into(view)
+            }.show()
+        }
     }
 }
