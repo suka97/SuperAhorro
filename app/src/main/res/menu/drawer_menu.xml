@@ -17,6 +17,7 @@
 
         <item
             android:id="@+id/listUnitsFragment"
+            android:icon="@drawable/icon_units"
             android:title="Unidades" />
 
         <item
