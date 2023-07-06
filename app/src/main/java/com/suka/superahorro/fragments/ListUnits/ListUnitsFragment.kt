@@ -90,7 +90,7 @@ class ListUnitsFragment : Fragment() {
 
 
     private fun initAdapter() {
-        adapter = UnitAdapter(viewModel.units)
+        adapter = UnitAdapter(viewModel.user.data.units)
         b.recUnits.layoutManager = LinearLayoutManager(context)
         b.recUnits.adapter = adapter
     }

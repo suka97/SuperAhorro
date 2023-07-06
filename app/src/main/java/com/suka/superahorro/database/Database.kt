@@ -74,7 +74,7 @@ object Database {
     }
 
 
-    suspend fun getItem(id: Int): Item {
+    suspend fun getItem(id: Long): Item {
         val item = itemsColl.document(id.toString()).get().await().toObject<DbItem>() ?: throw Exception("Item not found")
         return Item(item)
     }
@@ -174,7 +174,7 @@ object Database {
     }
 
 
-    suspend fun deleteItem(itemId: Int) {
+    suspend fun deleteItem(itemId: Long) {
         // reset model's parents
         val item = getItem(itemId)
         for ( modelRef in item.data.models ) {

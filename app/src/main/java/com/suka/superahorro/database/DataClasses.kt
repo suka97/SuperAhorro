@@ -15,7 +15,7 @@ data class DbUser(
 
 
 data class DbUnit(
-    var id: Int = 0,
+    var id: Long = 1,
     var name_short: String = "",
     var name_long: String = "",
     var sell_unit: String = "",
@@ -29,7 +29,7 @@ data class DbUnit(
 
 @Parcelize
 data class DbItemRef(
-    var id: Int = 0,
+    var id: Long = 0,
     var name: String = ""
 ): Parcelable {
     override fun toString(): String {
@@ -40,7 +40,7 @@ data class DbItemRef(
 
 @Parcelize
 data class DbItem(
-    var id: Int = 0,
+    var id: Long = 0,
     var name: String = "",
     var models: MutableList<DbModelRef> = mutableListOf(),
 ): Parcelable
@@ -66,7 +66,7 @@ data class DbModel(
     var img: String? = null,
     var brand: String? = null,
     var sale_mode: String? = null,  // "Lata 100g, 1kg, 5kg"
-    var base_unit: Int? = null,
+    var base_unit: Long? = null,
     var content: Float? = null,
     var note: String? = null,
 
@@ -102,7 +102,7 @@ data class DbCart(
 
 @Parcelize
 data class DbCartItem(
-    var id: Int = 0,
+    var id: Long = 0,
     var name: String = "",
     var model: Model? = null,
     var amount: Float? = null,
@@ -116,7 +116,7 @@ data class DbCartItem(
         var img: String? = null,
         var brand: String? = null,
         var sale_mode: String? = null,  // "Lata 100g, 1kg, 5kg"
-        var base_unit: Int? = null,
+        var base_unit: Long? = null,
         var content: Float? = null,
         var note: String? = null,
     ) : Parcelable

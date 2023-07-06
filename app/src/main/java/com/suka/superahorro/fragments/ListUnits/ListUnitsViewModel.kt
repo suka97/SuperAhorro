@@ -15,13 +15,11 @@ class ListUnitsViewModel : ViewModel() {
     var isLoading = MutableLiveData<Boolean>(false)
 
     lateinit var user: User
-    lateinit var units: MutableList<DbUnit>
 
     fun init(callback: ()->Unit) {
         viewModelScope.launch {
             isLoading.value = true
             user = async { Database.getUser() }.await()
-            units = user.data.units
             isLoading.value = false
 
             callback()
@@ -32,7 +30,6 @@ class ListUnitsViewModel : ViewModel() {
     fun saveUnits(callback: ()->Unit) {
         viewModelScope.launch {
             isLoading.value = true
-            user.data.units = units
             Database.saveUser(user)
             isLoading.value = false
 
@@ -43,7 +40,7 @@ class ListUnitsViewModel : ViewModel() {
 
     fun addNewUnit(nameLong: String, callback: ()->Unit) {
         viewModelScope.launch {
-            units.add(DbUnit(name_long = nameLong))
+            user.addNewUnit(nameLong)
             callback()
         }
     }

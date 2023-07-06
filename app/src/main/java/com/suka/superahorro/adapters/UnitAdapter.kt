@@ -25,11 +25,14 @@ class UnitAdapter (
 ) : RecyclerView.Adapter<UnitAdapter.ItemHolder>() {
     class ItemHolder (v: View) : RecyclerView.ViewHolder(v) {
         private var view: View
+        private lateinit var unit: DbUnit
         init {
             this.view = v
         }
 
         fun setTexts (unit: DbUnit) {
+            this.unit = unit
+
             val nameLong: TextInputLayout = view.findViewById(R.id.nameLong_txt)
             nameLong.setText(unit.name_long)
 
@@ -73,12 +76,11 @@ class UnitAdapter (
             val sellUnit: TextInputLayout = view.findViewById(R.id.sellUnit_txt)
             val sellMult: TextInputLayout = view.findViewById(R.id.sellMult_txt)
 
-            return DbUnit(
-                name_long = nameLong.text(),
-                name_short = nameShort.text(),
-                sell_unit = sellUnit.text(),
-                sell_mult = sellMult.number(),
-            )
+            unit.name_long = nameLong.text()
+            unit.name_short = nameShort.text()
+            unit.sell_unit = sellUnit.text()
+            unit.sell_mult = sellMult.number()
+            return unit
         }
 
     }

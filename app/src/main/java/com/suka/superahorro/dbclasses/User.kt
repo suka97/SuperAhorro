@@ -8,9 +8,9 @@ class User (var data: DbUser) {
     constructor(id: String) : this(DbUser(id=id))
 
     fun addNewItem(name: String): Item {
-        var id = Random.nextInt(from = 10000, until = 99999)
+        var id = Random.nextLong(from = 10000, until = 99999)
         while (data.items.any { it.id == id }) {
-            id = Random.nextInt(from = 10000, until = 99999)
+            id = Random.nextLong(from = 10000, until = 99999)
         }
         val newItem = Item(id=id, name=name)
         data.items.add(newItem.toRef())
@@ -18,13 +18,19 @@ class User (var data: DbUser) {
     }
 
 
-    fun getUnit(id: Int?): DbUnit? {
-        if ( id == null ) return null
-        return data.units.find { it.id == id }
+    fun addNewUnit(nameLong: String): DbUnit {
+        var id = Random.nextLong(from = 100, until = 200)
+        while (data.units.any { it.id == id }) {
+            id = Random.nextLong(from = 100, until = 200)
+        }
+        val newUnit = DbUnit(id=id, name_long=nameLong)
+        data.units.add(newUnit)
+        return newUnit
     }
 
 
-    fun getUnitsNames(): Array<String> {
-        return data.units.map { it.name_long }.toTypedArray()
+    fun getUnit(id: Long?): DbUnit? {
+        if ( id == null ) return null
+        return data.units.find { it.id == id }
     }
 }
