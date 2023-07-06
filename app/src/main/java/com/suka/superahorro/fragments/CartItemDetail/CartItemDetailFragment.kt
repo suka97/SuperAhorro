@@ -1,6 +1,7 @@
 package com.suka.superahorro.fragments.CartItemDetail
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -25,6 +26,7 @@ import com.suka.superahorro.database.DbModelRef
 import com.suka.superahorro.databinding.FragmentCartItemDetailBinding
 import com.suka.superahorro.packages.REQUEST_IMAGE_CAPTURE
 import com.suka.superahorro.packages.createAutoCompleteDialog
+import com.suka.superahorro.packages.createInputDialog
 import com.suka.superahorro.packages.number
 import com.suka.superahorro.packages.numberOrNull
 import com.suka.superahorro.packages.requestImage
@@ -217,10 +219,10 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
             .setItems(items) { dialog, which ->
                 when(items[which]) {
                     DIALOG_ADDMODEL_BYSKU -> {
-                        scanBarcode{
-                            viewModel.getModelBySku(it) { model ->
+                        scanBarcode{ sku: String ->
+                            viewModel.getModelBySku(sku) { model ->
                                 if ( model == null ) {
-                                    Snackbar.make(b.root, "No se encontró el modelo", Snackbar.LENGTH_SHORT).show()
+                                    newModelWithSku(sku)
                                 }
                                 else {
                                     viewModel.cartItem.linkModel(model)
@@ -240,6 +242,20 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
                             }
                         )
                     }
+                }
+            }
+            .show()
+    }
+
+
+    fun newModelWithSku(sku: String) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("SKU no encontrado")
+            .setMessage("No se encontró un modelo con el SKU $sku. ¿Desea crear uno nuevo?")
+            .setPositiveButton("Crear") { dialog, which ->
+                val dialog = Dialog(requireActivity())
+                createInputDialog(dialog, "Nombre del modelo", "") { name ->
+                    viewModel.linkNewModel(name, sku)
                 }
             }
             .show()
