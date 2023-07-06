@@ -117,6 +117,13 @@ class CartFragment : Fragment() {
             R.id.toolbar_cart_close -> {
                 onCartClose()
             }
+            R.id.toolbar_cart_sort -> {
+                if ( viewModel.sortPattern == CartItemAdapter.SortPattern.NONE )
+                    viewModel.sortPattern = CartItemAdapter.SortPattern.PRICE
+                else
+                    viewModel.sortPattern = CartItemAdapter.SortPattern.NONE
+                adapter.sort(viewModel.sortPattern)
+            }
             else -> ""
         }
         return super.onOptionsItemSelected(item)
@@ -145,7 +152,8 @@ class CartFragment : Fragment() {
                 }
                 val dialog = builder.create()
                 dialog.show()
-            }
+            },
+            sortPattern = viewModel.sortPattern
         )
         b.recCartItems.layoutManager = LinearLayoutManager(context)
         b.recCartItems.adapter = adapter

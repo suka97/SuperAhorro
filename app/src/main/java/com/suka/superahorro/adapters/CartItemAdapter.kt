@@ -1,5 +1,6 @@
 package com.suka.superahorro.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +12,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.suka.superahorro.R
 import com.suka.superahorro.dbclasses.Cart
+import com.suka.superahorro.dbclasses.CartItem
 import com.suka.superahorro.packages.*
 
 class CartItemAdapter (
     var cart: Cart,
     var onItemClick : (Int) -> Unit,
-    var onItemDelete : (Int) -> Unit
+    var onItemDelete : (Int) -> Unit,
+    sortPattern: SortPattern = SortPattern.NONE
 ) : RecyclerView.Adapter<CartItemAdapter.ItemHolder>() {
+    enum class SortPattern {
+        NONE, PRICE, NAME
+    }
+
+    init {
+        sort(sortPattern)
+    }
+
+
     class ItemHolder (v: View) : RecyclerView.ViewHolder(v) {
         private var view: View
         init {
@@ -72,6 +84,8 @@ class CartItemAdapter (
 
     }
 
+    private var sortedIndexes: List<Int>? = null
+
     fun notifyDeleteItem (position: Int) {
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, cart.size())
@@ -92,18 +106,50 @@ class CartItemAdapter (
     }
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
-        val item = cart.getItem(position)
+        val index = sortedIndexes?.get(position) ?: position
+        val item = cart.getItem(index)
 
         holder.setPicture(item.data.model?.img)
         holder.setName(item.data.name)
         holder.setPrice(item.getTotalPrice())
         holder.setAmount(item.data.amount)
         holder.getCard().setOnClickListener() {
-            onItemClick(position)
+            onItemClick(index)
         }
         holder.getCard().setOnLongClickListener() {
             holder.onCardViewLongClick(onItemDelete)
             true
         }
+    }
+
+    fun sort(sortPattern: SortPattern) {
+        when (sortPattern) {
+            SortPattern.NONE -> {
+                sortedIndexes = null
+            }
+            SortPattern.PRICE -> sortByPrice()
+            SortPattern.NAME -> sortByName()
+        }
+        notifyDataSetChanged()
+    }
+
+    private fun sortByPrice() {
+        val sortedItemsWithIndex = cart.data.items.withIndex()
+            .sortedBy { it.value.unit_price }
+            .map { it.value to it.index }
+        // Obtener solo los elementos ordenados en una nueva lista
+        val sortedItems = sortedItemsWithIndex.map { it.first }
+        // Obtener los nuevos índices en una lista separada
+        sortedIndexes = sortedItemsWithIndex.map { it.second }
+    }
+
+    private fun sortByName() {
+        val sortedItemsWithIndex = cart.data.items.withIndex()
+            .sortedBy { it.value.name }
+            .map { it.value to it.index }
+        // Obtener solo los elementos ordenados en una nueva lista
+        val sortedItems = sortedItemsWithIndex.map { it.first }
+        // Obtener los nuevos índices en una lista separada
+        sortedIndexes = sortedItemsWithIndex.map { it.second }
     }
 }

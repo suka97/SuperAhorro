@@ -3,6 +3,7 @@ package com.suka.superahorro.fragments.Cart
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.suka.superahorro.adapters.CartItemAdapter
 import com.suka.superahorro.database.Database
 import com.suka.superahorro.database.DbItemRef
 import com.suka.superahorro.dbclasses.Cart
@@ -24,6 +25,8 @@ class CartViewModel : ViewModel() {
     var onItemsChange: (() -> Unit)? = null
     lateinit var cart: Cart
     lateinit var user: User
+    var sortPattern: CartItemAdapter.SortPattern = CartItemAdapter.SortPattern.NONE
+
 
     // handle courritine exceptions
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
