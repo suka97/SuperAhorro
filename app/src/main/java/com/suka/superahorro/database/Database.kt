@@ -11,6 +11,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import com.suka.superahorro.dbclasses.Cart
+import com.suka.superahorro.dbclasses.DbGlobals
 import com.suka.superahorro.dbclasses.Item
 import com.suka.superahorro.dbclasses.Model
 import com.suka.superahorro.dbclasses.User
@@ -40,6 +41,7 @@ object Database {
 
     suspend fun saveUser(user: User) {
         userDoc.set(user.data).await()
+        DbGlobals.user = user
     }
 
 
@@ -63,8 +65,7 @@ object Database {
 
 
     suspend fun getUser(): User {
-        val user = userDoc.get().await().toObject<DbUser>() ?: throw Exception("User not found")
-        return User(user)
+        return DbGlobals.user
     }
 
 

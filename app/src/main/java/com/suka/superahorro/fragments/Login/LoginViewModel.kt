@@ -4,9 +4,13 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.suka.superahorro.database.Database
+import com.suka.superahorro.dbclasses.DbGlobals
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel() {
     val isLoading = MutableLiveData<Boolean>(false)
@@ -54,9 +58,13 @@ class LoginViewModel : ViewModel() {
             loginError(LoginResult.EMAIL_NOT_VERIFIED); return
         }
 
-//        isLoading.value = false
-        Database.init()
-        loginListener(LoginResult.SUCCESS)
+        viewModelScope.launch {
+            Database.init()
+            async { DbGlobals.init() }.await()
+
+            // isLoading.value = false
+            loginListener(LoginResult.SUCCESS)
+        }
     }
 
 
