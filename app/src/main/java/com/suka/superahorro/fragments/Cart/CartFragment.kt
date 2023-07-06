@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -13,6 +14,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ImageButton
+import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -110,6 +113,9 @@ class CartFragment : Fragment() {
         val id = when(item.itemId) {
             R.id.toolbar_cart_add -> {
                 isAdding.value = !isAdding.value!!
+            }
+            R.id.toolbar_cart_sort -> {
+                sortItems(item)
             }
             R.id.toolbar_cart_scan -> {
                 onButtonScanClick()
@@ -264,6 +270,34 @@ class CartFragment : Fragment() {
                 }
             }
             .show()
+    }
+
+
+    fun sortItems(menuItem: MenuItem) {
+        val popupMenu = PopupMenu(requireContext(), view, Gravity.BOTTOM)
+        popupMenu.inflate(R.menu.dropdown_sort_cart)
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.sort_by_name -> {
+                    viewModel.sortPattern = CartItemAdapter.SortPattern.NAME
+                    adapter.sort(viewModel.sortPattern)
+                    true
+                }
+                R.id.sort_by_price -> {
+                    viewModel.sortPattern = CartItemAdapter.SortPattern.PRICE
+                    adapter.sort(viewModel.sortPattern)
+                    true
+                }
+                R.id.sort_by_none -> {
+                    viewModel.sortPattern = CartItemAdapter.SortPattern.NONE
+                    adapter.sort(viewModel.sortPattern)
+                    true
+                }
+                else -> false
+                }
+
+        }
+        popupMenu.show()
     }
 
 

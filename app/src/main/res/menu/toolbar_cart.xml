@@ -7,13 +7,14 @@
         android:icon="@drawable/icon_add"
         app:showAsAction="always" />
     <item
-        android:id="@+id/toolbar_cart_sort"
-        android:title="Sort"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/toolbar_cart_scan"
         android:title="Escanear"
         android:icon="@drawable/icon_barcode"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/toolbar_cart_sort"
+        android:title="Sort"
+        android:icon="@drawable/icon_sort"
         app:showAsAction="always" />
     <item
         android:id="@+id/toolbar_cart_delete"
