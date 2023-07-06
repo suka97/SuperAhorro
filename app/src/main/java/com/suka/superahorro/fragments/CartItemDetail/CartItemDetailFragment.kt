@@ -3,8 +3,6 @@ package com.suka.superahorro.fragments.CartItemDetail
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-import android.media.Image
 import android.os.Bundle
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -13,32 +11,27 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
-import com.stfalcon.imageviewer.StfalconImageViewer
 import com.suka.superahorro.R
 import com.suka.superahorro.database.DbModelRef
 import com.suka.superahorro.databinding.FragmentCartItemDetailBinding
-import com.suka.superahorro.dbclasses.Model
 import com.suka.superahorro.packages.REQUEST_IMAGE_CAPTURE
 import com.suka.superahorro.packages.createAutoCompleteDialog
 import com.suka.superahorro.packages.number
+import com.suka.superahorro.packages.numberOrNull
 import com.suka.superahorro.packages.requestImage
 import com.suka.superahorro.packages.round
 import com.suka.superahorro.packages.setGlidePicture
 import com.suka.superahorro.packages.setLoading
+import com.suka.superahorro.packages.setNumber
 import com.suka.superahorro.packages.setText
 import com.suka.superahorro.packages.text
 import com.suka.superahorro.packages.toStringNull
@@ -160,6 +153,8 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
         b.totalPriceTxt.setText(cartItem.getTotalPrice().toStringNull())
         b.modelNameTxt.setText(cartItem.data.model?.name)
         b.modelSkuTxt.setText(cartItem.data.model?.sku)
+        b.modelContentTxt.setText(cartItem.data.model?.content.toStringNull())
+        b.modelUnitShortTxt.setText(cartItem.getBaseUnit())
         b.modelBrandTxt.setText(cartItem.data.model?.brand)
         b.modelSaleModeTxt.setText(cartItem.data.model?.sale_mode)
         b.modelNoteTxt.setText(cartItem.data.model?.note)
@@ -169,6 +164,10 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
         b.amountTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
         b.unitPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
         b.totalPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdateTotal))
+
+        // set units
+        b.amountTxt.suffixText = cartItem.getMeasureUnit()
+        b.unitPriceTxt.suffixText = cartItem.getUnitPrice()
     }
 
 
@@ -248,39 +247,28 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
 
 
     fun onUpdateTotal(){
-        val amount: Float? = b.amountTxt.number()
-        val total: Float? = b.totalPriceTxt.number()
-        if(amount != null && total != null){
-            val price = (total / amount).round(2)
-            autoCallbacksEnabled = false
-            b.unitPriceTxt.editText?.setText(price.toString())
-            autoCallbacksEnabled = true
-        }
+        autoCallbacksEnabled = false
+        viewModel.cartItem.calcUnitPriceFromTotal(b.totalPriceTxt.numberOrNull())
+        b.unitPriceTxt.setNumber(viewModel.cartItem.data.unit_price)
+        autoCallbacksEnabled = true
 
         applyChanges()
     }
+
 
     fun onUpdatePriceAmount(){
-        val amount: Float? = b.amountTxt.number()
-        val price: Float? = b.unitPriceTxt.number()
-        if(amount != null && price != null){
-            val total = (amount * price).round(2)
-            autoCallbacksEnabled = false
-            b.totalPriceTxt.editText?.setText(total.toString())
-            autoCallbacksEnabled = true
-        }
-
         applyChanges()
+
+        autoCallbacksEnabled = false
+        b.totalPriceTxt.setNumber(viewModel.cartItem.getTotalPrice())
+        autoCallbacksEnabled = true
     }
+
 
     fun applyChanges(){
         viewModel.cartItem.data.name = b.nameTxt.text()
-        viewModel.cartItem.data.amount = b.amountTxt.number()
-        viewModel.cartItem.data.unit_price = b.unitPriceTxt.number()
-//        viewModel.cartItem.data.model. = brand.getText()
-//        viewModel.cartItem.data.sku = sku.getText()
-
-//        viewModel.updateCartItem(cartItem)
+        viewModel.cartItem.data.amount = b.amountTxt.numberOrNull()
+        viewModel.cartItem.data.unit_price = b.unitPriceTxt.numberOrNull()
     }
 
 

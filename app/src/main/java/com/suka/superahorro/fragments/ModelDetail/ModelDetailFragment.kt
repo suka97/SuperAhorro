@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
@@ -14,6 +16,7 @@ import com.suka.superahorro.databinding.FragmentModelDetailBinding
 import com.suka.superahorro.packages.setGlidePicture
 import com.suka.superahorro.packages.setLoading
 import com.suka.superahorro.packages.setText
+import com.suka.superahorro.packages.text
 import com.suka.superahorro.packages.toStringNull
 
 class ModelDetailFragment : Fragment() {
@@ -36,6 +39,16 @@ class ModelDetailFragment : Fragment() {
         viewModel.init(args.modelRef, args.parentItem) {
             initTexts()
             initButtons()
+
+            // save changes on parent fragment
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    getTexts()
+                    viewModel.saveModel {
+                        findNavController().navigateUp()
+                    }
+                }
+            })
         }
 
         initViewModelObservers()
@@ -52,6 +65,16 @@ class ModelDetailFragment : Fragment() {
         b.saleModeTxt.setText(viewModel.model.data.sale_mode)
         b.noteTxt.setText(viewModel.model.data.note)
         setPicture(viewModel.model.data.img)
+    }
+
+
+    fun getTexts() {
+        viewModel.model.data.name = b.nameTxt.text()
+        viewModel.model.data.sku = b.modelSkuTxt.text()
+        viewModel.model.data.brand = b.brandTxt.text()
+        viewModel.model.data.content = b.contentTxt.text().toFloatOrNull()
+        viewModel.model.data.sale_mode = b.saleModeTxt.text()
+        viewModel.model.data.note = b.noteTxt.text()
     }
 
 

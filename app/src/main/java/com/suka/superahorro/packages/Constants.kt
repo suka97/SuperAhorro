@@ -25,6 +25,7 @@ import com.suka.superahorro.activities.MainActivity
 
 const val GLOBAL_UNIT_AMOUNT = "kg"
 const val GLOBAL_UNIT_PRICE = "$"
+const val GLOBAL_UNIT_NAME = "u"
 
 // activity requests
 const val REQUEST_IMAGE_CAPTURE = 1
@@ -61,6 +62,10 @@ fun TextInputLayout.numberOrNull(): Float? {
 
 fun TextInputLayout.setText(text: String?) {
     this.editText?.setText(text)
+}
+
+fun TextInputLayout.setNumber(number: Float?) {
+    this.setText(number?.toStringNull())
 }
 
 
