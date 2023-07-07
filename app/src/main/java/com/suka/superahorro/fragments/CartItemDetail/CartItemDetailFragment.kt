@@ -25,6 +25,7 @@ import com.suka.superahorro.R
 import com.suka.superahorro.database.DbModelRef
 import com.suka.superahorro.databinding.FragmentCartItemDetailBinding
 import com.suka.superahorro.packages.REQUEST_IMAGE_CAPTURE
+import com.suka.superahorro.packages.SimpleTextWatcher
 import com.suka.superahorro.packages.createAutoCompleteDialog
 import com.suka.superahorro.packages.createInputDialog
 import com.suka.superahorro.packages.number
@@ -85,6 +86,8 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
         initViewModelObservers()
         initButtons()
         onItemUpdated()
+        initTextCallbacks()
+        initChangesListeners()
     }
 
 
@@ -165,11 +168,6 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
         b.modelNoteTxt.setText(cartItem.data.model?.note)
         setPicture(cartItem.data.model?.img)
 
-        // update callbacks
-        b.amountTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
-        b.unitPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
-        b.totalPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdateTotal))
-
         // set units
         b.amountTxt.suffixText = cartItem.getMeasureUnit()
         b.unitPriceTxt.suffixText = cartItem.getUnitPrice()
@@ -177,10 +175,6 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
 
 
     fun initButtons() {
-        b.modelNameTxt.setEndIconOnClickListener {
-            Snackbar.make(b.root, "Icon clicked", Snackbar.LENGTH_SHORT).show()
-        }
-
         b.modelImg.setOnLongClickListener(){
             if (viewModel.isLoading.value == true) return@setOnLongClickListener true
             if (viewModel.cartItem.data.model != null) {
@@ -209,7 +203,12 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
 
         b.modelSkuTxt.setEndIconOnClickListener {
             scanBarcode { barcode ->
-                viewModel.updateModelSku(barcode)
+                viewModel.getModelBySku(barcode) { model ->
+                    if ( model == null ) b.modelSkuTxt.setText(barcode)
+                    else {
+                        Snackbar.make(requireView(), "El SKU ya está en uso", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }
@@ -345,5 +344,27 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
     override fun onItemUpdated() {
         initHiddens()
         initTexts()
+    }
+
+
+    fun initTextCallbacks() {
+        b.amountTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
+        b.unitPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
+        b.totalPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdateTotal))
+    }
+
+    fun initChangesListeners() {
+        // item
+        b.amountTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.itemChanges = true})
+        b.unitPriceTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.itemChanges = true})
+        b.totalPriceTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.itemChanges = true})
+        // model
+        b.modelNameTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.modelChanges = true})
+        b.modelSkuTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.modelChanges = true})
+        b.modelContentTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.modelChanges = true})
+        b.modelUnitShortTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.modelChanges = true})
+        b.modelBrandTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.modelChanges = true})
+        b.modelSaleModeTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.modelChanges = true})
+        b.modelNoteTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.modelChanges = true})
     }
 }

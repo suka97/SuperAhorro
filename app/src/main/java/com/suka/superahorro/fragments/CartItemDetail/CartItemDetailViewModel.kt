@@ -1,6 +1,7 @@
 package com.suka.superahorro.fragments.CartItemDetail
 
 import android.graphics.Bitmap
+import android.provider.ContactsContract.Data
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,6 +25,8 @@ class CartItemDetailViewModel : ViewModel() {
     val dbAuthError = MutableLiveData<Boolean>(false)
 
     var itemDetail: Item? = null
+    var itemChanges: Boolean = false
+    var modelChanges: Boolean = false
 
     lateinit var cart: Cart
     lateinit var cartItem: CartItem
@@ -70,19 +73,6 @@ class CartItemDetailViewModel : ViewModel() {
             }
 
             callback()
-        }
-    }
-
-
-    fun updateModelSku(sku: String?) {
-        viewModelScope.launch {
-            isLoading.value = true
-            async {  Database.setModelSku(cartItem.data.model!!.id, sku) }.await()
-            isLoading.value = false
-
-            cartItem.data.model!!.sku = sku
-            itemDetail = null   // reinicio el itemDetail porque quedo desactualizado
-            fragmentNotifier.onItemUpdated()
         }
     }
 
@@ -145,9 +135,27 @@ class CartItemDetailViewModel : ViewModel() {
 
 
     fun saveCartChanges(callback: () -> Unit) {
-        cart.setItem(cartItem)
         viewModelScope.launch {
-            async { Database.saveCart(cart) }.await()
+            if (itemChanges) {
+                cart.setItem(cartItem)
+                isLoading.value = true
+                async { Database.saveCart(cart) }.await()
+            }
+            if (modelChanges && cartItem.data.model!=null) {
+                isLoading.value = true
+                if (itemDetail==null) itemDetail = async { Database.getItem(cartItem.data.id) }.await()
+                val cartModel = cartItem.data.model!!
+                val model = async { Database.getModelById(cartItem.data.model!!.id) }.await()
+                model.data.name = cartModel.name
+                model.data.sku = cartModel.sku
+                model.data.content = cartModel.content
+                model.data.brand = cartModel.brand
+                model.data.sale_mode = cartModel.sale_mode
+                model.data.note = cartModel.note
+                async { Database.saveModel(model, itemDetail!!) }.await()
+            }
+
+            isLoading.value = false
             callback()
         }
     }
