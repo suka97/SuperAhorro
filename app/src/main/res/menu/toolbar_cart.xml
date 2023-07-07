@@ -13,9 +13,21 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/toolbar_cart_sort"
-        android:title="Sort"
+        android:title="Ordenar"
         android:icon="@drawable/icon_sort"
-        app:showAsAction="always" />
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/toolbar_cart_sort_name"
+                android:title="Nombre" />
+            <item
+                android:id="@+id/toolbar_cart_sort_price"
+                android:title="Precio" />
+            <item
+                android:id="@+id/toolbar_cart_sort_none"
+                android:title="Ninguno" />
+        </menu>
+    </item>
     <item
         android:id="@+id/toolbar_cart_delete"
         android:title="Eliminar Carrito"

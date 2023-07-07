@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Menu
@@ -20,7 +19,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -30,6 +28,7 @@ import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
 import com.suka.superahorro.R
 import com.suka.superahorro.activities.LoginActivity
+import com.suka.superahorro.adapters.CartAdapter
 import com.suka.superahorro.adapters.CartItemAdapter
 import com.suka.superahorro.database.DbItemRef
 import com.suka.superahorro.databinding.FragmentCartBinding
@@ -114,21 +113,20 @@ class CartFragment : Fragment() {
             R.id.toolbar_cart_add -> {
                 isAdding.value = !isAdding.value!!
             }
-            R.id.toolbar_cart_sort -> {
-                sortItems(item)
-            }
             R.id.toolbar_cart_scan -> {
                 onButtonScanClick()
             }
             R.id.toolbar_cart_close -> {
                 onCartClose()
             }
-            R.id.toolbar_cart_sort -> {
-                if ( viewModel.sortPattern == CartItemAdapter.SortPattern.NONE )
-                    viewModel.sortPattern = CartItemAdapter.SortPattern.PRICE
-                else
-                    viewModel.sortPattern = CartItemAdapter.SortPattern.NONE
-                adapter.sort(viewModel.sortPattern)
+            R.id.toolbar_cart_sort_name -> {
+                sortItems(CartItemAdapter.SortPattern.NAME)
+            }
+            R.id.toolbar_cart_sort_price -> {
+                sortItems(CartItemAdapter.SortPattern.PRICE)
+            }
+            R.id.toolbar_cart_sort_none -> {
+                sortItems(CartItemAdapter.SortPattern.NONE)
             }
             else -> ""
         }
@@ -273,31 +271,9 @@ class CartFragment : Fragment() {
     }
 
 
-    fun sortItems(menuItem: MenuItem) {
-        val popupMenu = PopupMenu(requireContext(), view, Gravity.BOTTOM)
-        popupMenu.inflate(R.menu.dropdown_sort_cart)
-        popupMenu.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.sort_by_name -> {
-                    viewModel.sortPattern = CartItemAdapter.SortPattern.NAME
-                    adapter.sort(viewModel.sortPattern)
-                    true
-                }
-                R.id.sort_by_price -> {
-                    viewModel.sortPattern = CartItemAdapter.SortPattern.PRICE
-                    adapter.sort(viewModel.sortPattern)
-                    true
-                }
-                R.id.sort_by_none -> {
-                    viewModel.sortPattern = CartItemAdapter.SortPattern.NONE
-                    adapter.sort(viewModel.sortPattern)
-                    true
-                }
-                else -> false
-                }
-
-        }
-        popupMenu.show()
+    fun sortItems(sortPattern: CartItemAdapter.SortPattern) {
+        viewModel.sortPattern = sortPattern
+        adapter.sort(sortPattern)
     }
 
 
