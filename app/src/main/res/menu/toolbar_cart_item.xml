@@ -5,4 +5,9 @@
         android:id="@+id/toolbar_cart_item_open_model"
         android:title="Abrir Detalle del Modelo"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/toolbar_cart_item_refresh_model"
+        android:title="Actualizar Info del Modelo"
+        app:showAsAction="never" />
 </menu>

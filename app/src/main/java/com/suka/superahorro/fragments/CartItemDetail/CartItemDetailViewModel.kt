@@ -120,6 +120,18 @@ class CartItemDetailViewModel : ViewModel() {
     }
 
 
+    fun refreshModel() {
+        viewModelScope.launch {
+            isLoading.value = true
+            val model = async { Database.getModelById(cartItem.data.model!!.id) }.await()
+            isLoading.value = false
+            cartItem.linkModel(model)
+
+            fragmentNotifier.onItemUpdated()
+        }
+    }
+
+
     fun linkModelById(id: String) {
         viewModelScope.launch {
             isLoading.value = true

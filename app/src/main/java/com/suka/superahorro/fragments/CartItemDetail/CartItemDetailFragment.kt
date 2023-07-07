@@ -98,6 +98,9 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
             R.id.toolbar_cart_item_open_model -> {
                 goToModelDetail()
             }
+            R.id.toolbar_cart_item_refresh_model -> {
+                viewModel.refreshModel()
+            }
             else -> ""
         }
         return super.onOptionsItemSelected(item)

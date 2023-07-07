@@ -1,5 +1,6 @@
 package com.suka.superahorro.dbclasses
 
+import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
