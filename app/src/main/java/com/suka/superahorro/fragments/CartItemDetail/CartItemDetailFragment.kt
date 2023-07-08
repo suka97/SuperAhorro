@@ -37,6 +37,7 @@ import com.suka.superahorro.packages.setLoading
 import com.suka.superahorro.packages.setNumber
 import com.suka.superahorro.packages.setText
 import com.suka.superahorro.packages.text
+import com.suka.superahorro.packages.toSimpleTextWatcher
 import com.suka.superahorro.packages.toStringNull
 
 
@@ -287,6 +288,13 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
         viewModel.cartItem.data.name = b.nameTxt.text()
         viewModel.cartItem.data.amount = b.amountTxt.numberOrNull()
         viewModel.cartItem.data.unit_price = b.unitPriceTxt.numberOrNull()
+
+        viewModel.cartItem.data.model?.name = b.modelNameTxt.text()
+        viewModel.cartItem.data.model?.sku = b.modelSkuTxt.text()
+        viewModel.cartItem.data.model?.content = b.modelContentTxt.numberOrNull()
+        viewModel.cartItem.data.model?.brand = b.modelBrandTxt.text()
+        viewModel.cartItem.data.model?.sale_mode = b.modelSaleModeTxt.text()
+        viewModel.cartItem.data.model?.note = b.modelNoteTxt.text()
     }
 
 
@@ -305,17 +313,6 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
                 viewModel.isImgLoading.value = false
             }
         )
-    }
-
-    private fun getTextWatcher(callback: ()->Unit): TextWatcher {
-        return object : TextWatcher {
-            override fun afterTextChanged(s: android.text.Editable?) {
-                if (autoCallbacksEnabled)
-                    callback()
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
-        }
     }
 
 
@@ -348,23 +345,37 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
 
 
     fun initTextCallbacks() {
-        b.amountTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
-        b.unitPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdatePriceAmount))
-        b.totalPriceTxt.editText?.addTextChangedListener(getTextWatcher(::onUpdateTotal))
+        b.amountTxt.editText?.addTextChangedListener(toSimpleTextWatcher(::onUpdatePriceAmount))
+        b.unitPriceTxt.editText?.addTextChangedListener(toSimpleTextWatcher(::onUpdatePriceAmount))
+        b.totalPriceTxt.editText?.addTextChangedListener(toSimpleTextWatcher(::onUpdateTotal))
     }
 
     fun initChangesListeners() {
         // item
-        b.amountTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.itemChanges = true})
-        b.unitPriceTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.itemChanges = true})
-        b.totalPriceTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.itemChanges = true})
+        b.amountTxt.editText?.addTextChangedListener(onTextWatcherCartItem())
+        b.unitPriceTxt.editText?.addTextChangedListener(onTextWatcherCartItem())
+        b.totalPriceTxt.editText?.addTextChangedListener(onTextWatcherCartItem())
         // model
-        b.modelNameTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.modelChanges = true})
-        b.modelSkuTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.modelChanges = true})
-        b.modelContentTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.modelChanges = true})
-        b.modelUnitShortTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.modelChanges = true})
-        b.modelBrandTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.modelChanges = true})
-        b.modelSaleModeTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.modelChanges = true})
-        b.modelNoteTxt.editText?.addTextChangedListener(SimpleTextWatcher{viewModel.modelChanges = true})
+        b.modelNameTxt.editText?.addTextChangedListener(onTextWatcherModel())
+        b.modelSkuTxt.editText?.addTextChangedListener(onTextWatcherModel())
+        b.modelContentTxt.editText?.addTextChangedListener(onTextWatcherModel())
+        b.modelUnitShortTxt.editText?.addTextChangedListener(onTextWatcherModel())
+        b.modelBrandTxt.editText?.addTextChangedListener(onTextWatcherModel())
+        b.modelSaleModeTxt.editText?.addTextChangedListener(onTextWatcherModel())
+        b.modelNoteTxt.editText?.addTextChangedListener(onTextWatcherModel())
+    }
+
+
+    fun onTextWatcherCartItem(): SimpleTextWatcher {
+        return SimpleTextWatcher {
+            viewModel.itemChanges = true
+            applyChanges()
+        }
+    }
+    fun onTextWatcherModel(): SimpleTextWatcher {
+        return SimpleTextWatcher {
+            viewModel.modelChanges = true
+            applyChanges()
+        }
     }
 }

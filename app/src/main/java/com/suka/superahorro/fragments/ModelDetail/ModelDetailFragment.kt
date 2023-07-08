@@ -35,6 +35,7 @@ class ModelDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        clearTexts()
         val args = ModelDetailFragmentArgs.fromBundle(requireArguments())
         viewModel.init(args.modelRef, args.parentItem) {
             initTexts()
@@ -122,6 +123,18 @@ class ModelDetailFragment : Fragment() {
                 }
                 .show()
         }
+    }
+
+
+    fun clearTexts() {
+        b.nameTxt.setText(null)
+        b.modelSkuTxt.setText(null)
+        b.parentNameTxt.setText(null)
+        b.brandTxt.setText(null)
+        b.contentTxt.setText(null)
+        b.baseUnitTxt.setText(null)
+        b.saleModeTxt.setText(null)
+        b.noteTxt.setText(null)
     }
 
 }

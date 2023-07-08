@@ -3,6 +3,10 @@ package com.suka.superahorro.packages
 import android.text.Editable
 import android.text.TextWatcher
 
+fun toSimpleTextWatcher(callback: ()->Unit): SimpleTextWatcher {
+    return SimpleTextWatcher { callback() }
+}
+
 class SimpleTextWatcher(private val callback: (String) -> Unit) : TextWatcher {
     override fun afterTextChanged(s: Editable?) {
         callback(s.toString())
