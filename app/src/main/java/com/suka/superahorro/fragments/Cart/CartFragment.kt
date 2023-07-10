@@ -41,7 +41,7 @@ import com.suka.superahorro.packages.showKeyboard
 class CartFragment : Fragment() {
     private val viewModel: CartViewModel by viewModels()
     private  lateinit var b: FragmentCartBinding
-    private lateinit var toolbarMenu: Menu
+    private var toolbarMenu: Menu? = null
 
     lateinit var adapter : CartItemAdapter
     var isAdding: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -172,7 +172,7 @@ class CartFragment : Fragment() {
         isAdding.observe(viewLifecycleOwner) { isAdding ->
             b.newItemTxt.visibility = if (isAdding) View.VISIBLE else View.GONE
             b.cartTotalTxt.visibility = if (isAdding) View.GONE else View.VISIBLE
-            toolbarMenu.findItem(R.id.toolbar_cart_add)?.setIcon(
+            toolbarMenu?.findItem(R.id.toolbar_cart_add)?.setIcon(
                 if (isAdding) R.drawable.icon_add_filled else R.drawable.icon_add
             )
             if ( isAdding == true ) {

@@ -3,6 +3,7 @@ package com.suka.superahorro.fragments.Cart
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.suka.superahorro.adapters.CartItemAdapter
 import com.suka.superahorro.database.Database
 import com.suka.superahorro.database.DbItemRef
@@ -33,7 +34,7 @@ class CartViewModel : ViewModel() {
         Log.e("CartViewModel", "Exception in couroutine: ${throwable.message}")
         dbAuthError.value = true
     }
-    private val viewModelScope = CoroutineScope(Dispatchers.Main + exceptionHandler)
+    //private val viewModelScope = CoroutineScope(Dispatchers.Main + exceptionHandler)
 
 
     fun init(cart: Cart) {

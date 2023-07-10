@@ -54,12 +54,12 @@ class Cart(var data: DbCart): Parcelable {
         data.last_edit = Timestamp.now()
 
         // creo un nuevo cart con los mismos datos pero cerrado con los items completados
-        val newCart = this
+        val newCart = Cart(data.copy())
         newCart.data.items = mutableListOf()
         newCart.data.status = DbCart.STATUS_CLOSED
         Database.addCart(newCart)
 
-        for ( i in data.items.indices ) {
+        for ( i in data.items.indices.reversed() ) {
             val item = data.items[i]
             if ( item.unit_price==null || item.amount==null ) continue
             if ( item.model == null ) continue
