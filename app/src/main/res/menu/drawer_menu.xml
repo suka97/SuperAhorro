@@ -21,6 +21,12 @@
             android:title="Unidades" />
 
         <item
+            android:id="@+id/cartHistoryFragment"
+            android:icon="@drawable/icon_history"
+            android:title="Historial de compras"
+            />
+
+        <item
             android:id="@+id/userFragment"
             android:icon="@drawable/icon_user"
             android:title="Usuario"

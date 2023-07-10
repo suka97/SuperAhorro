@@ -89,4 +89,13 @@
         android:name="com.suka.superahorro.fragments.ListUnits.ListUnitsFragment"
         android:label="Unidades"
         tools:layout="@layout/fragment_list_units" />
+    <fragment
+        android:id="@+id/cartHistoryFragment"
+        android:name="com.suka.superahorro.fragments.CartHistory.CartHistoryFragment"
+        android:label="Historial de compras"
+        tools:layout="@layout/fragment_cart_history" >
+        <action
+            android:id="@+id/action_cartHistoryFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
+    </fragment>
 </navigation>

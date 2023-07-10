@@ -52,6 +52,13 @@ object Database {
     }
 
 
+    suspend fun getClosedCarts(): MutableList<Cart> {
+        val req = cartsColl.whereEqualTo("status", DbCart.STATUS_CLOSED).orderBy("last_edit").limit(10).get().await()
+        val dbcarts = req.toObjects(DbCart::class.java)
+        return dbcarts.map { Cart(it) }.toMutableList()
+    }
+
+
     suspend fun saveCart(cart: Cart) {
         cartsColl.document(cart.data.id).set(cart.data).await()
     }
