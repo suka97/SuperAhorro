@@ -17,6 +17,8 @@ class ModelDetailViewModel : ViewModel() {
     var isLoading = MutableLiveData<Boolean>(false)
     var isImgLoading = MutableLiveData<Boolean>(false)
 
+    var modelChanges: Boolean = false
+
     lateinit var model: Model
     lateinit var user: User
     lateinit var parentItem: Item
@@ -37,10 +39,13 @@ class ModelDetailViewModel : ViewModel() {
 
     fun saveModel(callback: ()->Unit) {
         viewModelScope.launch {
-            isLoading.value = true
-            async { Database.saveModel(model, parentItem) }.await()
-            isLoading.value = false
+            if (modelChanges) {
+                isLoading.value = true
+                async { Database.saveModel(model, parentItem) }.await()
+                isLoading.value = false
+            }
 
+            modelChanges = false
             callback()
         }
     }

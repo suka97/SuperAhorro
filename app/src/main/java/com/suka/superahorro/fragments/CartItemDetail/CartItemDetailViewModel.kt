@@ -156,6 +156,8 @@ class CartItemDetailViewModel : ViewModel() {
             }
 
             isLoading.value = false
+            itemChanges = false
+            modelChanges = false
             callback()
         }
     }

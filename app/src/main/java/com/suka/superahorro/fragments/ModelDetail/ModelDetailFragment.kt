@@ -13,6 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.suka.superahorro.R
 import com.suka.superahorro.databinding.FragmentModelDetailBinding
+import com.suka.superahorro.packages.SimpleTextWatcher
 import com.suka.superahorro.packages.setGlidePicture
 import com.suka.superahorro.packages.setLoading
 import com.suka.superahorro.packages.setText
@@ -40,11 +41,12 @@ class ModelDetailFragment : Fragment() {
         viewModel.init(args.modelRef, args.parentItem) {
             initTexts()
             initButtons()
+            initChangesListeners()
 
             // save changes on parent fragment
             requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    getTexts()
+                    applyChanges()
                     viewModel.saveModel {
                         findNavController().navigateUp()
                     }
@@ -69,7 +71,7 @@ class ModelDetailFragment : Fragment() {
     }
 
 
-    fun getTexts() {
+    fun applyChanges() {
         viewModel.model.data.name = b.nameTxt.text()
         viewModel.model.data.sku = b.modelSkuTxt.text()
         viewModel.model.data.brand = b.brandTxt.text()
@@ -135,6 +137,27 @@ class ModelDetailFragment : Fragment() {
         b.baseUnitTxt.setText(null)
         b.saleModeTxt.setText(null)
         b.noteTxt.setText(null)
+    }
+
+
+    fun initChangesListeners() {
+        b.nameTxt.editText?.addTextChangedListener(onTextWatcherModel())
+        b.modelSkuTxt.editText?.addTextChangedListener(onTextWatcherModel())
+        b.parentNameTxt.editText?.addTextChangedListener(onTextWatcherModel())
+        b.brandTxt.editText?.addTextChangedListener(onTextWatcherModel())
+        b.contentTxt.editText?.addTextChangedListener(onTextWatcherModel())
+        b.baseUnitTxt.editText?.addTextChangedListener(onTextWatcherModel())
+        b.baseUnitTxt.editText?.addTextChangedListener(onTextWatcherModel())
+        b.saleModeTxt.editText?.addTextChangedListener(onTextWatcherModel())
+        b.noteTxt.editText?.addTextChangedListener(onTextWatcherModel())
+    }
+
+
+    fun onTextWatcherModel(): SimpleTextWatcher {
+        return SimpleTextWatcher {
+            viewModel.modelChanges = true
+            applyChanges()
+        }
     }
 
 }
