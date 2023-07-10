@@ -265,7 +265,8 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
     }
 
 
-    fun onUpdateTotal(){
+    fun onUpdateTotal(newValue: String){
+        if (!autoCallbacksEnabled) return
         autoCallbacksEnabled = false
         viewModel.cartItem.calcUnitPriceFromTotal(b.totalPriceTxt.numberOrNull())
         b.unitPriceTxt.setNumber(viewModel.cartItem.data.unit_price)
@@ -275,7 +276,8 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
     }
 
 
-    fun onUpdatePriceAmount(){
+    fun onUpdatePriceAmount(newValue: String){
+        if (!autoCallbacksEnabled) return
         applyChanges()
 
         autoCallbacksEnabled = false
@@ -345,10 +347,11 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
 
 
     fun initTextCallbacks() {
-        b.amountTxt.editText?.addTextChangedListener(toSimpleTextWatcher(::onUpdatePriceAmount))
-        b.unitPriceTxt.editText?.addTextChangedListener(toSimpleTextWatcher(::onUpdatePriceAmount))
-        b.totalPriceTxt.editText?.addTextChangedListener(toSimpleTextWatcher(::onUpdateTotal))
+        b.amountTxt.editText?.addTextChangedListener(SimpleTextWatcher(::onUpdatePriceAmount))
+        b.unitPriceTxt.editText?.addTextChangedListener(SimpleTextWatcher(::onUpdatePriceAmount))
+        b.totalPriceTxt.editText?.addTextChangedListener(SimpleTextWatcher(::onUpdateTotal))
     }
+
 
     fun initChangesListeners() {
         // item

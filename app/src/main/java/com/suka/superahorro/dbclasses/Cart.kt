@@ -52,19 +52,30 @@ class Cart(var data: DbCart): Parcelable {
 
     suspend fun close() {
         data.last_edit = Timestamp.now()
-        data.status = DbCart.STATUS_CLOSED
-        Database.saveCart(this)
 
-        for ( item in data.items ) {
+        // creo un nuevo cart con los mismos datos pero cerrado con los items completados
+        val newCart = this
+        newCart.data.items = mutableListOf()
+        newCart.data.status = DbCart.STATUS_CLOSED
+        Database.addCart(newCart)
+
+        for ( i in data.items.indices ) {
+            val item = data.items[i]
+            if ( item.unit_price==null || item.amount==null ) continue
             if ( item.model == null ) continue
-            if ( item.unit_price == null ) continue
+
+            newCart.insertItem( this.getItem(i) )
+            this.deleteItem(i)
 
             Database.setModelLastBuy(item.model!!.id, Model.LastBuy(
-                date = data.last_edit,
+                date = newCart.data.last_edit,
                 price = item.unit_price!!,
                 amount = item.amount!!,
-                cart = data.id
+                cart = newCart.data.id
             ))
         }
+
+        Database.saveCart(this)
+        Database.saveCart(newCart)
     }
 }
