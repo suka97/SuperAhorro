@@ -7,6 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".fragments.Cart.CartFragment">
 
+    <TextView
+        android:id="@+id/cartShopName_txt"
+        style="@style/ToolbarTitle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:paddingLeft="10dp"
+        android:text="Local: Carrefour"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <ImageButton
         android:id="@+id/newItem_btOk"
@@ -16,7 +26,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/icon_ok"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/cartShopName_txt" />
 
     <TextView
         android:id="@+id/cartTotal_txt"
@@ -25,12 +35,12 @@
         style="@style/CartTopText"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
-        android:text="Lista: 16 items, Total: $10,500.00"
+        android:text="Items: 16, Total: $10,500.00"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/newItem_btOk"
         app:layout_constraintEnd_toStartOf="@id/newItem_btOk"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/newItem_btOk" />
 
     <AutoCompleteTextView
         android:id="@+id/newItem_txt"
@@ -42,7 +52,7 @@
         app:layout_constraintBottom_toBottomOf="@id/newItem_btOk"
         app:layout_constraintEnd_toStartOf="@id/newItem_btOk"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/newItem_btOk" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recCartItems"

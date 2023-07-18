@@ -93,7 +93,7 @@ class CartItemAdapter (
 
 
     fun getCartDescription(): String {
-        return "Lista: $itemCount, Total: ${UnitValue(cart.data.total, GLOBAL_UNIT_PRICE)}"
+        return "Items: $itemCount, Total: ${UnitValue(cart.data.total, GLOBAL_UNIT_PRICE)}"
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {

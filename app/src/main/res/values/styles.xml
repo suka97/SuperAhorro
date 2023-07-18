@@ -28,4 +28,12 @@
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:textSize">20sp</item>
     </style>
+
+    <style name="ToolbarTitle">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:background">?android:colorPrimary</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 </resources>

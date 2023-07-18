@@ -15,7 +15,7 @@
         android:id="@+id/toolbar_cart_sort"
         android:title="Ordenar"
         android:icon="@drawable/icon_sort"
-        app:showAsAction="always">
+        app:showAsAction="never">
         <menu>
             <item
                 android:id="@+id/toolbar_cart_sort_name"
