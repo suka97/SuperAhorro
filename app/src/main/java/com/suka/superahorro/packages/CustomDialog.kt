@@ -30,6 +30,7 @@ fun createInputDialog(dialog: Dialog, desc: String, value: Any, onOkClicked: (St
 //        is UnitValue -> input.setText(value.value?.toString() ?: "")
 //        else -> input.setText(value.toString())
 //    }
+    input.setText(value.toString())
     if ( value is String ) input.inputType = InputType.TYPE_CLASS_TEXT
 
     txtDesc.text = desc

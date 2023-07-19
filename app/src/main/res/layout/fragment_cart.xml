@@ -10,6 +10,7 @@
     <TextView
         android:id="@+id/cartShopName_txt"
         style="@style/ToolbarTitle"
+        android:background="#00BCD4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:gravity="center_horizontal|center_vertical"

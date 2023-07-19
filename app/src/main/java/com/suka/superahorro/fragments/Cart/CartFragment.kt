@@ -1,6 +1,7 @@
 package com.suka.superahorro.fragments.Cart
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -32,6 +33,7 @@ import com.suka.superahorro.adapters.CartAdapter
 import com.suka.superahorro.adapters.CartItemAdapter
 import com.suka.superahorro.database.DbItemRef
 import com.suka.superahorro.databinding.FragmentCartBinding
+import com.suka.superahorro.packages.createInputDialog
 import com.suka.superahorro.packages.hideKeyboard
 import com.suka.superahorro.packages.setLoading
 import com.suka.superahorro.packages.setToolbarTitle
@@ -208,6 +210,16 @@ class CartFragment : Fragment() {
         b.newItemTxt.setOnItemClickListener { parent, view, position, id ->
             val selectedOption = parent.getItemAtPosition(position) as DbItemRef
             goToItemDetailNew(selectedOption)
+        }
+
+        b.cartShopNameTxt.text = viewModel.cart.data.shop
+        b.cartShopNameTxt.setOnClickListener{
+            val dialog = Dialog(requireActivity())
+            createInputDialog(dialog, "Nombre del local", b.cartShopNameTxt.text) { name ->
+                viewModel.cart.data.shop = name
+                viewModel.saveCartChanges()
+                b.cartShopNameTxt.text = name
+            }
         }
     }
 
