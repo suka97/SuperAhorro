@@ -42,7 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/newItem_btOk" />
 
-    <AutoCompleteTextView
+    <com.suka.superahorro.packages.InstantAutoCompleteTextView
         android:id="@+id/newItem_txt"
         style="@style/CartTopText"
         android:layout_width="0dp"

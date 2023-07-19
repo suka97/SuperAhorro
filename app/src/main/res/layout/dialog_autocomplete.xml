@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
 
-    <AutoCompleteTextView
+    <com.suka.superahorro.packages.InstantAutoCompleteTextView
         android:id="@+id/inputDialogEdit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
