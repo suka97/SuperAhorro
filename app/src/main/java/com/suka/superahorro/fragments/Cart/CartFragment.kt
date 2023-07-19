@@ -221,12 +221,14 @@ class CartFragment : Fragment() {
 
     private fun goToItemDetailNew(item: DbItemRef) {
         val newItem = viewModel.insertCartItem(item)
-        val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment(
-            cart = viewModel.cart,
-            itemPos = newItem.cartPos
-        )
-        findNavController().navigate(action)
-        isAdding.value = false
+        viewModel.saveCartChanges(showLoading = true) {
+            isAdding.value = false
+            val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment(
+                cart = viewModel.cart,
+                itemPos = newItem.cartPos
+            )
+            findNavController().navigate(action)
+        }
     }
 
 

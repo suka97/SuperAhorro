@@ -77,17 +77,19 @@ class CartViewModel : ViewModel() {
     }
 
 
-    fun saveCartChanges(showLoading: Boolean = false) {
+    fun saveCartChanges(showLoading: Boolean = false, callback: (()->Unit)? = null) {
         viewModelScope.launch {
             if (showLoading) isLoading.value = true
             async { Database.saveCart(cart) }.await()
             isLoading.value = false
+            callback?.invoke()
         }
     }
 
 
     fun insertCartItem(item: DbItemRef): CartItem {
         cart.insertItem(CartItem(item))
+        saveCartChanges()
         return cart.getLastItem()
     }
 
