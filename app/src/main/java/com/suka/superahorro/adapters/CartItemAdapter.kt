@@ -68,9 +68,9 @@ class CartItemAdapter (
             txtPrice.text = UnitValue(price, GLOBAL_UNIT_PRICE).toString()
         }
 
-        fun setAmount (amount: Float?) {
+        fun setAmount (amount: Float?, unit: String?) {
             var txtAmount : TextView = view.findViewById(R.id.txtAmount_item)
-            txtAmount.text = UnitValue(amount, GLOBAL_UNIT_AMOUNT).toString()
+            txtAmount.text = UnitValue(amount, unit).toString()
         }
 
         fun onCardViewLongClick (onItemClick: (Int) -> Unit) {
@@ -118,7 +118,7 @@ class CartItemAdapter (
         holder.setPicture(item.data.model?.img)
         holder.setName(item.data.name)
         holder.setPrice(item.getTotalPrice())
-        holder.setAmount(item.data.amount)
+        holder.setAmount(item.data.amount, item.getMeasureUnit())
         holder.getCard().setOnClickListener() {
             onItemClick(index)
         }
