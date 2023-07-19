@@ -63,6 +63,12 @@ class CartItemAdapter (
             txtName.text = name
         }
 
+        fun setModelName (name: String?) {
+            var txtName : TextView = view.findViewById(R.id.txtName_model)
+            txtName.text = name
+            txtName.visibility = if (name == null) View.GONE else View.VISIBLE
+        }
+
         fun setPrice (price: Float?) {
             var txtPrice : TextView = view.findViewById(R.id.txtPrice_item)
             txtPrice.text = UnitValue(price, GLOBAL_UNIT_PRICE).toString()
@@ -117,6 +123,7 @@ class CartItemAdapter (
 
         holder.setPicture(item.data.model?.img)
         holder.setName(item.data.name)
+        holder.setModelName(item.data.model?.name)
         holder.setPrice(item.getTotalPrice())
         holder.setAmount(item.data.amount, item.getMeasureUnit())
         holder.getCard().setOnClickListener() {

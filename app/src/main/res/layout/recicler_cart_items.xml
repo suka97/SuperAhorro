@@ -66,7 +66,8 @@
             android:textSize="30sp"
             app:layout_constraintEnd_toStartOf="@+id/linearLayout"
             app:layout_constraintStart_toEndOf="@+id/img_item"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/txtName_model"/>
 
         <TextView
             android:id="@+id/txtName_model"
