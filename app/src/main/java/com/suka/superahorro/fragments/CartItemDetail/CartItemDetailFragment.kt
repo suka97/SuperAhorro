@@ -287,6 +287,8 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
 
 
     fun applyChanges(){
+        if (!autoCallbacksEnabled) return
+
         viewModel.cartItem.data.name = b.nameTxt.text()
         viewModel.cartItem.data.amount = b.amountTxt.numberOrNull()
         viewModel.cartItem.data.unit_price = b.unitPriceTxt.numberOrNull()
@@ -341,8 +343,10 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
 
 
     override fun onItemUpdated() {
+        autoCallbacksEnabled = false
         initHiddens()
         initTexts()
+        autoCallbacksEnabled = true
     }
 
 
