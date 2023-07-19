@@ -11,7 +11,12 @@ data class DbUser(
     var name: String = "",
     var items: MutableList<DbItemRef> = mutableListOf(),
     var units: MutableList<DbUnit> = mutableListOf(),
-)
+    var config: Config = Config(),
+) {
+    data class Config(
+        var def_cart_sort: String? = null,
+    )
+}
 
 
 data class DbUnit(

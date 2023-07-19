@@ -26,7 +26,7 @@ class CartViewModel : ViewModel() {
     var onItemsChange: (() -> Unit)? = null
     lateinit var cart: Cart
     lateinit var user: User
-    var sortPattern: CartItemAdapter.SortPattern = CartItemAdapter.SortPattern.NONE
+    lateinit var sortPattern: CartItemAdapter.SortPattern
 
 
     // handle courritine exceptions
@@ -42,6 +42,7 @@ class CartViewModel : ViewModel() {
         viewModelScope.launch {
             isLoading.value = true
             user = async { Database.getUser() }.await()
+            sortPattern = CartItemAdapter.SortPattern.fromString(user.data.config.def_cart_sort)
             isLoading.value = false
 
             isInitialized.value = true

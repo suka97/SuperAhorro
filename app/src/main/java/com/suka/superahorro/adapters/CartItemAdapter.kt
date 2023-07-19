@@ -22,7 +22,13 @@ class CartItemAdapter (
     sortPattern: SortPattern = SortPattern.NONE
 ) : RecyclerView.Adapter<CartItemAdapter.ItemHolder>() {
     enum class SortPattern {
-        NONE, PRICE, NAME
+        NONE, PRICE, NAME;
+
+        companion object {
+            fun fromString(str: String?): SortPattern {
+                return values().firstOrNull { it.name.equals(str, true) } ?: SortPattern.NONE
+            }
+        }
     }
 
     init {
