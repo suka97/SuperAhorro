@@ -168,8 +168,10 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
         b.modelSaleModeTxt.setText(cartItem.data.model?.sale_mode)
         b.modelNoteTxt.setText(cartItem.data.model?.note)
         setPicture(cartItem.data.model?.img)
+    }
 
-        // set units
+    fun initSuffixes() {
+        val cartItem = viewModel.cartItem
         b.amountTxt.suffixText = cartItem.getMeasureUnit()
         b.unitPriceTxt.suffixText = cartItem.getUnitPrice()
     }
@@ -346,6 +348,7 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
         autoCallbacksEnabled = false
         initHiddens()
         initTexts()
+        initSuffixes()
         autoCallbacksEnabled = true
     }
 
@@ -383,6 +386,7 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
         return SimpleTextWatcher {
             viewModel.modelChanges = true
             applyChanges()
+            initSuffixes()  // si cambian las cantidades, se muestra distintos sufijos
         }
     }
 }

@@ -117,6 +117,7 @@ class CartItemDetailViewModel : ViewModel() {
             isLoading.value = false
             cartItem.linkModel(model)
 
+            modelChanges = false
             fragmentNotifier.onItemUpdated()
         }
     }
