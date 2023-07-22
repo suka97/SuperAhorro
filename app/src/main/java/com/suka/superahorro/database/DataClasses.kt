@@ -112,6 +112,7 @@ data class DbCartItem(
     var model: Model? = null,
     var amount: Float? = null,
     var unit_price: Float? = null,
+    var checked: Boolean = false,
 ) : Parcelable {
     @Parcelize
     data class Model(

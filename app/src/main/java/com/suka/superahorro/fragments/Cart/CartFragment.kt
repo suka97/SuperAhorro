@@ -159,7 +159,11 @@ class CartFragment : Fragment() {
                 val dialog = builder.create()
                 dialog.show()
             },
-            sortPattern = viewModel.sortPattern
+            sortPattern = viewModel.sortPattern,
+            onItemChange = { cartItem ->
+                viewModel.cart.setItem(cartItem)
+                viewModel.saveCartChanges()
+            }
         )
         b.recCartItems.layoutManager = LinearLayoutManager(context)
         b.recCartItems.adapter = adapter

@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
@@ -17,8 +18,9 @@ import com.suka.superahorro.packages.*
 
 class CartItemAdapter (
     var cart: Cart,
-    var onItemClick : (Int) -> Unit,
-    var onItemDelete : (Int) -> Unit,
+    var onItemClick: (Int) -> Unit,
+    var onItemDelete: (Int) -> Unit,
+    var onItemChange: (cartItem: CartItem) -> Unit,
     sortPattern: SortPattern = SortPattern.NONE
 ) : RecyclerView.Adapter<CartItemAdapter.ItemHolder>() {
     enum class SortPattern {
@@ -79,6 +81,16 @@ class CartItemAdapter (
             txtAmount.text = UnitValue(amount, unit).toString()
         }
 
+        fun setChecked (checked: Boolean, onChange: (Boolean)->Unit) {
+            var checkAdded : CheckBox = view.findViewById(R.id.checkAdded)
+            checkAdded.isChecked = checked
+            checkAdded.setOnCheckedChangeListener { _, isChecked ->
+                onChange(isChecked)
+            }
+        }
+
+
+
         fun onCardViewLongClick (index: Int, onItemClick: (Int) -> Unit) {
             val popupMenu = PopupMenu(view.context, view)
             popupMenu.inflate(R.menu.card_longclick_menu)
@@ -126,6 +138,10 @@ class CartItemAdapter (
         holder.setModelName(item.data.model?.name)
         holder.setPrice(item.getTotalPrice())
         holder.setAmount(item.data.amount, item.getMeasureUnit())
+        holder.setChecked(item.data.checked) { newValue ->
+            item.data.checked = newValue
+            onItemChange(item)
+        }
         holder.getCard().setOnClickListener() {
             onItemClick(index)
         }

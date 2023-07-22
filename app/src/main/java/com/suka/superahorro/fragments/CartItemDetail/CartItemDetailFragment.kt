@@ -168,6 +168,7 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
         b.modelSaleModeTxt.setText(cartItem.data.model?.sale_mode)
         b.modelNoteTxt.setText(cartItem.data.model?.note)
         setPicture(cartItem.data.model?.img)
+        b.checkAdded.isChecked = cartItem.data.checked
     }
 
     fun initSuffixes() {
@@ -294,6 +295,7 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
         viewModel.cartItem.data.name = b.nameTxt.text()
         viewModel.cartItem.data.amount = b.amountTxt.numberOrNull()
         viewModel.cartItem.data.unit_price = b.unitPriceTxt.numberOrNull()
+        viewModel.cartItem.data.checked = b.checkAdded.isChecked
 
         viewModel.cartItem.data.model?.name = b.modelNameTxt.text()
         viewModel.cartItem.data.model?.sku = b.modelSkuTxt.text()
@@ -365,6 +367,7 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
         b.amountTxt.editText?.addTextChangedListener(onTextWatcherCartItem())
         b.unitPriceTxt.editText?.addTextChangedListener(onTextWatcherCartItem())
         b.totalPriceTxt.editText?.addTextChangedListener(onTextWatcherCartItem())
+        initCheckAdded()
         // model
         b.modelNameTxt.editText?.addTextChangedListener(onTextWatcherModel())
         b.modelSkuTxt.editText?.addTextChangedListener(onTextWatcherModel())
@@ -375,6 +378,15 @@ class CartItemDetailFragment : Fragment(), CartItemDetailViewModel.FragmentNotif
         b.modelNoteTxt.editText?.addTextChangedListener(onTextWatcherModel())
     }
 
+    fun initCheckAdded() {
+        b.checkAdded.setOnCheckedChangeListener { _, _ ->
+            viewModel.itemChanges = true
+            applyChanges()
+        }
+        b.txtCheckAdded.setOnClickListener {
+            b.checkAdded.isChecked = !b.checkAdded.isChecked
+        }
+    }
 
     fun onTextWatcherCartItem(): SimpleTextWatcher {
         return SimpleTextWatcher {

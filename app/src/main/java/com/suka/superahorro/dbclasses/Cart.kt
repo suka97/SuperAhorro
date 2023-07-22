@@ -62,7 +62,8 @@ class Cart(var data: DbCart): Parcelable {
         for ( i in data.items.indices.reversed() ) {
             val item = data.items[i]
             if ( item.unit_price==null || item.amount==null ) continue
-            if ( item.model == null ) continue
+            if ( !item.checked ) continue
+            //if ( item.model == null ) continue
 
             newCart.insertItem( this.getItem(i) )
             this.deleteItem(i)
