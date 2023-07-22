@@ -165,6 +165,7 @@ class CartFragment : Fragment() {
         b.recCartItems.adapter = adapter
 
         viewModel.onItemsChange = {
+            adapter.sort(viewModel.sortPattern)
             updateCartTotal()
         }
     }
@@ -239,7 +240,7 @@ class CartFragment : Fragment() {
                 cart = viewModel.cart,
                 itemPos = newItem.cartPos
             )
-            findNavController().navigate(action)
+            //findNavController().navigate(action)
         }
     }
 

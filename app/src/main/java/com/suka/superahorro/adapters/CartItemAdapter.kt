@@ -79,13 +79,13 @@ class CartItemAdapter (
             txtAmount.text = UnitValue(amount, unit).toString()
         }
 
-        fun onCardViewLongClick (onItemClick: (Int) -> Unit) {
+        fun onCardViewLongClick (index: Int, onItemClick: (Int) -> Unit) {
             val popupMenu = PopupMenu(view.context, view)
             popupMenu.inflate(R.menu.card_longclick_menu)
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.menuDelete -> {
-                        onItemClick(adapterPosition)
+                        onItemClick(index)
                         true
                     }
                     else -> false
@@ -130,7 +130,7 @@ class CartItemAdapter (
             onItemClick(index)
         }
         holder.getCard().setOnLongClickListener() {
-            holder.onCardViewLongClick(onItemDelete)
+            holder.onCardViewLongClick(index, onItemDelete)
             true
         }
     }

@@ -90,7 +90,8 @@ class CartViewModel : ViewModel() {
 
     fun insertCartItem(item: DbItemRef): CartItem {
         cart.insertItem(CartItem(item))
-        saveCartChanges()
+        onItemsChange?.invoke()
+        //saveCartChanges()
         return cart.getLastItem()
     }
 
