@@ -4,4 +4,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="select1">#7969A3</color>
+
+    <color name="list_highlight">#A8FFEB3B</color>
+    <color name="list_default">#424242</color>
 </resources>

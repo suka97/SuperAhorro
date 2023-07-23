@@ -5,11 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.os.Handler
 import android.provider.MediaStore
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
@@ -20,6 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.stfalcon.imageviewer.StfalconImageViewer
 import com.suka.superahorro.R
+import com.suka.superahorro.activities.LoginActivity
 import com.suka.superahorro.activities.MainActivity
 
 
@@ -103,6 +106,18 @@ fun Fragment.requestImage() {
 fun Fragment.setToolbarTitle(title: String) {
     val activity = requireActivity() as AppCompatActivity
     activity.supportActionBar?.setTitle(title)
+}
+
+
+fun CardView.highlight(time: Long = 1000) {
+    this.setHighlight(true)
+    Handler().postDelayed({
+        this.setHighlight(false)
+    }, time)
+}
+fun CardView.setHighlight(highlight: Boolean) {
+    val color = if (highlight) R.color.list_highlight else R.color.list_default
+    this.setCardBackgroundColor(resources.getColor(color))
 }
 
 

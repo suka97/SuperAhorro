@@ -17,11 +17,12 @@ import com.suka.superahorro.dbclasses.CartItem
 import com.suka.superahorro.packages.*
 
 class CartItemAdapter (
+    var recyclerView: RecyclerView,
     var cart: Cart,
     var onItemClick: (Int) -> Unit,
     var onItemDelete: (Int) -> Unit,
     var onItemChange: (cartItem: CartItem) -> Unit,
-    sortPattern: SortPattern = SortPattern.NONE
+    var sortPattern: SortPattern = SortPattern.NONE
 ) : RecyclerView.Adapter<CartItemAdapter.ItemHolder>() {
     enum class SortPattern {
         NONE, PRICE, NAME;
@@ -108,11 +109,31 @@ class CartItemAdapter (
 
     }
 
-    private var sortedIndexes: List<Int>? = null
+    private var sortedIndexes: List<Int>? = null    // entro con el indice sort, y obtengo el indice original en la lista
+
+    fun notifyItemAdded (position: Int) {
+        val listPos = sortedIndexes?.indexOf(position)
+        if (listPos == null || listPos < 0) {
+            notifyDataSetChanged()
+            return
+        }
+        notifyItemInserted(listPos)
+        notifyItemRangeChanged(listPos, cart.size())
+
+        recyclerView.post {
+            val holder = recyclerView.findViewHolderForAdapterPosition(listPos) as ItemHolder?
+            holder?.getCard()?.highlight()
+        }
+    }
 
     fun notifyDeleteItem (position: Int) {
-        notifyItemRemoved(position)
-        notifyItemRangeChanged(position, cart.size())
+        val listPos = sortedIndexes?.indexOf(position)
+        if (listPos == null || listPos < 0) {
+            notifyDataSetChanged()
+            return
+        }
+        notifyItemRemoved(listPos)
+        notifyItemRangeChanged(listPos, cart.size())
     }
 
 
@@ -159,7 +180,10 @@ class CartItemAdapter (
             SortPattern.PRICE -> sortByPrice()
             SortPattern.NAME -> sortByName()
         }
-        notifyDataSetChanged()
+        if ( this.sortPattern != sortPattern ) {
+            this.sortPattern = sortPattern
+            notifyDataSetChanged()
+        }
     }
 
     private fun sortByPrice() {
@@ -170,6 +194,7 @@ class CartItemAdapter (
         val sortedItems = sortedItemsWithIndex.map { it.first }
         // Obtener los nuevos índices en una lista separada
         sortedIndexes = sortedItemsWithIndex.map { it.second }
+        this.sortedIndexes = sortedIndexes
     }
 
     private fun sortByName() {
@@ -179,6 +204,7 @@ class CartItemAdapter (
         // Obtener solo los elementos ordenados en una nueva lista
         val sortedItems = sortedItemsWithIndex.map { it.first }
         // Obtener los nuevos índices en una lista separada
-        sortedIndexes = sortedItemsWithIndex.map { it.second }
+        val sortedIndexes = sortedItemsWithIndex.map { it.second }
+        this.sortedIndexes = sortedIndexes
     }
 }

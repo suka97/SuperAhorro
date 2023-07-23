@@ -137,7 +137,7 @@ class CartFragment : Fragment() {
 
 
     private fun initAdapter() {
-        adapter = CartItemAdapter(viewModel.cart,
+        adapter = CartItemAdapter(b.recCartItems, viewModel.cart,
             // OnClick
             { position ->
                 val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment(
@@ -152,8 +152,8 @@ class CartFragment : Fragment() {
                 builder.setTitle("Borrar item")
                 builder.setMessage("¿Está seguro que desea eliminar el item?")
                 builder.setPositiveButton("Sí") { _, _ ->
-                    viewModel.deleteCartItem(position)
                     adapter.notifyDeleteItem(position)
+                    viewModel.deleteCartItem(position)
                     Snackbar.make(b.root, "Item eliminado", Snackbar.LENGTH_SHORT).show()
                 }
                 val dialog = builder.create()
@@ -238,6 +238,7 @@ class CartFragment : Fragment() {
 
     private fun goToItemDetailNew(item: DbItemRef) {
         val newItem = viewModel.insertCartItem(item)
+        adapter.notifyItemAdded(newItem.cartPos)
         viewModel.saveCartChanges(showLoading = true) {
             isAdding.value = false
             val action = CartFragmentDirections.actionCartFragmentToItemDetailFragment(
